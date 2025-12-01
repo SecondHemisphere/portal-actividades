@@ -4,6 +4,10 @@ import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { Activity } from '../../../models/Activity';
 import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { Category } from '../../../models/Category';
+import { Organizer } from '../../../models/Organizer';
+import { ServCategoriesJson } from '../../../services/serv-categories-json';
+import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 
 declare const bootstrap: any;
 
@@ -23,16 +27,8 @@ export class ActivityCrud {
   minDate:string = "2020-01-01";
   maxDate = new Date().toISOString().split("T")[0]; ///fecha con formato yyyy-mm-dd
 
-  categories = [
-    { id: 1, name: "Arte" },
-    { id: 2, name: "Deportes" },
-    { id: 3, name: "Bienestar" }
-  ];
-
-  organizers = [
-    { id: 1, name: "Juan Pérez" },
-    { id: 2, name: "María López" }
-  ];
+  categories: Category[] = [];
+  organizers: Organizer[] = [];
 
   activityFilters: SearchFilter[] = [
     { type: 'text', field: 'title', label: 'Título' },
@@ -66,9 +62,13 @@ export class ActivityCrud {
 
   constructor(
     private miServicio: ServActivitiesJson,
+    private categoriesService: ServCategoriesJson,
+    private organizersService: ServOrganizersJson,
     private formbuilder: FormBuilder
   ) {
     this.loadActivities();
+    this.loadCategories();
+    this.loadOrganizers();
 
     this.formActivity = this.formbuilder.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
@@ -92,6 +92,18 @@ export class ActivityCrud {
     this.miServicio.getActivities().subscribe((data: Activity[]) => {
       this.activities = data;
       this.filteredActivities = [...data];
+    });
+  }
+
+  loadCategories() {
+    this.categoriesService.getCategories().subscribe((data: Category[]) => {
+      this.categories = data;
+    });
+  }
+
+  loadOrganizers() {
+    this.organizersService.getOrganizers().subscribe((data: Organizer[]) => {
+      this.organizers = data;
     });
   }
 
