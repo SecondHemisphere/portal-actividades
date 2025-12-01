@@ -1,1 +1,165 @@
-<p>activity-crud works!</p>
+<div class="container mt-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <h2 class="mb-3 mb-md-0">Gestión de Actividades</h2>
+
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+      <!-- BUSCADOR -->
+      <app-search-form [filters]="activityFilters" (onSearch)="search($event)"> </app-search-form>
+
+      <!-- REINICIAR -->
+      <button
+        class="btn btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="loadActivities()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reiniciar
+      </button>
+
+      <!-- CREAR ACTIVIDAD -->
+      <button class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
+        <i class="bi bi-plus-circle"></i>
+        Crear Actividad
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <app-data-table
+    [colArray]="colArray"
+    [gridData]="filteredActivities"
+    [showView]="true"
+    (onEdit)="openEdit($event)"
+    (onDelete)="delete($event)"
+  >
+  </app-data-table>
+
+  <!-- MODAL CREAR/EDITAR -->
+  <div class="modal fade" id="activityModal" tabindex="-1" #activityModalRef>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- HEADER -->
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ editingId ? 'Editar Actividad' : 'Nueva Actividad' }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- FORM -->
+        <form [formGroup]="formActivity">
+          <div class="modal-body">
+            <!-- TITULO -->
+            <div class="mb-3">
+              <label class="form-label">Título</label>
+              <input type="text" class="form-control" formControlName="title" />
+              <span class="error">
+                @if(formActivity.get("title")?.invalid && formActivity.get("title")?.touched){
+                @if(formActivity.get("title")?.errors?.["required"]){ Es requerido }
+                @if(formActivity.get("title")?.errors?.["minlength"]){ Mínimo 3 caracteres } }
+              </span>
+            </div>
+
+            <!-- CATEGORÍA -->
+            <div class="mb-3">
+              <label class="form-label">Categoría</label>
+              <select class="form-select" formControlName="categoryId">
+                @for(c of categories; track $index){
+                <option [value]="c.id">{{ c.name }}</option>
+                }
+              </select>
+              <span class="error">
+                @if(formActivity.get("categoryId")?.invalid &&
+                formActivity.get("categoryId")?.touched){ Seleccione una categoría }
+              </span>
+            </div>
+
+            <!-- ORGANIZADOR -->
+            <div class="mb-3">
+              <label class="form-label">Organizador</label>
+              <select class="form-select" formControlName="organizerId">
+                @for(o of organizers; track $index){
+                <option [value]="o.id">{{ o.name }}</option>
+                }
+              </select>
+              <span class="error">
+                @if(formActivity.get("organizerId")?.invalid &&
+                formActivity.get("organizerId")?.touched){ Seleccione un organizador }
+              </span>
+            </div>
+
+            <!-- FECHA -->
+            <div class="mb-3">
+              <label class="form-label">Fecha</label>
+              <input type="date" class="form-control" formControlName="date" />
+              <span class="error">
+                @if(formActivity.get("date")?.invalid && formActivity.get("date")?.touched){
+                Seleccione una fecha }
+              </span>
+            </div>
+
+            <!-- DURACIÓN -->
+            <div class="mb-3">
+              <label class="form-label">Duración (Ej: 2h, 90min)</label>
+              <input type="text" class="form-control" formControlName="duration" />
+              <span class="error">
+                @if(formActivity.get("duration")?.invalid && formActivity.get("duration")?.touched){
+                Duración requerida }
+              </span>
+            </div>
+
+            <!-- LUGAR -->
+            <div class="mb-3">
+              <label class="form-label">Lugar</label>
+              <input type="text" class="form-control" formControlName="location" />
+              <span class="error">
+                @if(formActivity.get("location")?.invalid && formActivity.get("location")?.touched){
+                Lugar requerido }
+              </span>
+            </div>
+
+            <!-- CAPACIDAD -->
+            <div class="mb-3">
+              <label class="form-label">Capacidad</label>
+              <input type="number" class="form-control" formControlName="capacity" min="1" />
+              <span class="error">
+                @if(formActivity.get("capacity")?.invalid && formActivity.get("capacity")?.touched){
+                Capacidad mínima 1 }
+              </span>
+            </div>
+
+            <!-- DESCRIPCIÓN -->
+            <div class="mb-3">
+              <label class="form-label">Descripción</label>
+              <textarea class="form-control" rows="3" formControlName="description"></textarea>
+              <span class="error">
+                @if(formActivity.get("description")?.invalid &&
+                formActivity.get("description")?.touched){ Descripción requerida }
+              </span>
+            </div>
+
+            <!-- ACTIVO SOLO AL EDITAR -->
+            @if(editingId){
+            <div class="form-check mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="active"
+                id="checkActive"
+              />
+              <label class="form-check-label" for="checkActive">Activo</label>
+            </div>
+            }
+          </div>
+
+          <!-- BOTONES -->
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+              Cancelar
+            </button>
+            <button class="btn btn-primary" type="button" (click)="save()">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
