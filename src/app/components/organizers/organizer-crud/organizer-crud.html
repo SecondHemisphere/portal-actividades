@@ -1,0 +1,215 @@
+<div class="container mt-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <!-- TÍTULO -->
+    <h2 class="mb-3 mb-md-0">Gestión de Organizadores</h2>
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+      <!-- BUSCADOR -->
+      <app-search-form [filters]="organizerFilters" (onSearch)="search($event)"> </app-search-form>
+
+      <!-- BOTÓN REINICIAR -->
+      <button
+        class="btn btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="loadOrganizers()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reiniciar
+      </button>
+
+      <!-- BOTÓN CREAR ORGANIZADOR -->
+      <button class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
+        <i class="bi bi-plus-circle"></i>
+        Crear Organizador
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLA DE ORGANIZADORES -->
+  <app-data-table
+    [colArray]="colArray"
+    [gridData]="filteredOrganizers"
+    (onView)="openView($event)"
+    (onEdit)="openEdit($event)"
+    (onDelete)="delete($event)"
+  ></app-data-table>
+
+  <!-- MODAL -->
+  <div class="modal fade" id="organizerModal" tabindex="-1" #organizerModalRef>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ editingId ? 'Editar Organizador' : 'Nuevo Organizador' }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <form [formGroup]="formOrganizer">
+          <div class="modal-body">
+            <!-- NAME -->
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" formControlName="name" />
+
+              <span class="error">
+                @if(formOrganizer.get("name")?.invalid && (formOrganizer.get("name")?.touched)) {
+                @if(formOrganizer.get("name")?.errors?.["required"]) { El nombre es obligatorio. }
+                @if(formOrganizer.get("name")?.errors?.["minlength"]) { Mínimo 3 caracteres. }
+                @if(formOrganizer.get("name")?.errors?.["maxlength"]) { Máximo 50 caracteres. }
+                @if(formOrganizer.get("name")?.errors?.["pattern"]) { Solo letras y espacios. } }
+              </span>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="mb-3">
+              <label class="form-label">Correo</label>
+              <input type="email" class="form-control" formControlName="email" />
+              <span class="error">
+                @if(formOrganizer.get("email")?.invalid && formOrganizer.get("email")?.touched) {
+                @if(formOrganizer.get("email")?.errors?.["required"]) { El correo es obligatorio. }
+                @if(formOrganizer.get("email")?.errors?.["email"]) { Correo inválido. } }
+              </span>
+            </div>
+
+            <!-- TELÉFONO -->
+            <div class="mb-3">
+              <label class="form-label">Teléfono</label>
+              <input type="text" class="form-control" formControlName="phone" />
+              <span class="error">
+                @if(formOrganizer.get("phone")?.invalid && formOrganizer.get("phone")?.touched) {
+                @if(formOrganizer.get("phone")?.errors?.["required"]) { El teléfono es obligatorio.
+                } @if(formOrganizer.get("phone")?.errors?.["pattern"]) { Debe tener 7-15 dígitos,
+                opcional "+". } }
+              </span>
+            </div>
+
+            <!-- DEPARTAMENTO -->
+            <div class="mb-3">
+              <label class="form-label">Departamento</label>
+              <input type="text" class="form-control" formControlName="department" />
+              <span class="error">
+                @if(formOrganizer.get("department")?.invalid &&
+                formOrganizer.get("department")?.touched) {
+                @if(formOrganizer.get("department")?.errors?.["required"]) { Requerido. }
+                @if(formOrganizer.get("department")?.errors?.["minlength"]) { Mínimo 2 caracteres. }
+                @if(formOrganizer.get("department")?.errors?.["maxlength"]) { Máximo 50 caracteres.
+                } }
+              </span>
+            </div>
+
+            <!-- CARGO -->
+            <div class="mb-3">
+              <label class="form-label">Cargo</label>
+              <input type="text" class="form-control" formControlName="position" />
+              <span class="error">
+                @if(formOrganizer.get("position")?.invalid &&
+                formOrganizer.get("position")?.touched) {
+                @if(formOrganizer.get("position")?.errors?.["required"]) { Requerido. }
+                @if(formOrganizer.get("position")?.errors?.["minlength"]) { Mínimo 3 caracteres. }
+                @if(formOrganizer.get("position")?.errors?.["maxlength"]) { Máximo 50 caracteres. }
+                @if(formOrganizer.get("position")?.errors?.["pattern"]) { Solo letras y espacios. }
+                }
+              </span>
+            </div>
+
+            <!-- BIO -->
+            <div class="mb-3">
+              <label class="form-label">Biografía</label>
+              <textarea rows="3" class="form-control" formControlName="bio"></textarea>
+              <span class="error">
+                @if(formOrganizer.get("bio")?.invalid && formOrganizer.get("bio")?.touched) {
+                @if(formOrganizer.get("bio")?.errors?.["required"]) { Requerido. }
+                @if(formOrganizer.get("bio")?.errors?.["minlength"]) { Mínimo 10 caracteres. }
+                @if(formOrganizer.get("bio")?.errors?.["maxlength"]) { Máximo 300 caracteres. } }
+              </span>
+            </div>
+
+            <!-- TURNO -->
+            <div class="mb-3">
+              <label class="form-label">Turnos</label>
+
+              <div>
+                @for(s of shifts; track $index) {
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [value]="s"
+                    (change)="onShiftChange($event, s)"
+                    [checked]="formOrganizer.value.shifts?.includes(s)"
+                  />
+                  <label class="form-check-label">{{ s }}</label>
+                </div>
+                }
+              </div>
+
+              <span class="error">
+                @if(formOrganizer.get("shifts")?.invalid && formOrganizer.get("shifts")?.touched) {
+                Seleccione al menos un turno. }
+              </span>
+            </div>
+
+            <!-- DÍAS -->
+            <div class="mb-3">
+              <label class="form-label">Días de trabajo</label>
+
+              <div>
+                @for(d of days; track $index) {
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [value]="d"
+                    (change)="onDayChange($event, d)"
+                    [checked]="formOrganizer.value.workDays?.includes(d)"
+                  />
+                  <label class="form-check-label">{{ d }}</label>
+                </div>
+                }
+              </div>
+
+              <span class="error">
+                @if(formOrganizer.get("workDays")?.invalid &&
+                formOrganizer.get("workDays")?.touched) { Seleccione al menos un día. }
+              </span>
+            </div>
+
+            <!-- FOTO -->
+            <div class="mb-3">
+              <label class="form-label">Foto</label>
+              <input
+                type="file"
+                class="form-control"
+                accept="image/*"
+                (change)="onFileSelected($event)"
+              />
+
+              @if(photoPreview){
+              <div class="mt-2">
+                <img
+                  [src]="photoPreview"
+                  style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
+                />
+              </div>
+              }
+            </div>
+
+            <!-- ACTIVO -->
+            @if(editingId) {
+            <div class="form-check mb-3">
+              <input type="checkbox" class="form-check-input" formControlName="active" />
+              <label class="form-check-label">Activo</label>
+            </div>
+            }
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+              Cancelar
+            </button>
+            <button class="btn btn-primary" type="button" (click)="save()">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

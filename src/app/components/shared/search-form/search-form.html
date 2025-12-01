@@ -1,0 +1,60 @@
+<!-- BOTÓN QUE ABRE EL MODAL -->
+<div class="text-end">
+  <button class="btn btn-outline-primary" type="button" (click)="openModal()">
+    <i class="bi bi-search"></i> Buscar
+  </button>
+</div>
+
+<!-- MODAL DE BÚSQUEDA -->
+<div class="modal fade" tabindex="-1" #searchModalRef>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title">Búsqueda</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        <!-- FILTROS -->
+        @for (f of filters; track f.field) {
+        <div class="mb-3">
+          <label class="form-label">{{ f.label }}</label>
+
+          <!-- FILTRO: TEXT -->
+          @if (f.type === 'text') {
+          <input type="text" class="form-control" [formControl]="getControl(f.field)" />
+          }
+
+          <!-- FILTRO: SELECT -->
+          @if (f.type === 'select') {
+          <select class="form-control" [formControl]="getControl(f.field)">
+            <option value="">Seleccione</option>
+            @for (op of f.options; track op.value) {
+            <option [value]="op.value">{{ op.label }}</option>
+            }
+          </select>
+          }
+
+          <!-- FILTRO: DATE -->
+          @if (f.type === 'date') {
+          <input type="date" class="form-control" [formControl]="getControl(f.field)" />
+          }
+
+          <!-- FILTRO: NUMBER -->
+          @if (f.type === 'number') {
+          <input type="number" class="form-control" [formControl]="getControl(f.field)" />
+          }
+        </div>
+        }
+      </div>
+
+      <!-- BOTONES -->
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="clear()">Limpiar</button>
+        <button class="btn btn-primary" type="button" (click)="search()">Buscar</button>
+      </div>
+    </div>
+  </div>
+</div>

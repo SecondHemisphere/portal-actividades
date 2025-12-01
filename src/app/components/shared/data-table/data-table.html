@@ -1,0 +1,147 @@
+<div class="container mt-4 mb-1">
+  <!-- SELECTOR DE CANTIDAD DE REGISTROS -->
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+      Mostrar
+      <select
+        class="form-select d-inline-block w-auto"
+        [formControl]="pageSizeControl"
+        (change)="onPageSizeChange()"
+      >
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+        <option [value]="25">25</option>
+        <option [value]="50">50</option>
+      </select>
+      registros
+    </div>
+  </div>
+
+  <!-- CONTENEDOR CON SCROLL PARA TABLAS GRANDES -->
+  <div class="table-responsive" style="max-height: 350px; overflow-x: auto; overflow-y: auto">
+    <table class="table table-bordered table-hover table-striped align-middle">
+      <!-- ENCABEZADO -->
+      <thead class="table-primary">
+        <tr>
+          <!-- COLUMNAS -->
+          @for (col of colArray; track $index) {
+          <th
+            (click)="sort(col.field)"
+            style="cursor: pointer; white-space: nowrap"
+            class="px-3 py-2"
+          >
+            {{ col.header }} @if (sortField === col.field) {
+            <span class="ms-1"> {{ sortDirection === 'asc' ? '▲' : '▼' }} </span> }
+          </th>
+          }
+          <!-- COLUMNA DE ACCIONES -->
+          @if (showView || showEdit || showDelete) {
+          <th class="px-3 py-2">Acciones</th>
+          }
+        </tr>
+      </thead>
+      <!-- CUERPO -->
+      <tbody>
+        @for (row of pagedData; track $index) {
+        <tr>
+          <!-- CELDAS -->
+          @for (col of colArray; track col.field) {
+          <td class="px-3 py-2">
+            @if (col.type === 'longtext') {
+            <span class="truncate-text" style="cursor: pointer" (click)="openModal(row[col.field])">
+              {{ row[col.field] }}
+            </span>
+            } @else if (col.lookup) { {{ col.lookup(row[col.field]) }} } @else if (col.type ===
+            'boolean') { {{ row[col.field] ? 'Sí' : 'No' }} } @else { {{ row[col.field] }} }
+          </td>
+          }
+          <!-- ACCIONES -->
+          @if (showView || showEdit || showDelete) {
+          <td class="px-3 py-2">
+            <!-- BOTÓN VER -->
+            @if (showView) {
+            <button class="btn btn-secondary btn-sm me-2" (click)="view(row)">
+              <i class="bi bi-eye-fill"></i>
+            </button>
+            }
+            <!-- BOTÓN EDITAR -->
+            @if (showEdit) {
+            <button class="btn btn-primary btn-sm me-2" (click)="edit(row)">
+              <i class="bi bi-pencil-fill"></i></button
+            >}
+            <!-- BOTÓN ELIMINAR -->
+            @if (showDelete) {
+            <button class="btn btn-danger btn-sm me-2" (click)="delete(row)">
+              <i class="bi bi-trash-fill"></i>
+            </button>
+            }
+          </td>
+          }
+        </tr>
+        }
+      </tbody>
+      <!-- TEXTO CUANDO NO HAY DATOS -->
+      @if (pagedData.length === 0) {
+      <tr>
+        <td
+          [attr.colspan]="colArray.length + (showView || showEdit || showDelete ? 1 : 0)"
+          class="text-center py-4 text-muted"
+        >
+          <i class="bi bi-inbox fs-3 d-block mb-2"></i> No hay datos para mostrar
+        </td>
+      </tr>
+      }
+    </table>
+  </div>
+</div>
+<!-- PAGINACIÓN -->
+@if (pagedData.length !== 0) {
+<div class="d-flex justify-content-between align-items-center mt-2 mb-3">
+  <div class="fw-semibold">Página {{ currentPage }} de {{ totalPages }}</div>
+  <nav aria-label="Page navigation" class="mt-3">
+    <ul class="pagination justify-content-center">
+      <!-- PRIMERA PÁGINA -->
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" (click)="goToPage(1)"> <i class="bi bi-chevron-bar-left"></i> </a>
+      </li>
+      <!-- PÁGINA ANTERIOR -->
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" (click)="prevPage()"> <i class="bi bi-chevron-left"></i> </a>
+      </li>
+      <!-- NÚMEROS -->
+      @for (page of pages; track page) {
+      <li class="page-item" [class.active]="page === currentPage">
+        <a class="page-link" (click)="goToPage(page)"> {{ page }} </a>
+      </li>
+      }
+      <!-- SIGUIENTE -->
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" (click)="nextPage()"> <i class="bi bi-chevron-right"></i> </a>
+      </li>
+      <!-- ÚLTIMA -->
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" (click)="goToPage(totalPages)">
+          <i class="bi bi-chevron-bar-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+}
+
+<!-- MODAL TEXTO LARGO -->
+@if (showModal) {
+<div class="custom-modal">
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h5>{{ modalTitle }}</h5>
+      <button class="close-btn" (click)="closeModal()">×</button>
+    </div>
+    <div class="custom-modal-body">{{ selectedText }}</div>
+    <div class="custom-modal-footer">
+      <button class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+}

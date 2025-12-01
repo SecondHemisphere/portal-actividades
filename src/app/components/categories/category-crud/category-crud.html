@@ -1,0 +1,92 @@
+<div class="container mt-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <!-- TÍTULO -->
+    <h2 class="mb-3 mb-md-0">Gestión de Categorías</h2>
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+      <!-- BUSCADOR -->
+      <app-search-form [filters]="categoryFilters" (onSearch)="search($event)"> </app-search-form>
+
+      <!-- BOTÓN REINICIAR -->
+      <button
+        class="btn btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="loadCategories()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reiniciar
+      </button>
+
+      <!-- BOTÓN CREAR CATEGORÍA -->
+      <button class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
+        <i class="bi bi-plus-circle"></i>
+        Crear Categoría
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLA DE CATEGORÍAS -->
+  <app-data-table
+    [colArray]="colArray"
+    [gridData]="filteredCategories"
+    [showView]="false"
+    (onEdit)="openEdit($event)"
+    (onDelete)="delete($event)"
+  >
+  </app-data-table>
+
+  <!-- MODAL PARA CREAR / EDITAR -->
+  <div class="modal fade" id="categoryModal" tabindex="-1" #categoryModalRef>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- HEADER DEL MODAL -->
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ editingId ? 'Editar Categoría' : 'Nueva Categoría' }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- FORM -->
+        <form [formGroup]="formCategory">
+          <div class="modal-body">
+            <!-- NOMBRE -->
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" formControlName="name" />
+
+              <span class="error">
+                @if(formCategory.get("name")?.invalid && (formCategory.get("name")?.dirty ||
+                formCategory.get("name")?.touched)) {
+                @if(formCategory.get("name")?.errors?.["required"]){ Es requerido }
+                @if(formCategory.get("name")?.errors?.["minlength"]){ Debe tener mínimo 3 caracteres
+                } @if(formCategory.get("name")?.errors?.["maxlength"]){ Debe tener máximo 50
+                caracteres } @if(formCategory.get("name")?.errors?.["pattern"]){ Solo letras,
+                números y espacio } }
+              </span>
+            </div>
+
+            <!-- ACTIVA -->
+            @if(editingId){
+            <div class="form-check mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="active"
+                id="checkActive"
+              />
+              <label class="form-check-label" for="checkActive">Activa</label>
+            </div>
+            }
+          </div>
+
+          <!-- BOTONES DEL MODAL -->
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+              Cancelar
+            </button>
+            <button class="btn btn-primary" type="button" (click)="save()">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

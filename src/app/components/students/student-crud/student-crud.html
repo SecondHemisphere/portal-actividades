@@ -1,0 +1,222 @@
+<div class="container mt-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <!-- TÍTULO -->
+    <h2 class="mb-3 mb-md-0">Gestión de Estudiantes</h2>
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+      <!-- BUSCADOR -->
+      <app-search-form [filters]="studentFilters" (onSearch)="search($event)"> </app-search-form>
+
+      <!-- BOTÓN REINICIAR -->
+      <button
+        class="btn btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="loadStudents()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reiniciar
+      </button>
+
+      <!-- BOTÓN CREAR ESTUDIANTE -->
+      <button class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
+        <i class="bi bi-plus-circle"></i>
+        Crear Estudiante
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLA DE ESTUDIANTES -->
+  <app-data-table
+    [colArray]="colArray"
+    [gridData]="filteredStudents"
+    [showView]="false"
+    (onEdit)="openEdit($event)"
+    (onDelete)="delete($event)"
+  >
+  </app-data-table>
+
+  <!-- MODAL PARA CREAR / EDITAR -->
+  <div class="modal fade" id="studentModal" tabindex="-1" #studentModalRef>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- HEADER DEL MODAL -->
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ editingId ? 'Editar Estudiante' : 'Nuevo Estudiante' }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- FORM -->
+        <form [formGroup]="formStudent">
+          <div class="modal-body">
+            <!-- NOMBRE -->
+            <div class="mb-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control" formControlName="name" />
+
+              <span class="error">
+                @if(formStudent.get("name")?.invalid && (formStudent.get("name")?.dirty ||
+                formStudent.get("name")?.touched)) {
+                @if(formStudent.get("name")?.errors?.["required"]){ Es requerido }
+                @if(formStudent.get("name")?.errors?.["minlength"]){ Debe tener mínimo 3 caracteres
+                } @if(formStudent.get("name")?.errors?.["maxlength"]){ Debe tener máximo 50
+                caracteres } @if(formStudent.get("name")?.errors?.["pattern"]){ Solo letras y
+                espacio } }
+              </span>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="mb-3">
+              <label class="form-label">Correo</label>
+              <input type="text" class="form-control" name="email" formControlName="email" />
+              <span class="error">
+                @if(formStudent.get("email")?.invalid && (formStudent.get("email")?.dirty||
+                formStudent.get("email")?.touched)){
+                @if(formStudent.get("email")?.errors?.["required"]){ Es requerido}
+                @if(formStudent.get("email")?.errors?.["email"]){ Debe ser un correo válido }
+                @if(formStudent.get("email")?.errors?.["dominioInvalido"]){ El dominio del correo
+                debe ser @ug.edu.ec }}
+              </span>
+            </div>
+
+            <!-- TELÉFONO -->
+            <div class="mb-3">
+              <label class="form-label">Teléfono</label>
+              <input type="text" class="form-control" formControlName="phone" />
+
+              <span class="error">
+                @if(formStudent.get("phone")?.invalid && (formStudent.get("phone")?.dirty ||
+                formStudent.get("phone")?.touched)) {
+                @if(formStudent.get("phone")?.errors?.["required"]){ Es requerido }
+                @if(formStudent.get("phone")?.errors?.["pattern"]){ Debe ser un número válido de 7 a
+                15 dígitos, opcional + al inicio } }
+              </span>
+            </div>
+
+            <!-- FACULTAD -->
+            <div class="mb-3">
+              <label class="form-label">Facultad</label>
+              <select class="form-select" formControlName="faculty">
+                @for (f of faculties; track $index) {
+                <option [value]="f.faculty">{{ f.faculty }}</option>
+                }
+              </select>
+
+              <span class="error">
+                @if(formStudent.get("faculty")?.invalid && (formStudent.get("faculty")?.dirty ||
+                formStudent.get("faculty")?.touched)) {
+                @if(formStudent.get("faculty")?.errors?.["required"]){ Seleccione una facultad } }
+              </span>
+            </div>
+
+            <!-- CARRERA -->
+            <div class="mb-3">
+              <label class="form-label">Carrera</label>
+              <select class="form-select" formControlName="career">
+                @for (c of careers; track $index) {
+                <option [value]="c">{{ c }}</option>
+                }
+              </select>
+
+              <span class="error">
+                @if(formStudent.get("career")?.invalid && (formStudent.get("career")?.dirty ||
+                formStudent.get("career")?.touched)) {
+                @if(formStudent.get("career")?.errors?.["required"]){ Seleccione una carrera } }
+              </span>
+            </div>
+
+            <!-- SEMESTRE -->
+            <div class="mb-3">
+              <label class="form-label">Semestre</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="semester"
+                min="1"
+                max="10"
+              />
+              <span class="error">
+                @if(formStudent.get("semester")?.invalid && (formStudent.get("semester")?.dirty||
+                formStudent.get("semester")?.touched)){
+                @if(formStudent.get("semester")?.errors?.["required"]){ Es requerido}
+                @if(formStudent.get("semester")?.errors?.["min"] ||
+                formStudent.get("semester")?.errors?.["max"]){ El semestre minimo es 1 y el maximo
+                es 10}}
+              </span>
+            </div>
+
+            <!-- MODALIDAD -->
+            <div class="mb-3">
+              <label class="form-label">Modalidad</label>
+              <div>
+                @for(m of modalities; track $index) {
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="modality"
+                    [value]="m"
+                    id="modality{{ $index }}"
+                  />
+                  <label class="form-check-label" for="modality{{ $index }}">{{ m }}</label>
+                </div>
+                }
+              </div>
+
+              <span class="error">
+                @if(formStudent.get("modality")?.invalid && (formStudent.get("modality")?.dirty ||
+                formStudent.get("modality")?.touched)) {
+                @if(formStudent.get("modality")?.errors?.["required"]){ Seleccione una modalidad } }
+              </span>
+            </div>
+
+            <!-- JORNADA -->
+            <div class="mb-3">
+              <label class="form-label">Jornada</label>
+              <div>
+                @for(s of schedules; track $index) {
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="schedule"
+                    [value]="s"
+                    id="schedule{{ $index }}"
+                  />
+                  <label class="form-check-label" for="schedule{{ $index }}">{{ s }}</label>
+                </div>
+                }
+              </div>
+
+              <span class="error">
+                @if(formStudent.get("schedule")?.invalid && (formStudent.get("schedule")?.dirty ||
+                formStudent.get("schedule")?.touched)) {
+                @if(formStudent.get("schedule")?.errors?.["required"]){ Seleccione una jornada } }
+              </span>
+            </div>
+
+            <!-- ACTIVA -->
+            @if(editingId){
+            <div class="form-check mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="active"
+                id="checkActive"
+              />
+              <label class="form-check-label" for="checkActive">Activa</label>
+            </div>
+            }
+          </div>
+
+          <!-- BOTONES DEL MODAL -->
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+              Cancelar
+            </button>
+            <button class="btn btn-primary" type="button" (click)="save()">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
