@@ -26,12 +26,36 @@ export class ServActivitiesJson {
       .pipe(map(activities => activities.filter(a => a.active === true)));
   }
 
-  // search
-  searchActivities(param: string): Observable<Activity[]> {
-    return this.httpclient.get<Activity[]>(this.activitiesUrl)
-      .pipe(map(activities =>
-        activities.filter(a => a.title.toLowerCase().includes(param.toLowerCase()))
-      ));
+
+  //search
+  searchActivities(filters: any): Observable<Activity[]> {
+    return this.httpclient.get<Activity[]>(this.activitiesUrl).pipe(
+      map(activities =>
+        activities.filter(a => {
+          let ok = true;
+          // Filtro por titulo
+          if (filters.title && filters.title.trim() !== '') {
+            ok = ok && a.title.toLowerCase()
+              .includes(filters.title.toLowerCase());
+          }
+          // Filtro por categoria
+          if (filters.categoryId) {
+            ok = ok && a.categoryId === Number(filters.categoryId);
+          }
+          // Filtro por ubicacion
+          if (filters.location && filters.location.trim() !== '') {
+            ok = ok && a.location.toLowerCase()
+              .includes(filters.location.toLowerCase());
+          }
+          // Filtro por fecha
+          if (filters.date && filters.date.trim() !== '') {
+            ok = ok && a.date.toLowerCase()
+              .includes(filters.date.toLowerCase());
+          }
+          return ok;
+        })
+      )
+    );
   }
 
   // create (post)

@@ -90,7 +90,13 @@
             <!-- FECHA -->
             <div class="mb-3">
               <label class="form-label">Fecha</label>
-              <input type="date" class="form-control" formControlName="date" />
+              <input
+                type="date"
+                class="form-control"
+                formControlName="date"
+                [min]="minDate"
+                [max]="maxDate"
+              />
               <span class="error">
                 @if(formActivity.get("date")?.invalid && formActivity.get("date")?.touched){
                 Seleccione una fecha }

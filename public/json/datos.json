@@ -230,6 +230,18 @@
       "capacity": 100,
       "description": "Muestra de proyectos digitales y multimedia desarrollados por estudiantes.",
       "active": true
+    },
+    {
+      "id": "5185",
+      "title": "saaaaaaa",
+      "categoryId": "1",
+      "organizerId": "1",
+      "date": "2026-01-02",
+      "duration": "2h",
+      "location": "sssssssssssss",
+      "capacity": 11,
+      "description": "saaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "active": true
     }
   ],
   "categories": [
@@ -282,8 +294,14 @@
       "department": "Cultura",
       "position": "Coordinadora",
       "bio": "Apasionada por las actividades artísticas y la gestión cultural.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Martes", "Jueves"],
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Martes",
+        "Jueves"
+      ],
       "active": true,
       "id": "1"
     },
@@ -295,8 +313,14 @@
       "department": "Deportes",
       "position": "Entrenador",
       "bio": "Instructor con experiencia en preparación física para jóvenes.",
-      "shifts": ["Tarde"],
-      "workDays": ["Lunes", "Miércoles", "Viernes"],
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Lunes",
+        "Miércoles",
+        "Viernes"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=12",
       "active": true
     },
@@ -308,8 +332,14 @@
       "department": "Bienestar",
       "position": "Facilitadora",
       "bio": "Especialista en meditación, bienestar emocional y respiración consciente.",
-      "shifts": ["Mañana", "Tarde"],
-      "workDays": ["Martes", "Jueves"],
+      "shifts": [
+        "Mañana",
+        "Tarde"
+      ],
+      "workDays": [
+        "Martes",
+        "Jueves"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=47",
       "active": true
     },
@@ -321,8 +351,13 @@
       "department": "Cultura",
       "position": "Instructor de Teatro",
       "bio": "Actor profesional dedicado a formar nuevos talentos escénicos.",
-      "shifts": ["Noche"],
-      "workDays": ["Viernes", "Sábado"],
+      "shifts": [
+        "Noche"
+      ],
+      "workDays": [
+        "Viernes",
+        "Sábado"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=7",
       "active": true
     },
@@ -334,8 +369,14 @@
       "department": "Danza",
       "position": "Coreógrafa",
       "bio": "Experta en danza contemporánea y expresión corporal.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Martes", "Miércoles"],
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Martes",
+        "Miércoles"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=48",
       "active": true
     },
@@ -347,8 +388,15 @@
       "department": "Deportes",
       "position": "Instructor de Fútbol",
       "bio": "Entrenador certificado con enfoque en desarrollo juvenil.",
-      "shifts": ["Tarde", "Noche"],
-      "workDays": ["Martes", "Jueves", "Viernes"],
+      "shifts": [
+        "Tarde",
+        "Noche"
+      ],
+      "workDays": [
+        "Martes",
+        "Jueves",
+        "Viernes"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=30",
       "active": true
     },
@@ -360,8 +408,14 @@
       "department": "Bienestar",
       "position": "Psicóloga",
       "bio": "Especialista en programas de bienestar emocional estudiantil.",
-      "shifts": ["Mañana"],
-      "workDays": ["Miércoles", "Jueves", "Viernes"],
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Miércoles",
+        "Jueves",
+        "Viernes"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=62",
       "active": false
     },
@@ -373,8 +427,13 @@
       "department": "Cultura",
       "position": "Instructor de Música",
       "bio": "Músico profesional con trayectoria en bandas universitarias.",
-      "shifts": ["Tarde"],
-      "workDays": ["Lunes", "Miércoles"],
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Lunes",
+        "Miércoles"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=55",
       "active": true
     },
@@ -386,8 +445,13 @@
       "department": "Danza",
       "position": "Instructora de Ballet",
       "bio": "Bailarina profesional especializada en ballet clásico.",
-      "shifts": ["Noche"],
-      "workDays": ["Martes", "Viernes"],
+      "shifts": [
+        "Noche"
+      ],
+      "workDays": [
+        "Martes",
+        "Viernes"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=56",
       "active": true
     },
@@ -399,8 +463,14 @@
       "department": "Deportes",
       "position": "Entrenador de Natación",
       "bio": "Instructor con 10 años de experiencia entrenando equipos universitarios.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Martes", "Jueves"],
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Martes",
+        "Jueves"
+      ],
       "photoUrl": "https://i.pravatar.cc/150?img=59",
       "active": true
     }
@@ -547,7 +617,9 @@
   "faculties": [
     {
       "faculty": "ARQUITECTURA Y URBANISMO",
-      "careers": ["ARQUITECTURA"],
+      "careers": [
+        "ARQUITECTURA"
+      ],
       "id": "85a2"
     },
     {
@@ -568,12 +640,22 @@
     },
     {
       "faculty": "CIENCIAS AGRARIAS",
-      "careers": ["AGRONOMÍA", "AGROPECUARIA", "ALIMENTOS", "BIOQUÍMICA Y FARMACIA"],
+      "careers": [
+        "AGRONOMÍA",
+        "AGROPECUARIA",
+        "ALIMENTOS",
+        "BIOQUÍMICA Y FARMACIA"
+      ],
       "id": "3589"
     },
     {
       "faculty": "CIENCIAS ECONOMICAS",
-      "careers": ["ECONOMÍA", "FINANZAS", "NEGOCIOS INTERNACIONALES", "TURISMO"],
+      "careers": [
+        "ECONOMÍA",
+        "FINANZAS",
+        "NEGOCIOS INTERNACIONALES",
+        "TURISMO"
+      ],
       "id": "b11e"
     },
     {
@@ -603,27 +685,43 @@
     },
     {
       "faculty": "CIENCIAS NATURALES",
-      "careers": ["BIOLOGÍA", "GEOLOGÍA", "INGENIERÍA AMBIENTAL"],
+      "careers": [
+        "BIOLOGÍA",
+        "GEOLOGÍA",
+        "INGENIERÍA AMBIENTAL"
+      ],
       "id": "1a14"
     },
     {
       "faculty": "CIENCIAS PSICOLOGICAS",
-      "careers": ["PSICOLOGÍA"],
+      "careers": [
+        "PSICOLOGÍA"
+      ],
       "id": "0c9b"
     },
     {
       "faculty": "CIENCIAS QUIMICAS",
-      "careers": ["INGENIERÍA QUÍMICA", "BIOQUÍMICA Y FARMACIA"],
+      "careers": [
+        "INGENIERÍA QUÍMICA",
+        "BIOQUÍMICA Y FARMACIA"
+      ],
       "id": "9c81"
     },
     {
       "faculty": "COMUNICACION SOCIAL",
-      "careers": ["COMUNICACIÓN", "DISEÑO GRÁFICO", "PUBLICIDAD"],
+      "careers": [
+        "COMUNICACIÓN",
+        "DISEÑO GRÁFICO",
+        "PUBLICIDAD"
+      ],
       "id": "0013"
     },
     {
       "faculty": "CIENCIAS DE LA ACTIVIDAD FÍSICA",
-      "careers": ["ENTRENAMIENTO DEPORTIVO", "PEDAGOGÍA DE LA ACTIVIDAD FÍSICA Y DEPORTE"],
+      "careers": [
+        "ENTRENAMIENTO DEPORTIVO",
+        "PEDAGOGÍA DE LA ACTIVIDAD FÍSICA Y DEPORTE"
+      ],
       "id": "de1c"
     },
     {
@@ -642,27 +740,40 @@
     },
     {
       "faculty": "INGENIERIA INDUSTRIAL",
-      "careers": ["INGENIERÍA INDUSTRIAL", "INGENIERÍA DE LA PRODUCCIÓN"],
+      "careers": [
+        "INGENIERÍA INDUSTRIAL",
+        "INGENIERÍA DE LA PRODUCCIÓN"
+      ],
       "id": "e5c7"
     },
     {
       "faculty": "INGENIERIA QUIMICA",
-      "careers": ["INGENIERÍA QUÍMICA"],
+      "careers": [
+        "INGENIERÍA QUÍMICA"
+      ],
       "id": "8b6c"
     },
     {
       "faculty": "JURISPRUDENCIA CIENCIAS SOCIALES Y POLITICAS",
-      "careers": ["DERECHO", "CIENCIAS POLÍTICAS", "SOCIOLOGÍA"],
+      "careers": [
+        "DERECHO",
+        "CIENCIAS POLÍTICAS",
+        "SOCIOLOGÍA"
+      ],
       "id": "8c83"
     },
     {
       "faculty": "MEDICINA VETERINARIA Y ZOOTECNIA",
-      "careers": ["MEDICINA VETERINARIA"],
+      "careers": [
+        "MEDICINA VETERINARIA"
+      ],
       "id": "2afd"
     },
     {
       "faculty": "ODONTOLOGIA",
-      "careers": ["ODONTOLOGÍA"],
+      "careers": [
+        "ODONTOLOGÍA"
+      ],
       "id": "56de"
     }
   ]

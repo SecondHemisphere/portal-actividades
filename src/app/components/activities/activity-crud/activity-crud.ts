@@ -20,6 +20,9 @@ export class ActivityCrud {
   editingId: number | null = null;
   modalRef: any;
 
+  minDate:string = "2020-01-01";
+  maxDate = new Date().toISOString().split("T")[0]; ///fecha con formato yyyy-mm-dd
+
   categories = [
     { id: 1, name: "Arte" },
     { id: 2, name: "Deportes" },
@@ -33,8 +36,8 @@ export class ActivityCrud {
 
   activityFilters: SearchFilter[] = [
     { type: 'text', field: 'title', label: 'Título' },
-    { type: 'number', field: 'categoryId', label: 'Categoría' },
-    { type: 'number', field: 'organizerId', label: 'Organizador' },
+    { type: 'select', field: 'categoryId', label: 'Categoría' },
+    { type: 'select', field: 'organizerId', label: 'Organizador' },
     { type: 'text', field: 'location', label: 'Lugar' },
     { type: 'date', field: 'date', label: 'Fecha' }
   ];
@@ -42,8 +45,18 @@ export class ActivityCrud {
   colArray: TableColumn[] = [
     { field: 'id', header: 'ID', type: 'number' },
     { field: 'title', header: 'Título' },
-    { field: 'categoryId', header: 'Categoría' },
-    { field: 'organizerId', header: 'Organizador' },
+    {
+      field: 'categoryId',
+      header: 'Categoría',
+      type: 'lookup',
+      lookup: (id: number) => this.getCategoryName(id)
+    },
+    {
+      field: 'organizerId',
+      header: 'Organizador',
+      type: 'lookup',
+      lookup: (id: number) => this.getOrganizerName(id)
+    },
     { field: 'date', header: 'Fecha', type: 'date' },
     { field: 'duration', header: 'Duración' },
     { field: 'location', header: 'Lugar' },
@@ -80,6 +93,14 @@ export class ActivityCrud {
       this.activities = data;
       this.filteredActivities = [...data];
     });
+  }
+
+  getCategoryName(id: number): string {
+    return this.categories.find(c => Number(c.id) === Number(id))?.name || 'Sin categoría';
+  }
+
+  getOrganizerName(id: number): string {
+    return this.organizers.find(o => Number(o.id) === Number(id))?.name || 'Sin organizador';
   }
 
   delete(activity: Activity) {
