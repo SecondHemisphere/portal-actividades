@@ -90,13 +90,7 @@
             <!-- FECHA -->
             <div class="mb-3">
               <label class="form-label">Fecha</label>
-              <input
-                type="date"
-                class="form-control"
-                formControlName="date"
-                [min]="minDate"
-                [max]="maxDate"
-              />
+              <input type="date" class="form-control" formControlName="date" [min]="minDate" />
               <span class="error">
                 @if(formActivity.get("date")?.invalid && formActivity.get("date")?.touched){
                 Seleccione una fecha }
@@ -128,6 +122,25 @@
               <span class="error">
                 @if(formActivity.errors?.['horaInvalida'] && formActivity.touched){ La hora de fin
                 debe ser posterior a la hora de inicio }
+              </span>
+            </div>
+
+            <!-- INSCRIPCIONES HASTA -->
+            <div class="mb-3">
+              <label class="form-label">Fecha límite de inscripción</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="registrationDeadline"
+                [min]="minDate"
+                [max]="maxDeadlineDate"
+              />
+              <span class="error">
+                @if (formActivity.get("registrationDeadline")?.hasError("required") &&
+                formActivity.get("registrationDeadline")?.touched) { Seleccione una fecha límite de
+                inscripción. } @if(formActivity.errors?.['deadlineInvalida'] &&
+                formActivity.touched){ La fecha límite de inscripción no puede ser posterior a la
+                fecha del evento. }
               </span>
             </div>
 

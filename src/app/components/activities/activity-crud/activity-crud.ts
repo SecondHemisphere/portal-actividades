@@ -9,6 +9,7 @@ import { Organizer } from '../../../models/Organizer';
 import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
+import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 
 declare const bootstrap: any;
 
@@ -48,6 +49,7 @@ export class ActivityCrud {
     { field: 'categoryId', header: 'Categoría', type: 'lookup', lookup: (id: number) => this.getCategoryName(id) },
     { field: 'organizerId', header: 'Organizador', type: 'lookup', lookup: (id: number) => this.getOrganizerName(id) },
     { field: 'date', header: 'Fecha', type: 'date' },
+    { field: 'registrationDeadline', header: 'Inscripciones hasta', type: 'date' },
     { field: 'timeRange', header: 'Horas' },
     { field: 'location', header: 'Lugar' },
     { field: 'capacity', header: 'Cupo', type: 'number' },
@@ -71,12 +73,13 @@ export class ActivityCrud {
       date: ['', Validators.required],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
+      registrationDeadline: ['', Validators.required ],
       location: ['', [Validators.required, Validators.minLength(3)]],
       capacity: [1, [Validators.required, Validators.min(10), Validators.max(500)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       // photoUrl: [''],
       active: [true]
-    }, { validators: horaRangeValidator });
+    }, { validators: [horaRangeValidator, registrationDeadlineValidator] });
   }
 
   @ViewChild("activityModalRef") modalElement!: ElementRef;
@@ -97,6 +100,9 @@ export class ActivityCrud {
     reader.readAsDataURL(file);
   }
 
+  get maxDeadlineDate() {
+    return this.formActivity.get('date')?.value || this.maxDate;
+  }
 
   loadActivities() {
     this.miServicio.getActivities().subscribe((data: Activity[]) => {

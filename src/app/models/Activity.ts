@@ -4,6 +4,7 @@ export interface Activity {
   categoryId: number;
   organizerId: number;
   date: string;
+  registrationDeadline: string;
   timeRange: string;
   location: string;
   capacity: number;
