@@ -26,14 +26,31 @@ export class ServUsersJson {
       .pipe(map(users => users.filter(u => u.active === true)));
   }
 
-  // search
-  searchUsers(param: string): Observable<User[]> {
-    return this.httpclient.get<User[]>(this.usersUrl)
-      .pipe(map(users =>
-        users.filter(u =>
-          u.name.toLowerCase().includes(param.toLowerCase())
-        )
-      ));
+  //search
+  searchUsers(filters: any): Observable<User[]> {
+    return this.httpclient.get<User[]>(this.usersUrl).pipe(
+      map(users =>
+        users.filter(u => {
+          let ok = true;
+          // Filtro por nombre
+          if (filters.name && filters.name.trim() !== '') {
+            ok = ok && u.name.toLowerCase()
+              .includes(filters.name.toLowerCase());
+          }
+          // Filtro por email
+          if (filters.email && filters.email.trim() !== '') {
+            ok = ok && u.email.toLowerCase()
+              .includes(filters.email.toLowerCase());
+          }
+          // Filtro por rol
+          if (filters.role && filters.role.trim() !== '') {
+            ok = ok && u.role.toLowerCase()
+              .includes(filters.role.toLowerCase());
+          }
+          return ok;
+        })
+      )
+    );
   }
 
   // create
