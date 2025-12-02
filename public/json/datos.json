@@ -1,44 +1,99 @@
 {
   "categories": [
-    { "id": 1, "name": "Cultura", "active": true },
-    { "id": 2, "name": "Deporte", "active": true },
-    { "id": 3, "name": "Bienestar", "active": true },
-    { "id": 4, "name": "Arte", "active": true },
-    { "id": 5, "name": "Música", "active": true },
-    { "id": 6, "name": "Tecnología", "active": true },
-    { "id": 7, "name": "Ciencia", "active": true }
+    {
+      "id": "1",
+      "name": "Cultura",
+      "active": true
+    },
+    {
+      "id": "2",
+      "name": "Deporte",
+      "active": true
+    },
+    {
+      "id": "3",
+      "name": "Bienestar",
+      "active": true
+    },
+    {
+      "id": "4",
+      "name": "Arte",
+      "active": true
+    },
+    {
+      "id": "5",
+      "name": "Música",
+      "active": true
+    },
+    {
+      "id": "6",
+      "name": "Tecnología",
+      "active": true
+    },
+    {
+      "id": "7",
+      "name": "Ciencia",
+      "active": true
+    }
   ],
   "faculties": [
     {
       "faculty": "CIENCIAS ADMINISTRATIVAS",
-      "careers": ["ADMINISTRACIÓN DE EMPRESAS", "COMERCIO EXTERIOR"]
+      "careers": [
+        "ADMINISTRACIÓN DE EMPRESAS",
+        "COMERCIO EXTERIOR"
+      ],
+      "id": "db46"
     },
-    { "faculty": "CIENCIAS MEDICAS", "careers": ["MEDICINA", "ENFERMERÍA"] },
+    {
+      "faculty": "CIENCIAS MEDICAS",
+      "careers": [
+        "MEDICINA",
+        "ENFERMERÍA"
+      ],
+      "id": "8187"
+    },
     {
       "faculty": "INGENIERIA INDUSTRIAL",
-      "careers": ["INGENIERÍA INDUSTRIAL", "INGENIERÍA DE LA PRODUCCIÓN"]
+      "careers": [
+        "INGENIERÍA INDUSTRIAL",
+        "INGENIERÍA DE LA PRODUCCIÓN"
+      ],
+      "id": "c376"
     },
     {
       "faculty": "FILOSOFIA, LETRAS Y CIENCIAS DE LA EDUCACION",
-      "careers": ["PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"]
+      "careers": [
+        "PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"
+      ],
+      "id": "6716"
     }
   ],
   "organizers": [
     {
-      "id": 1,
       "name": "María González",
       "email": "maria.gonzalez@uni.edu",
       "phone": "+593987654321",
-      "role": "Organizador",
-      "active": true,
       "department": "Cultura",
       "position": "Coordinadora",
       "bio": "Apasionada por actividades artísticas.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Martes"]
+      "shifts": [
+        "Mañana",
+        "Noche",
+        "Tarde"
+      ],
+      "workDays": [
+        "Lunes",
+        "Martes",
+        "Domingo",
+        "Miércoles",
+        "Jueves"
+      ],
+      "active": true,
+      "id": "1"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Carlos Pérez",
       "email": "carlos.perez@uni.edu",
       "phone": "+593987222111",
@@ -47,11 +102,16 @@
       "department": "Deportes",
       "position": "Entrenador",
       "bio": "Instructor con experiencia en preparación física.",
-      "shifts": ["Tarde"],
-      "workDays": ["Miércoles", "Viernes"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Miércoles",
+        "Viernes"
+      ]
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Daniela Ruiz",
       "email": "daniela.ruiz@uni.edu",
       "phone": "+593981111222",
@@ -60,11 +120,17 @@
       "department": "Bienestar",
       "position": "Facilitadora",
       "bio": "Especialista en meditación y bienestar.",
-      "shifts": ["Mañana", "Tarde"],
-      "workDays": ["Martes", "Jueves"]
+      "shifts": [
+        "Mañana",
+        "Tarde"
+      ],
+      "workDays": [
+        "Martes",
+        "Jueves"
+      ]
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Jorge Álvarez",
       "email": "jorge.alvarez@uni.edu",
       "phone": "+593984444555",
@@ -73,11 +139,16 @@
       "department": "Arte",
       "position": "Instructor de Teatro",
       "bio": "Actor profesional.",
-      "shifts": ["Noche"],
-      "workDays": ["Viernes", "Sábado"]
+      "shifts": [
+        "Noche"
+      ],
+      "workDays": [
+        "Viernes",
+        "Sábado"
+      ]
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Lucía Herrera",
       "email": "lucia.herrera@uni.edu",
       "phone": "+593983333444",
@@ -86,11 +157,16 @@
       "department": "Danza",
       "position": "Coreógrafa",
       "bio": "Experta en danza contemporánea.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Miércoles"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Miércoles"
+      ]
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Pedro Medina",
       "email": "pedro.medina@uni.edu",
       "phone": "+593989898989",
@@ -99,11 +175,16 @@
       "department": "Deportes",
       "position": "Instructor de Fútbol",
       "bio": "Entrenador certificado.",
-      "shifts": ["Tarde"],
-      "workDays": ["Martes", "Jueves"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Martes",
+        "Jueves"
+      ]
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Ana Villamar",
       "email": "ana.villamar@uni.edu",
       "phone": "+593981223344",
@@ -112,11 +193,16 @@
       "department": "Bienestar",
       "position": "Psicóloga",
       "bio": "Especialista en bienestar emocional.",
-      "shifts": ["Mañana"],
-      "workDays": ["Miércoles", "Viernes"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Miércoles",
+        "Viernes"
+      ]
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Ricardo Salinas",
       "email": "ricardo.salinas@uni.edu",
       "phone": "+593989999000",
@@ -125,11 +211,16 @@
       "department": "Música",
       "position": "Instructor de Música",
       "bio": "Músico profesional.",
-      "shifts": ["Tarde"],
-      "workDays": ["Lunes", "Miércoles"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Lunes",
+        "Miércoles"
+      ]
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "Sofía Torres",
       "email": "sofia.torres@uni.edu",
       "phone": "+593981010101",
@@ -138,11 +229,16 @@
       "department": "Danza",
       "position": "Instructora de Ballet",
       "bio": "Bailarina profesional.",
-      "shifts": ["Noche"],
-      "workDays": ["Martes", "Viernes"]
+      "shifts": [
+        "Noche"
+      ],
+      "workDays": [
+        "Martes",
+        "Viernes"
+      ]
     },
     {
-      "id": 10,
+      "id": "10",
       "name": "Mario Castillo",
       "email": "mario.castillo@uni.edu",
       "phone": "+593982222333",
@@ -151,13 +247,18 @@
       "department": "Deportes",
       "position": "Entrenador de Natación",
       "bio": "Instructor con experiencia.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Jueves"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Jueves"
+      ]
     }
   ],
   "students": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Ana Pérez",
       "email": "ana.perez@ug.edu.ec",
       "phone": "+593987654321",
@@ -170,7 +271,7 @@
       "schedule": "Matutina"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Luis Gómez",
       "email": "luis.gomez@ug.edu.ec",
       "phone": "+593998877665",
@@ -183,7 +284,7 @@
       "schedule": "Vespertina"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Carla Sánchez",
       "email": "carla.sanchez@ug.edu.ec",
       "phone": "+593987112233",
@@ -196,7 +297,7 @@
       "schedule": "Nocturna"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Juan Torres",
       "email": "juan.torres@ug.edu.ec",
       "phone": "+593987221144",
@@ -209,7 +310,7 @@
       "schedule": "Matutina"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "María López",
       "email": "maria.lopez@ug.edu.ec",
       "phone": "+593987334455",
@@ -222,7 +323,7 @@
       "schedule": "Nocturna"
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Diego Castillo",
       "email": "diego.castillo@ug.edu.ec",
       "phone": "+593999887766",
@@ -235,7 +336,7 @@
       "schedule": "Vespertina"
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Sofía Morales",
       "email": "sofia.morales@ug.edu.ec",
       "phone": "+593987445566",
@@ -248,7 +349,7 @@
       "schedule": "Matutina"
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Carlos Fernández",
       "email": "carlos.fernandez@ug.edu.ec",
       "phone": "+593987556677",
@@ -261,7 +362,7 @@
       "schedule": "Vespertina"
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "Valentina Ruiz",
       "email": "valentina.ruiz@ug.edu.ec",
       "phone": "+593988776655",
@@ -274,7 +375,7 @@
       "schedule": "Nocturna"
     },
     {
-      "id": 10,
+      "id": "10",
       "name": "Miguel Herrera",
       "email": "miguel.herrera@ug.edu.ec",
       "phone": "+593987667788",
@@ -289,7 +390,7 @@
   ],
   "activities": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Taller de Fotografía",
       "categoryId": 1,
       "organizerId": 1,
@@ -301,7 +402,7 @@
       "active": true
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "Torneo Fútbol",
       "categoryId": 2,
       "organizerId": 2,
@@ -313,7 +414,7 @@
       "active": true
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Clase Yoga",
       "categoryId": 3,
       "organizerId": 3,
@@ -325,7 +426,7 @@
       "active": true
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Taller Pintura",
       "categoryId": 4,
       "organizerId": 4,
@@ -337,7 +438,7 @@
       "active": true
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Carrera 5K",
       "categoryId": 2,
       "organizerId": 2,
@@ -349,7 +450,7 @@
       "active": true
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Taller Danza Moderna",
       "categoryId": 1,
       "organizerId": 5,
@@ -361,7 +462,7 @@
       "active": true
     },
     {
-      "id": 7,
+      "id": "7",
       "title": "Concierto Acústico",
       "categoryId": 5,
       "organizerId": 8,
@@ -373,7 +474,7 @@
       "active": true
     },
     {
-      "id": 8,
+      "id": "8",
       "title": "Meditación Intensiva",
       "categoryId": 3,
       "organizerId": 3,
@@ -385,7 +486,7 @@
       "active": true
     },
     {
-      "id": 9,
+      "id": "9",
       "title": "Torneo Baloncesto",
       "categoryId": 2,
       "organizerId": 2,
@@ -397,7 +498,7 @@
       "active": true
     },
     {
-      "id": 10,
+      "id": "10",
       "title": "Sesión Calistenia",
       "categoryId": 2,
       "organizerId": 6,
@@ -409,7 +510,7 @@
       "active": true
     },
     {
-      "id": 11,
+      "id": "11",
       "title": "Círculo de Lectura",
       "categoryId": 1,
       "organizerId": 1,
@@ -421,7 +522,7 @@
       "active": true
     },
     {
-      "id": 12,
+      "id": "12",
       "title": "Respiración Consciente",
       "categoryId": 3,
       "organizerId": 3,
@@ -433,7 +534,7 @@
       "active": true
     },
     {
-      "id": 13,
+      "id": "13",
       "title": "Acuarela Avanzada",
       "categoryId": 4,
       "organizerId": 4,
@@ -445,7 +546,7 @@
       "active": true
     },
     {
-      "id": 14,
+      "id": "14",
       "title": "Ajedrez Universitario",
       "categoryId": 7,
       "organizerId": 1,
@@ -457,7 +558,7 @@
       "active": true
     },
     {
-      "id": 15,
+      "id": "15",
       "title": "Técnicas Vocales",
       "categoryId": 5,
       "organizerId": 8,
@@ -469,7 +570,7 @@
       "active": true
     },
     {
-      "id": 16,
+      "id": "16",
       "title": "Pilates Suave",
       "categoryId": 3,
       "organizerId": 3,
@@ -481,7 +582,7 @@
       "active": true
     },
     {
-      "id": 17,
+      "id": "17",
       "title": "Noche de Cine",
       "categoryId": 1,
       "organizerId": 1,
@@ -493,7 +594,7 @@
       "active": true
     },
     {
-      "id": 18,
+      "id": "18",
       "title": "Baile Fitness",
       "categoryId": 2,
       "organizerId": 2,
@@ -505,7 +606,7 @@
       "active": true
     },
     {
-      "id": 19,
+      "id": "19",
       "title": "Escritura Creativa",
       "categoryId": 1,
       "organizerId": 1,
@@ -517,7 +618,7 @@
       "active": true
     },
     {
-      "id": 20,
+      "id": "20",
       "title": "Feria Bienestar",
       "categoryId": 3,
       "organizerId": 3,
@@ -530,27 +631,147 @@
     }
   ],
   "enrollments": [
-    { "id": 1, "activityId": 1, "studentId": 1, "date": "2025-11-20", "status": "Confirmada" },
-    { "id": 2, "activityId": 2, "studentId": 2, "date": "2025-11-21", "status": "Confirmada" },
-    { "id": 3, "activityId": 3, "studentId": 3, "date": "2025-11-22", "status": "Pendiente" },
-    { "id": 4, "activityId": 4, "studentId": 4, "date": "2025-11-23", "status": "Confirmada" },
-    { "id": 5, "activityId": 5, "studentId": 5, "date": "2025-11-24", "status": "Cancelada" },
-    { "id": 6, "activityId": 6, "studentId": 6, "date": "2025-11-25", "status": "Confirmada" },
-    { "id": 7, "activityId": 7, "studentId": 7, "date": "2025-11-26", "status": "Pendiente" },
-    { "id": 8, "activityId": 8, "studentId": 8, "date": "2025-11-27", "status": "Confirmada" },
-    { "id": 9, "activityId": 9, "studentId": 9, "date": "2025-11-28", "status": "Confirmada" },
-    { "id": 10, "activityId": 10, "studentId": 10, "date": "2025-11-29", "status": "Confirmada" }
+    {
+      "id": "1",
+      "activityId": 1,
+      "studentId": 1,
+      "date": "2025-11-20",
+      "status": "Confirmada"
+    },
+    {
+      "id": "2",
+      "activityId": 2,
+      "studentId": 2,
+      "date": "2025-11-21",
+      "status": "Confirmada"
+    },
+    {
+      "id": "3",
+      "activityId": 3,
+      "studentId": 3,
+      "date": "2025-11-22",
+      "status": "Pendiente"
+    },
+    {
+      "id": "4",
+      "activityId": 4,
+      "studentId": 4,
+      "date": "2025-11-23",
+      "status": "Confirmada"
+    },
+    {
+      "id": "5",
+      "activityId": 5,
+      "studentId": 5,
+      "date": "2025-11-24",
+      "status": "Cancelada"
+    },
+    {
+      "id": "6",
+      "activityId": 6,
+      "studentId": 6,
+      "date": "2025-11-25",
+      "status": "Confirmada"
+    },
+    {
+      "id": "7",
+      "activityId": 7,
+      "studentId": 7,
+      "date": "2025-11-26",
+      "status": "Pendiente"
+    },
+    {
+      "id": "8",
+      "activityId": 8,
+      "studentId": 8,
+      "date": "2025-11-27",
+      "status": "Confirmada"
+    },
+    {
+      "id": "9",
+      "activityId": 9,
+      "studentId": 9,
+      "date": "2025-11-28",
+      "status": "Confirmada"
+    },
+    {
+      "id": "10",
+      "activityId": 10,
+      "studentId": 10,
+      "date": "2025-11-29",
+      "status": "Confirmada"
+    }
   ],
   "ratings": [
-    { "id": 1, "activityId": 1, "studentId": 1, "score": 5, "comment": "Excelente taller" },
-    { "id": 2, "activityId": 2, "studentId": 2, "score": 4, "comment": "Muy divertido" },
-    { "id": 3, "activityId": 3, "studentId": 3, "score": 5, "comment": "Relajante y útil" },
-    { "id": 4, "activityId": 4, "studentId": 4, "score": 3, "comment": "Bien pero corta duración" },
-    { "id": 5, "activityId": 5, "studentId": 5, "score": 4, "comment": "Competencia interesante" },
-    { "id": 6, "activityId": 6, "studentId": 6, "score": 5, "comment": "Aprendí mucho" },
-    { "id": 7, "activityId": 7, "studentId": 7, "score": 4, "comment": "Música muy buena" },
-    { "id": 8, "activityId": 8, "studentId": 8, "score": 5, "comment": "Muy relajante" },
-    { "id": 9, "activityId": 9, "studentId": 9, "score": 4, "comment": "Competencia rápida" },
-    { "id": 10, "activityId": 10, "studentId": 10, "score": 5, "comment": "Sesión intensa y útil" }
+    {
+      "id": "1",
+      "activityId": 1,
+      "studentId": 1,
+      "score": 5,
+      "comment": "Excelente taller"
+    },
+    {
+      "id": "2",
+      "activityId": 2,
+      "studentId": 2,
+      "score": 4,
+      "comment": "Muy divertido"
+    },
+    {
+      "id": "3",
+      "activityId": 3,
+      "studentId": 3,
+      "score": 5,
+      "comment": "Relajante y útil"
+    },
+    {
+      "id": "4",
+      "activityId": 4,
+      "studentId": 4,
+      "score": 3,
+      "comment": "Bien pero corta duración"
+    },
+    {
+      "id": "5",
+      "activityId": 5,
+      "studentId": 5,
+      "score": 4,
+      "comment": "Competencia interesante"
+    },
+    {
+      "id": "6",
+      "activityId": 6,
+      "studentId": 6,
+      "score": 5,
+      "comment": "Aprendí mucho"
+    },
+    {
+      "id": "7",
+      "activityId": 7,
+      "studentId": 7,
+      "score": 4,
+      "comment": "Música muy buena"
+    },
+    {
+      "id": "8",
+      "activityId": 8,
+      "studentId": 8,
+      "score": 5,
+      "comment": "Muy relajante"
+    },
+    {
+      "id": "9",
+      "activityId": 9,
+      "studentId": 9,
+      "score": 4,
+      "comment": "Competencia rápida"
+    },
+    {
+      "id": "10",
+      "activityId": 10,
+      "studentId": 10,
+      "score": 5,
+      "comment": "Sesión intensa y útil"
+    }
   ]
 }
