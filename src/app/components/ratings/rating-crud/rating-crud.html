@@ -1,1 +1,123 @@
-<p>rating-crud works!</p>
+<div class="container mt-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <h2 class="mb-3 mb-md-0">Gestión de Valoraciones</h2>
+
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+      <!-- BUSCADOR -->
+      <app-search-form [filters]="ratingFilters" (onSearch)="search($event)"> </app-search-form>
+
+      <!-- REINICIAR -->
+      <button
+        class="btn btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="loadRatings()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reiniciar
+      </button>
+
+      <!-- CREAR VALORACIÓN -->
+      <button class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
+        <i class="bi bi-plus-circle"></i>
+        Crear Valoración
+      </button>
+    </div>
+  </div>
+
+  <app-data-table
+    [colArray]="colArray"
+    [gridData]="filteredRatings"
+    [showView]="false"
+    (onEdit)="openEdit($event)"
+    (onDelete)="delete($event)"
+  >
+  </app-data-table>
+
+  <div class="modal fade" id="ratingModal" tabindex="-1" #ratingModalRef>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ editingId ? 'Editar Valoración' : 'Nueva Valoración' }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <form [formGroup]="formRating">
+          <div class="modal-body">
+            <!-- ACTIVIDAD -->
+            <div class="mb-3">
+              <label class="form-label">Actividad</label>
+              <select class="form-select" formControlName="activityId">
+                @for(a of activities; track $index){
+                <option [value]="a.id">{{ a.title }}</option>
+                }
+              </select>
+              <span class="error">
+                @if(formRating.get("activityId")?.invalid && formRating.get("activityId")?.touched){
+                Seleccione una actividad }
+              </span>
+            </div>
+
+            <!-- ESTUDIANTE -->
+            <div class="mb-3">
+              <label class="form-label">Estudiante</label>
+              <select class="form-select" formControlName="studentId">
+                @for(s of students; track $index){
+                <option [value]="s.id">{{ s.name }}</option>
+                }
+              </select>
+              <span class="error">
+                @if(formRating.get("studentId")?.invalid && formRating.get("studentId")?.touched){
+                Seleccione un estudiante }
+              </span>
+            </div>
+
+            <!-- PUNTUACIÓN -->
+            <div class="mb-3">
+              <label class="form-label">Puntuación (1-5)</label>
+              <input type="number" class="form-control" formControlName="stars" min="1" max="5" />
+              <span class="error">
+                @if(formRating.get("stars")?.invalid && formRating.get("stars")?.touched){ La
+                puntuación es requerida y debe estar entre 1 y 5. }
+              </span>
+            </div>
+
+            <!-- FECHA -->
+            <div class="mb-3">
+              <label class="form-label">Fecha</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="date"
+                [min]="minDate"
+                [max]="maxDate"
+              />
+              <span class="error">
+                @if(formRating.get("date")?.invalid && formRating.get("date")?.touched){ Seleccione
+                una fecha }
+              </span>
+            </div>
+
+            <!-- COMENTARIO -->
+            <div class="mb-3">
+              <label class="form-label">Comentario</label>
+              <textarea class="form-control" rows="3" formControlName="comment"></textarea>
+              <span class="error">
+                @if(formRating.get("comment")?.hasError("maxlength") &&
+                formRating.get("comment")?.touched){ El comentario no puede exceder los 250
+                caracteres. }
+              </span>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+              Cancelar
+            </button>
+            <button class="btn btn-primary" type="button" (click)="save()">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

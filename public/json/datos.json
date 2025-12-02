@@ -794,71 +794,89 @@
       "id": "1",
       "activityId": "1",
       "studentId": "1",
-      "score": 5,
-      "comment": "Excelente taller"
+      "stars": 5,
+      "comment": "Excelente taller",
+      "date": "2025-11-23"
     },
     {
       "id": "2",
       "activityId": "2",
       "studentId": "2",
-      "score": 4,
-      "comment": "Muy divertido"
+      "stars": 4,
+      "comment": "Muy divertido",
+      "date": "2025-12-06"
     },
     {
-      "id": "3",
       "activityId": "3",
       "studentId": "3",
-      "score": 5,
-      "comment": "Relajante y útil"
+      "stars": 4,
+      "comment": "Relajante y útil",
+      "date": "2025-12-01",
+      "id": "3"
     },
     {
       "id": "4",
       "activityId": "4",
       "studentId": "4",
-      "score": 3,
-      "comment": "Bien pero corta duración"
+      "stars": 3,
+      "comment": "Bien pero corta duración",
+      "date": "2025-12-11"
     },
     {
       "id": "5",
       "activityId": "5",
       "studentId": "5",
-      "score": 4,
-      "comment": "Competencia interesante"
+      "stars": 4,
+      "comment": "Competencia interesante",
+      "date": "2025-12-15"
     },
     {
       "id": "6",
       "activityId": "6",
       "studentId": "6",
-      "score": 5,
-      "comment": "Aprendí mucho"
+      "stars": 5,
+      "comment": "Aprendí mucho",
+      "date": "2025-11-29"
     },
     {
       "id": "7",
       "activityId": "7",
       "studentId": "7",
-      "score": 4,
-      "comment": "Música muy buena"
+      "stars": 4,
+      "comment": "Música muy buena",
+      "date": "2025-12-19"
     },
     {
       "id": "8",
       "activityId": "8",
       "studentId": "8",
-      "score": 5,
-      "comment": "Muy relajante"
+      "stars": 5,
+      "comment": "Muy relajante",
+      "date": "2025-12-02"
     },
     {
       "id": "9",
       "activityId": "9",
       "studentId": "9",
-      "score": 4,
-      "comment": "Competencia rápida"
+      "stars": 4,
+      "comment": "Competencia rápida",
+      "date": "2025-12-04"
     },
     {
       "id": "10",
       "activityId": "10",
       "studentId": "10",
-      "score": 5,
-      "comment": "Sesión intensa y útil"
+      "stars": 5,
+      "comment": "Sesión intensa y útil",
+      "date": "2025-12-02"
+    },
+    {
+      "activityId": "4",
+      "studentId": "3",
+      "stars": 4,
+      "comment": "aaaaaa",
+      "date": "2025-11-12",
+      "id": "0217"
     }
   ]
 }

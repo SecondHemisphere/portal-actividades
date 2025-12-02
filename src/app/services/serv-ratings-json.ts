@@ -21,14 +21,38 @@ export class ServRatingsJson {
     return this.httpclient.get<Rating>(`${this.ratingsUrl}/${id}`);
   }
 
-  // search
-  searchRatings(param: string): Observable<Rating[]> {
-    return this.httpclient.get<Rating[]>(this.ratingsUrl)
-      .pipe(map(ratings =>
-        ratings.filter(r =>
-          r.comment?.toLowerCase().includes(param.toLowerCase())
-        )
-      ));
+  //search
+  searchRatings(filters: any): Observable<Rating[]> {
+    return this.httpclient.get<Rating[]>(this.ratingsUrl).pipe(
+      map(ratings =>
+        ratings.filter(r => {
+          let ok = true;
+          // Filtro por comentario
+          if (filters.comment && filters.comment.trim() !== '') {
+            ok = ok && r.comment!.toLowerCase()
+              .includes(filters.comment.toLowerCase());
+          }
+          // Filtro por puntuación
+          if (filters.stars) {
+            ok = ok && r.stars === Number(filters.stars);
+          }
+          // Filtro por estudiante
+          if (filters.studentId) {
+            ok = ok && r.studentId == filters.studentId;
+          }
+          // Filtro por actividad
+          if (filters.activityId) {
+            ok = ok && r.activityId === filters.activityId;
+          }
+          // Filtro por fecha
+          if (filters.date && filters.date.trim() !== '') {
+            ok = ok && r.date.toLowerCase()
+              .includes(filters.date.toLowerCase());
+          }
+          return ok;
+        })
+      )
+    );
   }
 
   // create (post)
