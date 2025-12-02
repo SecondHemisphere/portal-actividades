@@ -5,7 +5,6 @@ import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { Modality, Schedule, Student } from '../../../models/Student';
 import { ServStudentsJson } from '../../../services/serv-students-json';
 import { ServFacultiesJson, Faculty } from '../../../services/serv-faculties-json';
-import { correoUgValidator } from '../../../validators/correoUgValidator';
 
 declare const bootstrap:any;
 
@@ -69,7 +68,7 @@ export class StudentCrud {
 
     this.formStudent = this.formbuilder.group({
       name: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50),Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      email:['',[Validators.required,Validators.email,correoUgValidator]],
+      email:['',[Validators.required,Validators.email]],
       faculty: ['',Validators.required],
       career: ['',Validators.required],
       semester: [1,[Validators.required,Validators.min(1),Validators.max(10)]],

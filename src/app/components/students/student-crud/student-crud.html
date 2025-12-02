@@ -72,9 +72,7 @@
                 @if(formStudent.get("email")?.invalid && (formStudent.get("email")?.dirty||
                 formStudent.get("email")?.touched)){
                 @if(formStudent.get("email")?.errors?.["required"]){ Es requerido}
-                @if(formStudent.get("email")?.errors?.["email"]){ Debe ser un correo válido }
-                @if(formStudent.get("email")?.errors?.["dominioInvalido"]){ El dominio del correo
-                debe ser @ug.edu.ec }}
+                @if(formStudent.get("email")?.errors?.["email"]){ Debe ser un correo válido }}
               </span>
             </div>
 

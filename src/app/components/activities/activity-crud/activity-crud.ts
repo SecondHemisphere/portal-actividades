@@ -33,8 +33,18 @@ export class ActivityCrud {
 
   activityFilters: SearchFilter[] = [
     { type: 'text', field: 'title', label: 'Título' },
-    { type: 'select', field: 'categoryId', label: 'Categoría' },
-    { type: 'select', field: 'organizerId', label: 'Organizador' },
+    {
+      type: 'select',
+      field: 'categoryId',
+      label: 'Categoría',
+      options: Object.values(this.categories).map(v => ({ label: v, value: v }))
+    },
+    {
+      type: 'select',
+      field: 'organizerId',
+      label: 'Organizador',
+      options: Object.values(this.organizers).map(v => ({ label: v, value: v }))
+    },
     { type: 'text', field: 'location', label: 'Lugar' },
     { type: 'date', field: 'date', label: 'Fecha' }
   ];
@@ -101,12 +111,20 @@ export class ActivityCrud {
   loadCategories() {
     this.categoriesService.getCategories().subscribe((data: Category[]) => {
       this.categories = data;
+      const categoryFilter = this.activityFilters.find(f => f.field === 'categoryId');
+      if (categoryFilter) {
+        categoryFilter.options = this.categories.map(c => ({ label: c.name, value: c.id }));
+      }
     });
   }
 
   loadOrganizers() {
     this.organizersService.getOrganizers().subscribe((data: Organizer[]) => {
       this.organizers = data;
+      const organizerFilter = this.activityFilters.find(f => f.field === 'organizerId');
+      if (organizerFilter) {
+        organizerFilter.options = this.organizers.map(o => ({ label: o.name, value: o.id }));
+      }
     });
   }
 

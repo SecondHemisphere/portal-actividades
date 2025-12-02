@@ -524,16 +524,16 @@
       "active": true
     },
     {
-      "id": "12",
       "title": "Respiración Consciente",
       "categoryId": 3,
       "organizerId": 3,
       "date": "2025-11-27",
-      "timeRange": "11:00 - 12:00",
       "location": "Sala Calm",
       "capacity": 25,
       "description": "Técnicas de respiración",
-      "active": true
+      "active": false,
+      "timeRange": "11:00 - 12:00",
+      "id": "12"
     },
     {
       "id": "13",

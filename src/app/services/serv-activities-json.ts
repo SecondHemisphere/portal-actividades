@@ -42,6 +42,10 @@ export class ServActivitiesJson {
           if (filters.categoryId) {
             ok = ok && a.categoryId === Number(filters.categoryId);
           }
+          // Filtro por organizador
+          if (filters.organizerId) {
+            ok = ok && a.organizerId === Number(filters.organizerId);
+          }
           // Filtro por ubicacion
           if (filters.location && filters.location.trim() !== '') {
             ok = ok && a.location.toLowerCase()
