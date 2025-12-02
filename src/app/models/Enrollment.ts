@@ -3,5 +3,12 @@ export interface Enrollment {
   activityId: number;
   studentId: number;
   date: string;
-  status: 'Pendiente' | 'Confirmada' | 'Cancelada';
+  note?: string;
+  status: EnrollmentStatus;
+}
+
+export enum EnrollmentStatus {
+  Pendiente = 'Pendiente',
+  Confirmada = 'Confirmada',
+  Cancelada = 'Cancelada'
 }

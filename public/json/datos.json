@@ -726,6 +726,30 @@
       "studentId": 10,
       "date": "2025-11-29",
       "status": "Confirmada"
+    },
+    {
+      "id": "43dd",
+      "activityId": "2",
+      "studentId": "3",
+      "date": "2025-12-10",
+      "note": "",
+      "status": "Pendiente"
+    },
+    {
+      "id": "4623",
+      "activityId": "3",
+      "studentId": "3",
+      "date": "2025-12-09",
+      "note": "aaaaaaaaaaaaaaaaaa",
+      "status": "Confirmada"
+    },
+    {
+      "activityId": "1",
+      "studentId": "6",
+      "date": "2025-10-29",
+      "note": "aasas",
+      "status": "Confirmada",
+      "id": "dfe6"
     }
   ],
   "ratings": [

@@ -4,6 +4,12 @@ export interface User {
   email: string;
   phone: string;
   password?: string;
-  role: 'Estudiante' | 'Organizador' | 'Admin';
+  role: UserRole;
   active: boolean;
+}
+
+export enum UserRole {
+  Estudiante = 'Estudiante',
+  Organizador = 'Organizador',
+  Admin = 'Admin'
 }

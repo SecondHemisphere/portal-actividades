@@ -1,1 +1,148 @@
-<p>enrollment-crud works!</p>
+<div class="container mt-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <h2 class="mb-3 mb-md-0">Gestión de Inscripciones</h2>
+
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+      <!-- BUSCADOR -->
+      <app-search-form [filters]="enrollmentFilters" (onSearch)="search($event)"> </app-search-form>
+
+      <!-- REINICIAR -->
+      <button
+        class="btn btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="loadEnrollments()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reiniciar
+      </button>
+
+      <!-- CREAR INSCRIPCIÓN -->
+      <button class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
+        <i class="bi bi-plus-circle"></i>
+        Crear Inscripción
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <app-data-table
+    [colArray]="colArray"
+    [gridData]="filteredEnrollments"
+    [showView]="true"
+    (onEdit)="openEdit($event)"
+    (onDelete)="delete($event)"
+  >
+  </app-data-table>
+
+  <!-- MODAL CREAR/EDITAR -->
+  <div class="modal fade" id="enrollmentModal" tabindex="-1" #enrollmentModalRef>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- HEADER -->
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ editingId ? 'Editar Inscripción' : 'Nueva Inscripción' }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- FORM -->
+        <form [formGroup]="formEnrollment">
+          <div class="modal-body">
+            <!-- ACTIVIDAD -->
+            <div class="mb-3">
+              <label class="form-label">Actividad</label>
+              <select class="form-select" formControlName="activityId">
+                @for(a of activities; track $index){
+                <option [value]="a.id">{{ a.title }}</option>
+                }
+              </select>
+              <span class="error">
+                @if(formEnrollment.get("activityId")?.invalid &&
+                formEnrollment.get("activityId")?.touched){ Seleccione una actividad }
+              </span>
+            </div>
+
+            <!-- ESTUDIANTE -->
+            <div class="mb-3">
+              <label class="form-label">Estudiante</label>
+              <select class="form-select" formControlName="studentId">
+                @for(s of students; track $index){
+                <option [value]="s.id">{{ s.name }}</option>
+                }
+              </select>
+              <span class="error">
+                @if(formEnrollment.get("studentId")?.invalid &&
+                formEnrollment.get("studentId")?.touched){ Seleccione un estudiante }
+              </span>
+            </div>
+
+            <!-- FECHA -->
+            <div class="mb-3">
+              <label class="form-label">Fecha</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="date"
+                [min]="minDate"
+                [max]="maxEnrollmentDate"
+              />
+              <span class="error">
+                @if(formEnrollment.get("date")?.invalid && formEnrollment.get("date")?.touched){
+                Seleccione una fecha válida }
+              </span>
+            </div>
+
+            <!-- OBSERVACIONES -->
+            <div class="mb-3">
+              <label class="form-label">Observaciones</label>
+              <textarea
+                class="form-control"
+                rows="3"
+                formControlName="note"
+                placeholder="Escriba alguna observación..."
+              ></textarea>
+              <span class="error">
+                @if(formEnrollment.get("note")?.invalid && (formEnrollment.get("note")?.dirty ||
+                formEnrollment.get("note")?.touched)){
+                @if(formEnrollment.get("note")?.errors?.["minlength"]){ Mínimo 5 caracteres }
+                @if(formEnrollment.get("note")?.errors?.["maxlength"]){ Máximo 300 caracteres } }
+              </span>
+            </div>
+
+            <!-- ESTADO -->
+            <div class="mb-3">
+              <label class="form-label">Estado</label>
+              <div>
+                @for(s of enrollmentStatuses; track $index) {
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="status"
+                    [value]="s"
+                    id="status{{ $index }}"
+                  />
+                  <label class="form-check-label" for="status{{ $index }}">{{ s }}</label>
+                </div>
+                }
+              </div>
+              <span class="error">
+                @if(formEnrollment.get("status")?.invalid && (formEnrollment.get("status")?.dirty ||
+                formEnrollment.get("status")?.touched)) {
+                @if(formEnrollment.get("status")?.errors?.["required"]){ Seleccione un estado } }
+              </span>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+                Cancelar
+              </button>
+              <button class="btn btn-primary" type="button" (click)="save()">Guardar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
