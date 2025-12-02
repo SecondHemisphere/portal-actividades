@@ -35,18 +35,8 @@ export class ActivityCrud {
 
   activityFilters: SearchFilter[] = [
     { type: 'text', field: 'title', label: 'Título' },
-    {
-      type: 'select',
-      field: 'categoryId',
-      label: 'Categoría',
-      options: Object.values(this.categories).map(v => ({ label: v, value: v }))
-    },
-    {
-      type: 'select',
-      field: 'organizerId',
-      label: 'Organizador',
-      options: Object.values(this.organizers).map(v => ({ label: v, value: v }))
-    },
+    { type: 'select', field: 'categoryId', label: 'Categoría', options: [] },
+    { type: 'select', field: 'organizerId', label: 'Organizador', options: [] },
     { type: 'text', field: 'location', label: 'Lugar' },
     { type: 'date', field: 'date', label: 'Fecha' }
   ];
@@ -55,18 +45,8 @@ export class ActivityCrud {
     { field: 'id', header: 'ID', type: 'number' },
     { field: 'title', header: 'Título' },
     { field: 'description', header: 'Descripción', type: 'longtext' },
-    {
-      field: 'categoryId',
-      header: 'Categoría',
-      type: 'lookup',
-      lookup: (id: number) => this.getCategoryName(id)
-    },
-    {
-      field: 'organizerId',
-      header: 'Organizador',
-      type: 'lookup',
-      lookup: (id: number) => this.getOrganizerName(id)
-    },
+    { field: 'categoryId', header: 'Categoría', type: 'lookup', lookup: (id: number) => this.getCategoryName(id) },
+    { field: 'organizerId', header: 'Organizador', type: 'lookup', lookup: (id: number) => this.getOrganizerName(id) },
     { field: 'date', header: 'Fecha', type: 'date' },
     { field: 'timeRange', header: 'Horas' },
     { field: 'location', header: 'Lugar' },
@@ -92,7 +72,7 @@ export class ActivityCrud {
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
       location: ['', [Validators.required, Validators.minLength(3)]],
-      capacity: [1, [Validators.required, Validators.min(1), Validators.max(500)]],
+      capacity: [1, [Validators.required, Validators.min(10), Validators.max(500)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       // photoUrl: [''],
       active: [true]
@@ -180,7 +160,7 @@ export class ActivityCrud {
       date: '',
       timeRange: '',
       location: '',
-      capacity: 1,
+      capacity: 10,
       description: '',
       active: true
     });

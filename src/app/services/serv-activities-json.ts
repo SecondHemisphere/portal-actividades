@@ -26,7 +26,6 @@ export class ServActivitiesJson {
       .pipe(map(activities => activities.filter(a => a.active === true)));
   }
 
-
   //search
   searchActivities(filters: any): Observable<Activity[]> {
     return this.httpclient.get<Activity[]>(this.activitiesUrl).pipe(

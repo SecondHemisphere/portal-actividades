@@ -21,14 +21,34 @@ export class ServEnrollmentsJson {
     return this.httpclient.get<Enrollment>(`${this.enrollmentsUrl}/${id}`);
   }
 
-  // search
-  searchEnrollments(param: string): Observable<Enrollment[]> {
-    return this.httpclient.get<Enrollment[]>(this.enrollmentsUrl)
-      .pipe(map(enrollments =>
-        enrollments.filter(e =>
-          e.status.toLowerCase().includes(param.toLowerCase())
-        )
-      ));
+  //search
+  searchEnrollments(filters: any): Observable<Enrollment[]> {
+    return this.httpclient.get<Enrollment[]>(this.enrollmentsUrl).pipe(
+      map(enrollments =>
+        enrollments.filter(e => {
+          let ok = true;
+          // Filtro por actividad
+          if (filters.activityId) {
+            ok = ok && e.activityId === Number(filters.activityId);
+          }
+          // Filtro por estudiante
+          if (filters.studentId) {
+            ok = ok && e.studentId === Number(filters.studentId);
+          }
+          // Filtro por fecha
+          if (filters.date && filters.date.trim() !== '') {
+            ok = ok && e.date.toLowerCase()
+              .includes(filters.date.toLowerCase());
+          }
+          // Filtro por estado
+          if (filters.status && filters.status.trim() !== '') {
+            ok = ok && e.status.toLowerCase()
+              .includes(filters.status.toLowerCase());
+          }
+          return ok;
+        })
+      )
+    );
   }
 
   // create (post)
