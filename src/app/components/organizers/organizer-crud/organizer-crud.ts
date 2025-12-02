@@ -66,7 +66,7 @@ export class OrganizerCrud {
       bio: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]],
       shifts: [[], [Validators.required]],
       workDays: [[], [Validators.required]],
-      // photoUrl: ['', [Validators.required]],
+      // photoUrl: [''],
       active: [true]
     });
   }

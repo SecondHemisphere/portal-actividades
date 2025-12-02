@@ -161,6 +161,26 @@
               </span>
             </div>
 
+            <!-- FOTO -->
+            <div class="mb-3">
+              <label class="form-label">Foto</label>
+              <input
+                type="file"
+                class="form-control"
+                accept="image/*"
+                (change)="onFileSelected($event)"
+              />
+
+              @if(photoPreview){
+              <div class="mt-2">
+                <img
+                  [src]="photoPreview"
+                  style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
+                />
+              </div>
+              }
+            </div>
+
             <!-- ACTIVO -->
             @if(editingId){
             <div class="form-check mb-3">

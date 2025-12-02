@@ -8,5 +8,6 @@ export interface Activity {
   location: string;
   capacity: number;
   description: string;
+  photoUrl?: string;
   active: boolean;
 }

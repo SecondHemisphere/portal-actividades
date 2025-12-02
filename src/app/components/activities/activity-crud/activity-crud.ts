@@ -25,6 +25,8 @@ export class ActivityCrud {
   editingId: number | null = null;
   modalRef: any;
 
+  photoPreview: string | null = null;
+
   minDate:string = "2020-01-01";
   maxDate = new Date().toISOString().split("T")[0]; ///fecha con formato yyyy-mm-dd
 
@@ -92,6 +94,7 @@ export class ActivityCrud {
       location: ['', [Validators.required, Validators.minLength(3)]],
       capacity: [1, [Validators.required, Validators.min(1), Validators.max(500)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
+      // photoUrl: [''],
       active: [true]
     }, { validators: horaRangeValidator });
   }
@@ -100,6 +103,20 @@ export class ActivityCrud {
   ngAfterViewInit() {
     this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
   }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.photoPreview = reader.result as string;
+      this.formActivity.patchValue({ photoUrl: this.photoPreview });
+    };
+
+    reader.readAsDataURL(file);
+  }
+
 
   loadActivities() {
     this.miServicio.getActivities().subscribe((data: Activity[]) => {
