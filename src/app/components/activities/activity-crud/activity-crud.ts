@@ -8,6 +8,7 @@ import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
 import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
+import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 
 declare const bootstrap: any;
 
@@ -41,6 +42,7 @@ export class ActivityCrud {
   colArray: TableColumn[] = [
     { field: 'id', header: 'ID', type: 'number' },
     { field: 'title', header: 'Título' },
+    { field: 'description', header: 'Descripción', type: 'longtext' },
     {
       field: 'categoryId',
       header: 'Categoría',
@@ -54,7 +56,7 @@ export class ActivityCrud {
       lookup: (id: number) => this.getOrganizerName(id)
     },
     { field: 'date', header: 'Fecha', type: 'date' },
-    { field: 'duration', header: 'Duración' },
+    { field: 'timeRange', header: 'Horas' },
     { field: 'location', header: 'Lugar' },
     { field: 'capacity', header: 'Cupo', type: 'number' },
     { field: 'active', header: 'Activo', type: 'boolean' },
@@ -75,12 +77,13 @@ export class ActivityCrud {
       categoryId: ['', Validators.required],
       organizerId: ['', Validators.required],
       date: ['', Validators.required],
-      duration: ['', [Validators.required]],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required],
       location: ['', [Validators.required, Validators.minLength(3)]],
       capacity: [1, [Validators.required, Validators.min(1), Validators.max(500)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       active: [true]
-    });
+    }, { validators: horaRangeValidator });
   }
 
   @ViewChild("activityModalRef") modalElement!: ElementRef;
@@ -140,7 +143,7 @@ export class ActivityCrud {
       categoryId: '',
       organizerId: '',
       date: '',
-      duration: '',
+      timeRange: '',
       location: '',
       capacity: 1,
       description: '',
@@ -152,7 +155,15 @@ export class ActivityCrud {
 
   openEdit(activity: Activity) {
     this.editingId = activity.id ?? null;
-    this.formActivity.patchValue(activity);
+
+    const [startTime, endTime] = activity.timeRange?.split(' - ') || ['', ''];
+
+    this.formActivity.patchValue({
+      ...activity,
+      startTime: startTime,
+      endTime: endTime
+    });
+
     this.modalRef.show();
   }
 
@@ -163,6 +174,11 @@ export class ActivityCrud {
     }
 
     let datos = this.formActivity.value;
+
+    datos.timeRange = `${datos.startTime} - ${datos.endTime}`;
+
+    delete datos.startTime;
+    delete datos.endTime;
 
     if (this.editingId) {
       let activity: Activity = { ...datos, id: this.editingId };
@@ -180,4 +196,5 @@ export class ActivityCrud {
       });
     }
   }
+
 }

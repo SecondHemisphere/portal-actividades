@@ -4,7 +4,7 @@ export interface Activity {
   categoryId: number;
   organizerId: number;
   date: string;
-  duration: string;
+  timeRange: string;
   location: string;
   capacity: number;
   description: string;

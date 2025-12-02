@@ -47,7 +47,8 @@ export class OrganizerCrud {
     { field: 'phone', header: 'Teléfono' },
     { field: 'department', header: 'Departamento' },
     { field: 'position', header: 'Cargo' },
-    { field: 'displayShifts', header: 'Disponibilidad' },
+    { field: 'displayShifts', header: 'Turnos' },
+    { field: 'displayDays', header: 'Días' },
     { field: 'active', header: 'Activo', type: 'boolean' }
   ];
 
@@ -128,7 +129,8 @@ export class OrganizerCrud {
 
       this.organizers = data.map(o => ({
         ...o,
-        displayShifts: o.shifts?.join(', ') ?? ''
+        displayShifts: o.shifts?.join(', ') ?? '',
+        displayDays: o.workDays?.join(', ') ?? ''
       }));
 
       this.filteredOrganizers = [...this.organizers];
@@ -150,7 +152,8 @@ export class OrganizerCrud {
       (data: Organizer[]) => {
         this.filteredOrganizers = data.map(o => ({
           ...o,
-          displayShifts: o.shifts?.join(', ')
+          displayShifts: o.shifts?.join(', ') ?? '',
+          displayDays: o.workDays?.join(', ') ?? ''
         }));
       }
     );

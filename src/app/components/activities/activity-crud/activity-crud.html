@@ -103,13 +103,31 @@
               </span>
             </div>
 
-            <!-- DURACIÓN -->
+            <!-- HORARIO -->
             <div class="mb-3">
-              <label class="form-label">Duración (Ej: 2h, 90min)</label>
-              <input type="text" class="form-control" formControlName="duration" />
+              <div class="mb-3 d-flex gap-2">
+                <div class="flex-fill">
+                  <label class="form-label">Hora Inicio</label>
+                  <input type="time" class="form-control" formControlName="startTime" />
+                  <span class="error">
+                    @if(formActivity.get("startTime")?.invalid &&
+                    formActivity.get("startTime")?.touched){ Hora de inicio requerida }
+                  </span>
+                </div>
+
+                <div class="flex-fill">
+                  <label class="form-label">Hora Fin</label>
+                  <input type="time" class="form-control" formControlName="endTime" />
+                  <span class="error">
+                    @if(formActivity.get("endTime")?.invalid &&
+                    formActivity.get("endTime")?.touched){ Hora de fin requerida }
+                  </span>
+                </div>
+              </div>
+
               <span class="error">
-                @if(formActivity.get("duration")?.invalid && formActivity.get("duration")?.touched){
-                Duración requerida }
+                @if(formActivity.errors?.['horaInvalida'] && formActivity.touched){ La hora de fin
+                debe ser posterior a la hora de inicio }
               </span>
             </div>
 
@@ -143,7 +161,7 @@
               </span>
             </div>
 
-            <!-- ACTIVO SOLO AL EDITAR -->
+            <!-- ACTIVO -->
             @if(editingId){
             <div class="form-check mb-3">
               <input
