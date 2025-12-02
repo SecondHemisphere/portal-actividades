@@ -29,11 +29,11 @@ export class ServEnrollmentsJson {
           let ok = true;
           // Filtro por actividad
           if (filters.activityId) {
-            ok = ok && e.activityId === Number(filters.activityId);
+            ok = ok && e.activityId === filters.activityId;
           }
           // Filtro por estudiante
           if (filters.studentId) {
-            ok = ok && e.studentId === Number(filters.studentId);
+            ok = ok && e.studentId === filters.studentId;
           }
           // Filtro por fecha
           if (filters.date && filters.date.trim() !== '') {
