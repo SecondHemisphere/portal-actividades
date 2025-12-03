@@ -4,19 +4,20 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   selector: 'app-pagination-controls',
   templateUrl: './pagination-control.html',
   styleUrls: ['./pagination-control.css'],
+  imports: []
 })
 export class PaginationControls {
-  @Input() totalData: any[] = [];
-  @Input() initialPageSize: number = 10;
+  @Input() totalData: any[] = []; // todos los datos que se van a paginar
+  @Input() initialPageSize: number = 10; // cantidad inicial de registros por página
 
-  @Output() pagedDataChange = new EventEmitter<any[]>();
-  @Output() onPageChange = new EventEmitter<number>();
-  @Output() onTotalPagesChange = new EventEmitter<number>();
+  @Output() pagedDataChange = new EventEmitter<any[]>(); // evento para envíar los datos que se deben mostrar
+  @Output() onPageChange = new EventEmitter<number>(); // evento para avisar en qué página estamos
+  @Output() onTotalPagesChange = new EventEmitter<number>(); // evento para avisar cuántas páginas existen en total
 
-  currentPage = 1;
-  pageSize = 10;
-  totalPages = 1;
-  pagedDataLength = 0;
+  currentPage = 1; // página actual
+  pageSize = 10; // cuántos registros se muestran por página
+  totalPages = 1; // total de páginas disponibles
+  pagedDataLength = 0; // cuántos datos tiene la página actual
 
   ngOnChanges() {
     this.pageSize = this.initialPageSize;
@@ -32,28 +33,28 @@ export class PaginationControls {
     this.updatePagination();
   }
 
-  /** Siguiente página */
+  /** Cambia a la siguiente página */
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.goToPage(this.currentPage + 1);
     }
   }
 
-  /** Página anterior */
+  /** Cambia a la página anterior */
   prevPage() {
     if (this.currentPage > 1) {
       this.goToPage(this.currentPage - 1);
     }
   }
 
-  /** Cambia tamaño de página */
+  /** Cambia cuántos registros se quieren ver por página */
   changePageSize(event: any) {
     this.pageSize = +(event.target.value);
     this.currentPage = 1;
     this.updatePagination();
   }
 
-  /** Total y datos paginados */
+  /** Actualiza la cantidad de páginas y los datos que se muestran en la página actual */
   private updatePagination() {
     if (!this.totalData) return;
 
@@ -69,7 +70,7 @@ export class PaginationControls {
     this.pagedDataChange.emit(paged);
   }
 
-  /** Crear rango dinámico para las 5 páginas (actual ± 2) */
+  /** Genera los números de página que se mostrarán alrededor de la actual */
   get pagesToShow(): number[] {
     const pages: number[] = [];
     const start = Math.max(1, this.currentPage - 2);
