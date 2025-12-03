@@ -3,10 +3,9 @@
   <div class="d-flex align-items-center gap-2">
     <label class="mb-0 fw-semibold">Mostrar</label>
     <select class="form-select form-select-sm w-auto py-1" (change)="changePageSize($event)">
-      <option [value]="5">5</option>
-      <option [value]="10">10</option>
-      <option [value]="20">20</option>
-      <option [value]="50">50</option>
+      @for (opt of pageSizeOptions; track opt) {
+      <option [value]="opt">{{ opt }}</option>
+      }
     </select>
     <span class="mb-0 fw-semibold">por página</span>
   </div>

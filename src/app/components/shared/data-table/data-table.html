@@ -1,7 +1,7 @@
 <!-- PAGINACIÓN -->
 <app-pagination-controls
   [totalData]="sortedData"
-  [initialPageSize]="10"
+  [pageSizeOptions]="[5, 10, 20, 50]"
   (pagedDataChange)="handlePagedData($event)"
   (onPageChange)="handlePageChange($event)"
   (onTotalPagesChange)="handleTotalPages($event)"
