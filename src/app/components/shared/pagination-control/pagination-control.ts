@@ -6,9 +6,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./pagination-control.css'],
 })
 export class PaginationControls {
-  @Input() showPageSizeSelector: boolean = true;
-  @Input() showPaginationControls: boolean = true;
-
   @Input() totalData: any[] = [];
   @Input() initialPageSize: number = 10;
 
