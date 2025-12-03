@@ -274,3 +274,24 @@ form img {
     width: 100%;
   }
 }
+
+.mensaje-vacio {
+  background-color: var(--bs-light);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px dashed var(--bs-secondary);
+  text-align: center;
+}
+
+.mensaje-vacio .icono-vacio {
+  font-size: 3rem;
+  color: var(--bs-secondary);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.mensaje-vacio .texto-vacio {
+  color: var(--bs-dark);
+  font-size: 1.25rem;
+  margin-top: 1rem;
+}

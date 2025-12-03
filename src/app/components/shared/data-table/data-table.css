@@ -81,37 +81,6 @@ table tbody tr:hover {
   border-color: #c53030;
 }
 
-.pagination .page-item .page-link {
-  color: var(--bs-primary);
-  border: 1px solid #cbd5e0;
-  background-color: var(--bs-light);
-  transition: 0.2s;
-}
-
-.pagination .page-item .page-link:hover {
-  background-color: var(--bs-primary);
-  color: #fff;
-  border-color: var(--bs-primary);
-}
-
-.pagination .page-item.active .page-link {
-  background-color: var(--bs-primary);
-  color: #fff;
-  border-color: var(--bs-primary);
-}
-
-.pagination .page-item.disabled .page-link {
-  color: var(--bs-secondary);
-  background-color: var(--bs-light);
-  border-color: #cbd5e0;
-  cursor: not-allowed;
-}
-
-.pagination {
-  margin: 0;
-  padding: 0;
-}
-
 .custom-modal {
   position: fixed;
   top: 50%;

@@ -19,8 +19,9 @@
   <hr />
 
   @if (filteredActivities.length === 0) {
-  <div class="alert alert-info text-center mt-5" role="alert">
-    No hay actividades activas o no se encontraron resultados para tu búsqueda.
+  <div class="text-center mt-5 mensaje-vacio">
+    <i class="bi bi-search icono-vacio"></i>
+    <p class="texto-vacio">No se encontraron resultados para tu búsqueda.</p>
   </div>
   } @else {
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
