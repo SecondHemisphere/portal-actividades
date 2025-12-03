@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+    <h2 class="mb-3 mb-md-0 text-primary">Catálogo de Actividades</h2>
+
+    <div class="d-flex flex-wrap gap-3 align-items-center">
+      <app-search-form [filters]="activityFilters" (onSearch)="searchActivities($event)">
+      </app-search-form>
+
+      <button
+        class="btn btn-outline-secondary d-flex align-items-center gap-1"
+        (click)="loadInitialData()"
+      >
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reiniciar
+      </button>
+    </div>
+  </div>
+
+  <hr />
+
+  @if (filteredActivities.length === 0) {
+  <div class="alert alert-info text-center mt-5" role="alert">
+    No hay actividades activas o no se encontraron resultados para tu búsqueda.
+  </div>
+  } @else {
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @for (activity of filteredActivities; track activity.id) {
+    <div class="col">
+      <app-activity-card
+        [activity]="activity"
+        [categories]="categories"
+        [organizers]="organizers"
+        [availableCapacity]="getAvailableCapacity(activity)"
+        (onEnroll)="enrollInActivity($event)"
+      >
+      </app-activity-card>
+    </div>
+    }
+  </div>
+  }
+</div>
