@@ -1,6 +1,10 @@
+<!-- NAVBAR PRINCIPAL -->
 <nav class="navbar navbar-expand-lg top-navbar mb-4 bg-light shadow-sm">
   <div class="container-fluid">
+    <!-- TÍTULO DEL PORTAL -->
     <a class="navbar-brand fw-bold text-primary"> Portal de Actividades </a>
+
+    <!-- BOTÓN PARA COLAPSAR MENÚ EN MÓVILES -->
     <button
       class="navbar-toggler"
       type="button"
@@ -9,22 +13,31 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- CONTENEDOR DEL MENÚ -->
     <div class="collapse navbar-collapse" id="mainMenu">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <!-- MENÚ PARA ESTUDIANTE -->
         @if (currentRole === UserRole.Estudiante) { @for (item of studentNav; track item.label) {
         <li class="nav-item">
           <a class="nav-link top-link" [routerLink]="item.link" routerLinkActive="active">
             {{ item.label }}
           </a>
         </li>
-        } } @else if (currentRole === UserRole.Organizador) { @for (item of organizerNav; track
+        } }
+
+        <!-- MENÚ PARA ORGANIZADOR -->
+        @else if (currentRole === UserRole.Organizador) { @for (item of organizerNav; track
         item.label) {
         <li class="nav-item">
           <a class="nav-link top-link" [routerLink]="item.link" routerLinkActive="active">
             {{ item.label }}
           </a>
         </li>
-        } } @else if (currentRole === UserRole.Admin) { @for (item of adminNav; track item.label) {
+        } }
+
+        <!-- MENÚ PARA ADMINISTRADOR -->
+        @else if (currentRole === UserRole.Admin) { @for (item of adminNav; track item.label) {
         <li class="nav-item">
           <a class="nav-link top-link" [routerLink]="item.link" routerLinkActive="active">
             {{ item.label }}
@@ -32,8 +45,11 @@
         </li>
         } }
       </ul>
+
+      <!-- DROPDOWN PARA CAMBIAR EL ROL (SIMULACIÓN) -->
       <div class="d-flex align-items-center ms-lg-3">
         <div class="dropdown">
+          <!-- BOTÓN DEL DROPDOWN -->
           <button
             class="btn btn-sm btn-outline-secondary dropdown-toggle"
             type="button"
@@ -42,22 +58,30 @@
           >
             Rol Actual: <span class="fw-bold">{{ currentRole }}</span>
           </button>
+
+          <!-- OPCIONES DE ROL -->
           <ul class="dropdown-menu dropdown-menu-end">
             <li class="dropdown-header">Cambiar Rol (Simulación)</li>
+
+            <!-- CAMBIAR A ROL ESTUDIANTE -->
             <li>
-              <a class="dropdown-item" (click)="setCurrentRole(UserRole.Estudiante)">{{
-                UserRole.Estudiante
-              }}</a>
+              <a class="dropdown-item" (click)="setCurrentRole(UserRole.Estudiante)">
+                {{ UserRole.Estudiante }}
+              </a>
             </li>
+
+            <!-- CAMBIAR A ROL ORGANIZADOR -->
             <li>
-              <a class="dropdown-item" (click)="setCurrentRole(UserRole.Organizador)">{{
-                UserRole.Organizador
-              }}</a>
+              <a class="dropdown-item" (click)="setCurrentRole(UserRole.Organizador)">
+                {{ UserRole.Organizador }}
+              </a>
             </li>
+
+            <!-- CAMBIAR A ROL ADMIN -->
             <li>
-              <a class="dropdown-item" (click)="setCurrentRole(UserRole.Admin)">{{
-                UserRole.Admin
-              }}</a>
+              <a class="dropdown-item" (click)="setCurrentRole(UserRole.Admin)">
+                {{ UserRole.Admin }}
+              </a>
             </li>
           </ul>
         </div>
@@ -65,6 +89,8 @@
     </div>
   </div>
 </nav>
+
+<!-- CONTENIDO DE LAS RUTAS -->
 <div class="container mt-3">
   <router-outlet></router-outlet>
 </div>

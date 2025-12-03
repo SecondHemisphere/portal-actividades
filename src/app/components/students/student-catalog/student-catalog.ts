@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { Activity } from '../../../models/Activity';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
 import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
-
-
 import { ServActivitiesJson } from '../../../services/serv-activities-json';
 import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { ActivityCard } from '../../activities/activity-card/activity-card';
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
-
 
 @Component({
   selector: 'app-student-catalog',
