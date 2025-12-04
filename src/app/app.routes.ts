@@ -6,7 +6,7 @@ import { OrganizerCrud } from './components/organizers/organizer-crud/organizer-
 import { StudentCrud } from './components/students/student-crud/student-crud';
 import { UserCrud } from './components/users/user-crud/user-crud';
 import { EnrollmentCrud } from './components/enrollments/enrollment-crud/enrollment-crud';
-import { StudentCatalog } from './components/students/student-catalog/student-catalog';
+import { ActivitiesPage } from './components/activities/activities-page/activities-page';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'student/catalog', pathMatch: 'full' },
@@ -14,14 +14,22 @@ export const routes: Routes = [
     {
         path: 'student',
         children: [
-            { path: 'catalog', component: StudentCatalog },
+          { path: 'catalog', component: ActivitiesPage },
+          // { path: 'enrollment-list', component: EnrollmentList },
+          // { path: 'history', component: StudentHistory },
+          // { path: 'profile', component: StudentProfile },
+          { path: '', redirectTo: 'catalog', pathMatch: 'full' }
         ]
     },
 
     {
         path: 'organizer',
         children: [
-            { path: 'dashboard', component: StudentCatalog },
+          // { path: 'dashboard', component: OrganizerDashboard },
+          // { path: 'activities', component: OrganizerActivities },
+          // { path: 'reports', component: OrganizerReports },
+          // { path: 'profile', component: OrganizerProfile },
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     },
     

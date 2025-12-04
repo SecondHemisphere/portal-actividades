@@ -39,33 +39,22 @@
   "faculties": [
     {
       "faculty": "CIENCIAS ADMINISTRATIVAS",
-      "careers": [
-        "ADMINISTRACIÓN DE EMPRESAS",
-        "COMERCIO EXTERIOR"
-      ],
+      "careers": ["ADMINISTRACIÓN DE EMPRESAS", "COMERCIO EXTERIOR"],
       "id": "db46"
     },
     {
       "faculty": "CIENCIAS MEDICAS",
-      "careers": [
-        "MEDICINA",
-        "ENFERMERÍA"
-      ],
+      "careers": ["MEDICINA", "ENFERMERÍA"],
       "id": "8187"
     },
     {
       "faculty": "INGENIERIA INDUSTRIAL",
-      "careers": [
-        "INGENIERÍA INDUSTRIAL",
-        "INGENIERÍA DE LA PRODUCCIÓN"
-      ],
+      "careers": ["INGENIERÍA INDUSTRIAL", "INGENIERÍA DE LA PRODUCCIÓN"],
       "id": "c376"
     },
     {
       "faculty": "FILOSOFIA, LETRAS Y CIENCIAS DE LA EDUCACION",
-      "careers": [
-        "PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"
-      ],
+      "careers": ["PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"],
       "id": "6716"
     }
   ],
@@ -95,20 +84,8 @@
       "department": "Cultura",
       "position": "Coordinadora",
       "bio": "Apasionada por actividades artísticas.",
-      "shifts": [
-        "Mañana",
-        "Noche",
-        "Tarde"
-      ],
-      "workDays": [
-        "Lunes",
-        "Martes",
-        "Domingo",
-        "Miércoles",
-        "Jueves",
-        "Sábado",
-        "Viernes"
-      ],
+      "shifts": ["Mañana", "Noche", "Tarde"],
+      "workDays": ["Lunes", "Martes", "Domingo", "Miércoles", "Jueves", "Sábado", "Viernes"],
       "active": true,
       "id": "1"
     },
@@ -122,13 +99,8 @@
       "department": "Deportes",
       "position": "Entrenador",
       "bio": "Instructor con experiencia en preparación física.",
-      "shifts": [
-        "Tarde"
-      ],
-      "workDays": [
-        "Miércoles",
-        "Viernes"
-      ]
+      "shifts": ["Tarde"],
+      "workDays": ["Miércoles", "Viernes"]
     },
     {
       "id": "3",
@@ -140,14 +112,8 @@
       "department": "Bienestar",
       "position": "Facilitadora",
       "bio": "Especialista en meditación y bienestar.",
-      "shifts": [
-        "Mañana",
-        "Tarde"
-      ],
-      "workDays": [
-        "Martes",
-        "Jueves"
-      ]
+      "shifts": ["Mañana", "Tarde"],
+      "workDays": ["Martes", "Jueves"]
     },
     {
       "id": "4",
@@ -159,13 +125,8 @@
       "department": "Arte",
       "position": "Instructor de Teatro",
       "bio": "Actor profesional.",
-      "shifts": [
-        "Noche"
-      ],
-      "workDays": [
-        "Viernes",
-        "Sábado"
-      ]
+      "shifts": ["Noche"],
+      "workDays": ["Viernes", "Sábado"]
     },
     {
       "id": "5",
@@ -177,13 +138,8 @@
       "department": "Danza",
       "position": "Coreógrafa",
       "bio": "Experta en danza contemporánea.",
-      "shifts": [
-        "Mañana"
-      ],
-      "workDays": [
-        "Lunes",
-        "Miércoles"
-      ]
+      "shifts": ["Mañana"],
+      "workDays": ["Lunes", "Miércoles"]
     },
     {
       "id": "6",
@@ -195,13 +151,8 @@
       "department": "Deportes",
       "position": "Instructor de Fútbol",
       "bio": "Entrenador certificado.",
-      "shifts": [
-        "Tarde"
-      ],
-      "workDays": [
-        "Martes",
-        "Jueves"
-      ]
+      "shifts": ["Tarde"],
+      "workDays": ["Martes", "Jueves"]
     },
     {
       "id": "7",
@@ -213,13 +164,8 @@
       "department": "Bienestar",
       "position": "Psicóloga",
       "bio": "Especialista en bienestar emocional.",
-      "shifts": [
-        "Mañana"
-      ],
-      "workDays": [
-        "Miércoles",
-        "Viernes"
-      ]
+      "shifts": ["Mañana"],
+      "workDays": ["Miércoles", "Viernes"]
     },
     {
       "id": "8",
@@ -231,13 +177,8 @@
       "department": "Música",
       "position": "Instructor de Música",
       "bio": "Músico profesional.",
-      "shifts": [
-        "Tarde"
-      ],
-      "workDays": [
-        "Lunes",
-        "Miércoles"
-      ]
+      "shifts": ["Tarde"],
+      "workDays": ["Lunes", "Miércoles"]
     },
     {
       "id": "9",
@@ -249,13 +190,8 @@
       "department": "Danza",
       "position": "Instructora de Ballet",
       "bio": "Bailarina profesional.",
-      "shifts": [
-        "Noche"
-      ],
-      "workDays": [
-        "Martes",
-        "Viernes"
-      ]
+      "shifts": ["Noche"],
+      "workDays": ["Martes", "Viernes"]
     },
     {
       "id": "10",
@@ -267,13 +203,8 @@
       "department": "Deportes",
       "position": "Entrenador de Natación",
       "bio": "Instructor con experiencia.",
-      "shifts": [
-        "Mañana"
-      ],
-      "workDays": [
-        "Lunes",
-        "Jueves"
-      ]
+      "shifts": ["Mañana"],
+      "workDays": ["Lunes", "Jueves"]
     }
   ],
   "students": [
@@ -420,6 +351,7 @@
       "description": "Aprende fotografía básica",
       "active": true,
       "timeRange": "09:00 - 11:00",
+      "photoUrl": "https://th.bing.com/th/id/R.25f51885e72010543fa8216e0a97df88?rik=7SwmZyjwgO%2bZSg&riu=http%3a%2f%2fwww.dzoom.org.es%2fwp-content%2fuploads%2f2012%2f12%2fqcam.jpg&ehk=NcD7RVxl9NgiRad5BQWq3UP%2fAlkZoMVyISMour6Ha4M%3d&risl=&pid=ImgRaw&r=0",
       "id": "1"
     },
     {
@@ -433,6 +365,7 @@
       "location": "Cancha Principal",
       "capacity": 16,
       "description": "Torneo interfacultades",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -446,6 +379,7 @@
       "description": "Yoga y relajación",
       "active": true,
       "timeRange": "08:30 - 11:00",
+      "photoUrl": "",
       "id": "3"
     },
     {
@@ -459,6 +393,7 @@
       "location": "Sala B1",
       "capacity": 20,
       "description": "Pintura al óleo",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -472,6 +407,7 @@
       "location": "Pista Atlética",
       "capacity": 200,
       "description": "Competencia deportiva",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -485,6 +421,7 @@
       "location": "Estudio 3",
       "capacity": 30,
       "description": "Fundamentos de danza",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -498,6 +435,7 @@
       "location": "Auditorio Central",
       "capacity": 120,
       "description": "Presentación musical",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -511,6 +449,7 @@
       "location": "Sala Zen",
       "capacity": 35,
       "description": "Sesión guiada",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -524,6 +463,7 @@
       "location": "Coliseo Deportivo",
       "capacity": 40,
       "description": "Competencia rápida",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -537,6 +477,7 @@
       "location": "Parque Norte",
       "capacity": 50,
       "description": "Entrenamiento funcional",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -550,6 +491,7 @@
       "location": "Biblioteca Central",
       "capacity": 20,
       "description": "Conversatorio literario",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -563,6 +505,7 @@
       "description": "Técnicas de respiración",
       "active": false,
       "timeRange": "11:00 - 12:00",
+      "photoUrl": "",
       "id": "12"
     },
     {
@@ -576,6 +519,7 @@
       "location": "Sala A1",
       "capacity": 15,
       "description": "Técnicas avanzadas",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -589,6 +533,7 @@
       "location": "Sala Multiusos",
       "capacity": 60,
       "description": "Torneo oficial de ajedrez",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -602,6 +547,7 @@
       "location": "Sala Acústica",
       "capacity": 30,
       "description": "Proyección y técnica vocal",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -615,6 +561,7 @@
       "location": "Sala Zen",
       "capacity": 30,
       "description": "Estiramiento y fortalecimiento",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -628,6 +575,7 @@
       "location": "Auditorio C4",
       "capacity": 150,
       "description": "Proyección cultural",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -641,6 +589,7 @@
       "location": "Coliseo Deportivo",
       "capacity": 80,
       "description": "Sesión intensa",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -654,6 +603,7 @@
       "location": "Sala Letras",
       "capacity": 20,
       "description": "Mejora tu estilo",
+      "photoUrl": "",
       "active": true
     },
     {
@@ -667,46 +617,8 @@
       "location": "Plazoleta Central",
       "capacity": 500,
       "description": "Charlas y stands",
+      "photoUrl": "",
       "active": true
-    },
-    {
-      "id": "917e",
-      "title": "aaa",
-      "categoryId": "2",
-      "organizerId": "3",
-      "date": "2025-12-02",
-      "registrationDeadline": "2025-12-01",
-      "timeRange": "23:42 - 23:44",
-      "location": "aaaaaaaa",
-      "capacity": 5,
-      "description": "asssssssss",
-      "active": true
-    },
-    {
-      "id": "b977",
-      "title": "aaaaaaaa",
-      "categoryId": "2",
-      "organizerId": "2",
-      "date": "2025-12-02",
-      "registrationDeadline": "2025-12-01",
-      "location": "ssssssssss",
-      "capacity": 12,
-      "description": "assssssssssssssssssssssssss",
-      "active": true,
-      "timeRange": "21:46 - 21:47"
-    },
-    {
-      "id": "124c",
-      "title": "saadss",
-      "categoryId": "3",
-      "organizerId": "6",
-      "date": "2025-11-05",
-      "registrationDeadline": "2025-10-01",
-      "location": "assssssssssss",
-      "capacity": 20,
-      "description": "dddddddddda",
-      "active": true,
-      "timeRange": "15:11 - 19:10"
     }
   ],
   "enrollments": [
