@@ -8,10 +8,11 @@ import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { CommonModule } from '@angular/common';
 import { PaginationControls } from '../../shared/pagination-control/pagination-control';
+import { ActivityCard } from '../activity-card/activity-card';
 
 @Component({
   selector: 'app-activity-list',
-  imports: [SearchForm, CommonModule, PaginationControls],
+  imports: [SearchForm, CommonModule, PaginationControls, ActivityCard],
   templateUrl: './activity-list.html',
   styleUrl: './activity-list.css',
 })
@@ -96,14 +97,7 @@ export class ActivityList {
     alert(`Te has inscrito a: ${activity.title}`);
   }
 
-  /** Verifica si la fecha límite de inscripción ha pasado */
-  isRegistrationClosed(activity: Activity): boolean {
-    const deadline = new Date(activity.registrationDeadline);
-    const today = new Date();
-    return deadline < today;
-  }
-
-    /** Actualiza los datos mostrados según la página seleccionada */
+  /** Actualiza los datos mostrados según la página seleccionada */
   handlePagedData(data: any[]) {
     this.pagedData = data;
   }

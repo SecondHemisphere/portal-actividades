@@ -7,6 +7,7 @@ import { StudentCrud } from './components/students/student-crud/student-crud';
 import { UserCrud } from './components/users/user-crud/user-crud';
 import { EnrollmentCrud } from './components/enrollments/enrollment-crud/enrollment-crud';
 import { ActivitiesPage } from './components/activities/activities-page/activities-page';
+import { MyEnrollmentsPage } from './components/enrollments/my-enrollments-page/my-enrollments-page';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'student/catalog', pathMatch: 'full' },
@@ -15,7 +16,7 @@ export const routes: Routes = [
         path: 'student',
         children: [
           { path: 'catalog', component: ActivitiesPage },
-          // { path: 'enrollment-list', component: EnrollmentList },
+          { path: 'enrollment-list', component: MyEnrollmentsPage },
           // { path: 'history', component: StudentHistory },
           // { path: 'profile', component: StudentProfile },
           { path: '', redirectTo: 'catalog', pathMatch: 'full' }

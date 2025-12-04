@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Enrollment } from '../models/Enrollment';
-import { map, Observable } from 'rxjs';
+import { Enrollment, EnrollmentStatus } from '../models/Enrollment';
+import { map, Observable, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +19,12 @@ export class ServEnrollmentsJson {
 
   getEnrollmentById(id: number): Observable<Enrollment> {
     return this.httpclient.get<Enrollment>(`${this.enrollmentsUrl}/${id}`);
+  }
+
+  getEnrollmentsByStudent(studentId: string | number): Observable<Enrollment[]> {
+    return this.httpclient.get<Enrollment[]>(this.enrollmentsUrl).pipe(
+      map(enrollments => enrollments.filter(e => Number(e.studentId) === Number(studentId)))
+    );
   }
 
   //search
@@ -66,6 +72,17 @@ export class ServEnrollmentsJson {
   delete(id: any): Observable<Enrollment> {
     let url = `${this.enrollmentsUrl}/${id}`;
     return this.httpclient.delete<Enrollment>(url);
+  }
+
+  // otros métodos
+  cancelEnrollment(id: number): Observable<Enrollment> {
+    return this.getEnrollmentById(id).pipe(
+      map(enrollment => {
+        const updated = { ...enrollment, status: 'Cancelada' as EnrollmentStatus };
+        return updated;
+      }),
+      switchMap(updated => this.update(updated))
+    );
   }
 
 }

@@ -1,1 +1,72 @@
-<p>activity-card works!</p>
+<div class="card h-100 shadow-sm">
+  <!-- Imagen -->
+  @if(activity.photoUrl){
+  <img
+    [src]="activity.photoUrl"
+    class="card-img-top"
+    alt="Foto de la actividad"
+    style="height: 200px; object-fit: cover"
+  />
+  } @else {
+  <div
+    class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+    style="height: 200px; color: white"
+  >
+    Sin imagen
+  </div>
+  }
+
+  <div class="card-body d-flex flex-column">
+    <h5 class="card-title text-primary">{{ activity.title }}</h5>
+    <span class="badge bg-secondary mb-2">{{ getCategoryName() }}</span>
+
+    <p class="card-text text-muted small mt-2">{{ activity.description | slice : 0 : 80 }}...</p>
+
+    <ul class="list-group list-group-flush small mt-2 mb-3 flex-grow-1">
+      <li class="list-group-item d-flex align-items-center">
+        <i class="bi bi-calendar me-2 text-primary"></i>
+        {{ activity.date | date : 'mediumDate' }}
+      </li>
+      <li class="list-group-item d-flex align-items-center">
+        <i class="bi bi-clock me-2 text-primary"></i>
+        {{ activity.timeRange }}
+      </li>
+      <li class="list-group-item d-flex align-items-center">
+        <i class="bi bi-geo-alt me-2 text-primary"></i>
+        {{ activity.location }}
+      </li>
+      <li class="list-group-item d-flex align-items-center">
+        <i class="bi bi-person-badge me-2 text-primary"></i>
+        Organiza: {{ getOrganizerName() }}
+      </li>
+    </ul>
+
+    <!-- Botones -->
+    <div class="mt-auto d-flex justify-content-between align-items-center">
+      @if(mode === 'student' && getAvailableCapacity() > 0){
+      <span class="text-secondary small"> Quedan {{ getAvailableCapacity() }} cupos </span>
+      } @else if(mode === 'student' && getAvailableCapacity() === 0){
+      <span class="text-danger small">Cupos Agotados</span>
+      } @if(mode === 'student'){
+      <button
+        class="btn btn-primary btn-sm me-2"
+        (click)="enrollClicked()"
+        [disabled]="getAvailableCapacity() === 0 || isRegistrationClosed()"
+      >
+        @if(isRegistrationClosed()){ Inscripciones Cerradas } @else { Inscribirme }
+      </button>
+      } @if(mode === 'my-enrollment'){
+      <button
+        class="btn btn-danger btn-sm me-2"
+        (click)="cancelClicked()"
+        [disabled]="enrollmentStatus !== 'Pendiente'"
+      >
+        Cancelar
+      </button>
+      }
+
+      <!-- Botón Ver -->
+      <button class="btn btn-primary btn-sm btn-info" (click)="viewClicked()">Ver</button>
+    </div>
+  </div>
+</div>

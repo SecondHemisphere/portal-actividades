@@ -34,6 +34,8 @@ export class ActivityCrud {
   categories: Category[] = [];
   organizers: Organizer[] = [];
 
+  activityEdit:Activity ={} as Activity; //para foto
+
   activityFilters: SearchFilter[] = [
     { type: 'text', field: 'title', label: 'Título' },
     { type: 'select', field: 'categoryId', label: 'Categoría', options: [] },
@@ -77,7 +79,7 @@ export class ActivityCrud {
       location: ['', [Validators.required, Validators.minLength(3)]],
       capacity: [1, [Validators.required, Validators.min(10), Validators.max(500)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      // photoUrl: [''],
+      photoUrl: [''],
       active: [true]
     }, { validators: [horaRangeValidator, registrationDeadlineValidator] });
   }
@@ -85,19 +87,6 @@ export class ActivityCrud {
   @ViewChild("activityModalRef") modalElement!: ElementRef;
   ngAfterViewInit() {
     this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
-  }
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.photoPreview = reader.result as string;
-      this.formActivity.patchValue({ photoUrl: this.photoPreview });
-    };
-
-    reader.readAsDataURL(file);
   }
 
   get maxDeadlineDate() {
@@ -139,6 +128,11 @@ export class ActivityCrud {
     return this.organizers.find(o => Number(o.id) === Number(id))?.name || 'Sin organizador';
   }
 
+  updatePhotoPreview() {
+    const url = this.formActivity.get('photoUrl')?.value;
+    this.photoPreview = url && url.trim() !== '' ? url : null;
+  }
+
   delete(activity: Activity) {
     const confirmado = confirm(`¿Seguro deseas eliminar la actividad? ${activity.title}`);
     if (confirmado) {
@@ -168,13 +162,17 @@ export class ActivityCrud {
       location: '',
       capacity: 10,
       description: '',
+      photoUrl: '',
       active: true
     });
 
+    this.photoPreview = null;
+    
     this.modalRef.show();
   }
 
   openEdit(activity: Activity) {
+    this.activityEdit = activity;
     this.editingId = activity.id ?? null;
 
     const [startTime, endTime] = activity.timeRange?.split(' - ') || ['', ''];
@@ -184,6 +182,8 @@ export class ActivityCrud {
       startTime: startTime,
       endTime: endTime
     });
+
+    this.photoPreview = activity.photoUrl || null;
 
     this.modalRef.show();
   }

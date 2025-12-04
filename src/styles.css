@@ -100,15 +100,14 @@ form .error {
   transition: 0.2s;
 }
 
-.btn-primary {
-  background-color: var(--bs-primary);
-  border-color: var(--bs-primary);
-  color: #fff;
+.btn-outline-secondary {
+  color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
 }
 
-.btn-primary:hover {
-  background-color: #434aa0;
-  border-color: #434aa0;
+.btn-outline-secondary:hover {
+  background-color: var(--bs-secondary);
+  color: #fff;
 }
 
 .btn-secondary {
@@ -122,14 +121,50 @@ form .error {
   border-color: #606f85;
 }
 
-.btn-outline-secondary {
-  color: var(--bs-secondary);
-  border-color: var(--bs-secondary);
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: #fff;
 }
 
-.btn-outline-secondary:hover {
-  background-color: var(--bs-secondary);
+.btn-primary:hover {
+  background-color: #434aa0;
+  border-color: #434aa0;
+}
+
+.btn-danger {
+  background-color: var(--bs-danger);
+  border-color: var(--bs-danger);
   color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #c53030;
+  border-color: #c53030;
+}
+
+.btn-outline-secondary:active {
+  background-color: var(--bs-secondary) !important;
+  color: #fff !important;
+  border-color: var(--bs-secondary) !important;
+}
+
+.btn-secondary:active {
+  background-color: #606f85 !important;
+  border-color: #606f85 !important;
+  color: #fff !important;
+}
+
+.btn-primary:active {
+  background-color: #434aa0 !important;;
+  border-color: #434aa0 !important;;
+  color: #fff !important;;
+}
+
+.btn-danger:active {
+  background-color: #c53030 !important;;
+  border-color: #c53030 !important;;
+  color: #fff !important;;
 }
 
 .btn.d-flex.gap-1,
