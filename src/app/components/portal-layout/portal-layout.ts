@@ -16,7 +16,7 @@ export class PortalLayout {
 
   // Opciones de menú para estudiantes
   studentNav = [
-    { label: 'Catálogo (Explorar)', link: '/student/catalog' },
+    { label: 'Explorar Actividades', link: '/activities' },
     { label: 'Mis Inscripciones', link: '/student/enrollment-list' },
     { label: 'Historial y Valorar', link: '/student/history' },
     { label: 'Mi Perfil', link: '/student/profile' }

@@ -8,14 +8,16 @@ import { UserCrud } from './components/users/user-crud/user-crud';
 import { EnrollmentCrud } from './components/enrollments/enrollment-crud/enrollment-crud';
 import { ActivitiesPage } from './components/activities/activities-page/activities-page';
 import { MyEnrollmentsPage } from './components/enrollments/my-enrollments-page/my-enrollments-page';
+import { ActivityView } from './components/activities/activity-view/activity-view';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'student/catalog', pathMatch: 'full' },
+    { path: '', redirectTo: 'catalog', pathMatch: 'full' },
+    { path: 'activities', component: ActivitiesPage },
+    { path: 'activity-view/:id', component: ActivityView },
     
     {
         path: 'student',
         children: [
-          { path: 'catalog', component: ActivitiesPage },
           { path: 'enrollment-list', component: MyEnrollmentsPage },
           // { path: 'history', component: StudentHistory },
           // { path: 'profile', component: StudentProfile },

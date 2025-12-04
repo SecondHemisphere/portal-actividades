@@ -92,11 +92,6 @@ export class ActivityList {
     );
   }
 
-  /** Acción del botón Inscribirse */
-  enrollClicked(activity: Activity) {
-    alert(`Te has inscrito a: ${activity.title}`);
-  }
-
   /** Actualiza los datos mostrados según la página seleccionada */
   handlePagedData(data: any[]) {
     this.pagedData = data;

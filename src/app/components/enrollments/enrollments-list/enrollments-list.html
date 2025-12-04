@@ -1,6 +1,5 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Mis Inscripciones</h2>
-
+  <h2 class="mb-4 text-center">Mis Inscripciones</h2>
   <app-pagination-controls
     [totalData]="filteredEnrollments"
     [pageSizeOptions]="[6, 12, 18]"
@@ -16,11 +15,6 @@
           [activity]="getActivity(enrollment.activityId)!"
           [categories]="getActivityCategory(getActivity(enrollment.activityId)!)"
           [organizers]="getActivityOrganizer(getActivity(enrollment.activityId)!)"
-          mode="my-enrollment"
-          [enrollmentStatus]="enrollment.status"
-          (enrollClickedEvent)="handleEnroll($event)"
-          (cancelClickedEvent)="handleCancel($event)"
-          (viewClickedEvent)="handleView($event)"
         ></app-activity-card>
         }
       </div>
