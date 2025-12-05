@@ -1,66 +1,78 @@
-<div class="card h-100 shadow-sm">
-  <!-- Imagen -->
-  @if (activity.photoUrl) {
-  <img
-    [src]="activity.photoUrl"
-    class="card-img-top"
-    alt="Foto de la actividad"
-    style="height: 200px; object-fit: cover"
-  />
-  } @else {
-  <div
-    class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
-    style="height: 200px; color: white"
-  >
-    Sin imagen
-  </div>
-  }
-
-  <div class="card-body d-flex flex-column">
-    <!-- TÍTULO -->
-    <h5 class="card-title text-primary">{{ activity.title }}</h5>
-
-    <!-- ESTADO DE INSCRIPCIÓN -->
-    @if (isRegistrationClosed()) {
-    <span class="badge-closed mb-2">
-      <i class="bi bi-x-octagon-fill"></i>
-      Inscripciones Cerradas
-    </span>
+<div class="card h-100 shadow-lg border-0 hover-shadow position-relative rounded-4">
+  <!-- IMAGEN -->
+  <div class="position-relative">
+    @if (activity.photoUrl) {
+    <img
+      [src]="activity.photoUrl"
+      class="card-img-top rounded-top-4"
+      alt="Foto de la actividad"
+      style="height: 180px; object-fit: cover"
+    />
+    } @else {
+    <div
+      class="card-img-top bg-light d-flex align-items-center justify-content-center rounded-top-4"
+      style="height: 180px; color: #6c757d"
+    >
+      <i class="bi bi-image-fill fs-3"></i> Sin Imagen
+    </div>
     }
 
     <!-- CATEGORÍA -->
-    <span class="badge bg-secondary mb-2 badge-custom">
+    <span
+      class="badge category-badge position-absolute top-0 start-0 m-2 px-3 py-2 rounded-pill shadow-sm"
+      [ngStyle]="{ 'background-color': getCategoryColor(), color: 'white' }"
+    >
       {{ getCategoryName() }}
     </span>
 
-    <!-- DESCRIPCIÓN -->
-    <p class="card-text text-muted small mt-1">{{ activity.description | slice : 0 : 80 }}...</p>
+    <!-- INSCRIPCIONES CERRADAS -->
+    @if (isRegistrationClosed()) {
+    <span
+      class="badge bg-danger position-absolute bottom-0 start-0 m-2 fw-bold p-2 text-uppercase shadow"
+    >
+      <i class="bi bi-x-octagon-fill me-1"></i> Inscripciones Cerradas
+    </span>
+    }
+  </div>
 
-    <!-- INFORMACIÓN -->
-    <ul class="list-group list-group-flush small mt-2 mb-3 flex-grow-1">
-      <li class="list-group-item d-flex align-items-center">
-        <i class="bi bi-calendar me-2 text-primary"></i>
-        {{ activity.date | date : 'mediumDate' }}
-      </li>
-      <li class="list-group-item d-flex align-items-center">
-        <i class="bi bi-clock me-2 text-primary"></i>
-        {{ activity.timeRange }}
-      </li>
-      <li class="list-group-item d-flex align-items-center">
-        <i class="bi bi-geo-alt me-2 text-primary"></i>
-        {{ activity.location }}
-      </li>
-      <li class="list-group-item d-flex align-items-center">
-        <i class="bi bi-person-badge me-2 text-primary"></i>
-        Organiza: {{ getOrganizerName() }}
-      </li>
-    </ul>
+  <!-- BODY -->
+  <div class="card-body d-flex flex-column p-3 pb-2">
+    <!-- TITULO -->
+    <h6 class="card-title text-primary fw-bold mb-2">
+      {{ activity.title }}
+    </h6>
 
-    <!-- BOTÓN VER -->
-    <div class="mt-auto text-end">
-      <button class="btn btn-primary" (click)="view()">
-        <i class="bi bi-eye me-1"></i> Ver
-      </button>
+    <!-- ORGANIZADOR -->
+    <div class="info-line d-flex align-items-center mb-2">
+      <i class="bi bi-person-badge me-2 text-secondary"></i>
+      <span class="small text-muted">Organiza:</span>
+      <span class="ms-1 fw-semibold">{{ getOrganizerName() }}</span>
     </div>
+
+    <!-- FECHA Y HORA -->
+    <div class="d-flex justify-content-between info-line small mb-2">
+      <span class="d-flex align-items-center">
+        <i class="bi bi-calendar me-2 text-secondary"></i>
+        {{ activity.date | date : 'MMM d, y' }}
+      </span>
+
+      <span class="d-flex align-items-center">
+        <i class="bi bi-clock me-2 text-secondary"></i>
+        {{ activity.timeRange }}
+      </span>
+    </div>
+
+    <!-- UBICACIÓN -->
+    <div class="info-line d-flex align-items-center small mb-1">
+      <i class="bi bi-geo-alt me-2 text-secondary"></i>
+      <span class="text-truncate">{{ activity.location }}</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="card-footer bg-white border-0 pt-0 pb-3 pe-3 text-end">
+    <button class="btn btn-primary btn-sm px-4 rounded-pill" (click)="view()">
+      <i class="bi bi-eye me-1"></i> Ver Detalles
+    </button>
   </div>
 </div>

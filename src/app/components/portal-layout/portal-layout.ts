@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { UserRole } from '../../models/User';
+import { UserRole, User } from '../../models/User';
 import { AuthService } from '../../services/auth/auth-service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-portal-layout',
@@ -10,10 +11,11 @@ import { AuthService } from '../../services/auth/auth-service';
   templateUrl: './portal-layout.html',
   styleUrl: './portal-layout.css',
 })
-export class PortalLayout {
+export class PortalLayout implements OnInit, OnDestroy {
   public UserRole = UserRole;
   currentRole: UserRole = UserRole.Estudiante;
   isLoggedIn = false;
+  private sub!: Subscription;
 
   studentNav = [
     { label: 'Explorar Actividades', link: '/activities' },
@@ -44,12 +46,17 @@ export class PortalLayout {
     { label: 'Iniciar Sesión', link: '/login' }
   ];
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.isLoggedIn = this.authService.isLoggedIn();
-    if (this.isLoggedIn) {
-      const user = this.authService.getCurrentUserValue();
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit() {
+    this.sub = this.authService.getCurrentUser().subscribe((user: User | null) => {
+      this.isLoggedIn = !!user;
       this.currentRole = user?.role || UserRole.Estudiante;
-    }
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   get navItems() {
@@ -63,9 +70,6 @@ export class PortalLayout {
 
   logout() {
     this.authService.logout();
-    this.isLoggedIn = false;
-    this.currentRole = UserRole.Estudiante;
     this.router.navigate(['/login']);
   }
-
 }

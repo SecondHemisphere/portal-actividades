@@ -39,4 +39,22 @@ export class ActivityCard {
     this.router.navigate(["/activity-view/",this.activity.id]);
   }
 
+  getCategoryColor(): string {
+    const colors = [
+      '#944FB6',
+      '#5A67D8',
+      '#4C9FE3',
+      '#2D3748',
+      '#3CA38E',
+      '#C09B40',
+      '#E29578',
+      '#429E51',
+      '#D977CE',
+      '#D96459',
+    ];
+
+    const index = (this.activity.categoryId - 1) % colors.length;
+    return colors[index];
+  }
+
 }

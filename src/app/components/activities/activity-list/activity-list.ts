@@ -10,6 +10,13 @@ import { CommonModule } from '@angular/common';
 import { PaginationControls } from '../../shared/pagination-control/pagination-control';
 import { ActivityCard } from '../activity-card/activity-card';
 
+const PATTERN = [
+  'col-lg-4', 'col-lg-4', 'col-lg-4',
+  'col-lg-6', 'col-lg-6',
+  'col-lg-4', 'col-lg-4', 'col-lg-4',
+  'col-lg-6', 'col-lg-6'
+];
+
 @Component({
   selector: 'app-activity-list',
   imports: [SearchForm, CommonModule, PaginationControls, ActivityCard],
@@ -92,10 +99,40 @@ export class ActivityList {
     );
   }
 
+  buildRows(data: any[]) {
+  const result: any[] = [];
+  let index = 0;
+
+  while (index < data.length) {
+    const remaining = data.length - index;
+
+    const possiblePatterns = [];
+    if (remaining >= 4) possiblePatterns.push(4);
+    if (remaining >= 3) possiblePatterns.push(3);
+
+    const selected = possiblePatterns[Math.floor(Math.random() * possiblePatterns.length)];
+
+    let colClass = '';
+    if (selected === 4) colClass = 'col-lg-3';
+    if (selected === 3) colClass = 'col-lg-4';
+
+    const rowItems = data.slice(index, index + selected).map(item => {
+      return { ...item, widthClass: colClass };
+    });
+
+    result.push(...rowItems);
+
+    index += selected;
+  }
+
+  return result;
+}
+
   /** Actualiza los datos mostrados según la página seleccionada */
   handlePagedData(data: any[]) {
-    this.pagedData = data;
+    this.pagedData = this.buildRows(data);
   }
+
   
   /** Guarda el número de la página actual */
   handlePageChange(page: number) {

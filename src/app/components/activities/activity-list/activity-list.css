@@ -1,0 +1,6 @@
+.container h2 {
+  color: var(--bs-secondary);
+  font-weight: 700;
+  border-bottom: 3px solid var(--bs-secondary);
+  padding-bottom: 0.5rem;
+}

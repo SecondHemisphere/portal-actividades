@@ -4,7 +4,7 @@
     <label class="mb-0 fw-semibold">Mostrar</label>
     <select class="form-select form-select-sm w-auto py-1" (change)="changePageSize($event)">
       @for (opt of pageSizeOptions; track opt) {
-      <option [value]="opt">{{ opt }}</option>
+      <option [value]="opt" [selected]="opt === pageSize">{{ opt }}</option>
       }
     </select>
     <span class="mb-0 fw-semibold">por página</span>

@@ -2,22 +2,26 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-pagination-controls',
+  imports: [],
   templateUrl: './pagination-control.html',
-  styleUrls: ['./pagination-control.css'],
-  imports: []
+  styleUrl: './pagination-control.css'
 })
 export class PaginationControls {
   @Input() totalData: any[] = []; // todos los datos que se van a paginar
   @Input() pageSizeOptions: number[] = [5, 10, 20, 50]; // opciones de cantidad de registros por página
-
+  
   @Output() pagedDataChange = new EventEmitter<any[]>(); // evento para envíar los datos que se deben mostrar
   @Output() onPageChange = new EventEmitter<number>(); // evento para avisar en qué página estamos
   @Output() onTotalPagesChange = new EventEmitter<number>(); // evento para avisar cuántas páginas existen en total
 
+  pageSize = 5; // cuántos registros se muestran por página
   currentPage = 1; // página actual
-  pageSize = 5 // cuántos registros se muestran por página
   totalPages = 1; // total de páginas disponibles
   pagedDataLength = 0; // cuántos datos tiene la página actual
+
+  constructor(){
+    this.pageSize = this.pageSizeOptions[1];
+  }
 
   ngOnChanges() {
     this.updatePagination();
