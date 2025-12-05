@@ -56,6 +56,7 @@ export class ActivityList {
     this.activitiesService.getActivities().subscribe((data: Activity[]) => {
       this.activities = data;
       this.filteredActivities = [...data];
+      this.pagedData = this.buildRows(this.filteredActivities);
     });
   }
 
@@ -95,45 +96,52 @@ export class ActivityList {
     this.activitiesService.searchActivities(filters).subscribe(
       (data: Activity[]) => {
         this.filteredActivities = data;
+        this.currentPage = 1;
+        this.totalPages = 1;
+        this.pagedData = this.buildRows(this.filteredActivities);
       }
     );
   }
 
   buildRows(data: any[]) {
-  const result: any[] = [];
-  let index = 0;
+    const result: any[] = [];
+    let index = 0;
 
-  while (index < data.length) {
-    const remaining = data.length - index;
+    while (index < data.length) {
+      const remaining = data.length - index;
 
-    const possiblePatterns = [];
-    if (remaining >= 4) possiblePatterns.push(4);
-    if (remaining >= 3) possiblePatterns.push(3);
+      const possiblePatterns = [];
+      if (remaining >= 4) possiblePatterns.push(4);
+      if (remaining >= 3) possiblePatterns.push(3);
 
-    const selected = possiblePatterns[Math.floor(Math.random() * possiblePatterns.length)];
+      if (remaining === 2) possiblePatterns.push(2);
+      if (remaining === 1) possiblePatterns.push(1);
 
-    let colClass = '';
-    if (selected === 4) colClass = 'col-lg-3';
-    if (selected === 3) colClass = 'col-lg-4';
+      const selected = possiblePatterns[Math.floor(Math.random() * possiblePatterns.length)];
 
-    const rowItems = data.slice(index, index + selected).map(item => {
-      return { ...item, widthClass: colClass };
-    });
+      let colClass = '';
+      if (selected === 4) colClass = 'col-lg-3';
+      if (selected === 3) colClass = 'col-lg-4';
+      if (selected === 2) colClass = 'col-lg-6';
+      if (selected === 1) colClass = 'col-lg-12';
 
-    result.push(...rowItems);
+      const rowItems = data.slice(index, index + selected).map(item => {
+        return { ...item, widthClass: colClass };
+      });
 
-    index += selected;
+      result.push(...rowItems);
+
+      index += selected;
+    }
+
+    return result;
   }
-
-  return result;
-}
 
   /** Actualiza los datos mostrados según la página seleccionada */
   handlePagedData(data: any[]) {
     this.pagedData = this.buildRows(data);
   }
 
-  
   /** Guarda el número de la página actual */
   handlePageChange(page: number) {
     this.currentPage = page;

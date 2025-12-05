@@ -1,7 +1,7 @@
 <div class="container py-4 activity-view-container">
   <!-- Imagen principal -->
   <div class="card mb-4 shadow-sm">
-    @if (activity?.photoUrl) {
+    @if (activity.photoUrl) {
     <img [src]="activity.photoUrl" alt="{{ activity.title }}" class="card-img-top activity-image" />
     } @else {
     <div class="card-img-top activity-no-image d-flex justify-content-center align-items-center">

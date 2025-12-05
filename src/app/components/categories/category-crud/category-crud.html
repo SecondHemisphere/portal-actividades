@@ -6,15 +6,6 @@
       <!-- BUSCADOR -->
       <app-search-form [filters]="categoryFilters" (onSearch)="search($event)"> </app-search-form>
 
-      <!-- BOTÓN REINICIAR -->
-      <button
-        class="btn btn-outline-secondary d-flex align-items-center gap-1"
-        (click)="loadCategories()"
-      >
-        <i class="bi bi-arrow-counterclockwise"></i>
-        Reiniciar
-      </button>
-
       <!-- BOTÓN CREAR CATEGORÍA -->
       <button class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
         <i class="bi bi-plus-circle"></i>

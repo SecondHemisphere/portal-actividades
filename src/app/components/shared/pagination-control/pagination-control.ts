@@ -19,11 +19,12 @@ export class PaginationControls {
   totalPages = 1; // total de páginas disponibles
   pagedDataLength = 0; // cuántos datos tiene la página actual
 
-  constructor(){
-    this.pageSize = this.pageSizeOptions[1];
+  ngOnInit() {
+    this.pageSize = this.pageSizeOptions[1] ?? 5;
   }
 
   ngOnChanges() {
+    this.currentPage = 1;
     this.updatePagination();
   }
 

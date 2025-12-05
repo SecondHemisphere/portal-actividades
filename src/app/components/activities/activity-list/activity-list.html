@@ -6,14 +6,6 @@
 
     <div class="d-flex flex-wrap gap-2 align-items-center">
       <app-search-form [filters]="activityFilters" (onSearch)="search($event)"></app-search-form>
-
-      <button
-        class="btn btn-outline-secondary d-flex align-items-center gap-1"
-        (click)="loadActivities()"
-      >
-        <i class="bi bi-arrow-counterclockwise"></i>
-        Reiniciar
-      </button>
     </div>
   </div>
 

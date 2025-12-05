@@ -1,5 +1,4 @@
 <div class="card h-100 shadow-lg border-0 hover-shadow position-relative rounded-4">
-  <!-- IMAGEN -->
   <div class="position-relative">
     @if (activity.photoUrl) {
     <img
@@ -17,7 +16,6 @@
     </div>
     }
 
-    <!-- CATEGORÍA -->
     <span
       class="badge category-badge position-absolute top-0 start-0 m-2 px-3 py-2 rounded-pill shadow-sm"
       [ngStyle]="{ 'background-color': getCategoryColor(), color: 'white' }"
@@ -25,54 +23,48 @@
       {{ getCategoryName() }}
     </span>
 
-    <!-- INSCRIPCIONES CERRADAS -->
     @if (isRegistrationClosed()) {
     <span
       class="badge bg-danger position-absolute bottom-0 start-0 m-2 fw-bold p-2 text-uppercase shadow"
     >
-      <i class="bi bi-x-octagon-fill me-1"></i> Inscripciones Cerradas
+      <i class="bi bi-x-octagon-fill me-1"></i> Cerradas
     </span>
     }
   </div>
 
-  <!-- BODY -->
   <div class="card-body d-flex flex-column p-3 pb-2">
-    <!-- TITULO -->
     <h6 class="card-title text-primary fw-bold mb-2">
       {{ activity.title }}
     </h6>
 
-    <!-- ORGANIZADOR -->
-    <div class="info-line d-flex align-items-center mb-2">
-      <i class="bi bi-person-badge me-2 text-secondary"></i>
-      <span class="small text-muted">Organiza:</span>
-      <span class="ms-1 fw-semibold">{{ getOrganizerName() }}</span>
+    <div class="info-line d-flex align-items-center mb-2 small">
+      <i class="bi bi-person-badge me-2 text-primary"></i>
+      <span class="fw-semibold text-dark">Organiza: {{ getOrganizerName() }}</span>
     </div>
 
-    <!-- FECHA Y HORA -->
     <div class="d-flex justify-content-between info-line small mb-2">
       <span class="d-flex align-items-center">
-        <i class="bi bi-calendar me-2 text-secondary"></i>
+        <i class="bi bi-calendar me-2 text-primary"></i>
         {{ activity.date | date : 'MMM d, y' }}
       </span>
+    </div>
 
+    <div class="d-flex justify-content-between info-line small mb-2">
       <span class="d-flex align-items-center">
-        <i class="bi bi-clock me-2 text-secondary"></i>
+        <i class="bi bi-clock me-2 text-primary"></i>
         {{ activity.timeRange }}
       </span>
     </div>
 
-    <!-- UBICACIÓN -->
-    <div class="info-line d-flex align-items-center small mb-1">
-      <i class="bi bi-geo-alt me-2 text-secondary"></i>
-      <span class="text-truncate">{{ activity.location }}</span>
+    <div class="info-line d-flex align-items-center small mb-2">
+      <i class="bi bi-geo-alt me-2 text-primary"></i>
+      <span class="text-truncate text-dark">{{ activity.location }}</span>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <div class="card-footer bg-white border-0 pt-0 pb-3 pe-3 text-end">
     <button class="btn btn-primary btn-sm px-4 rounded-pill" (click)="view()">
-      <i class="bi bi-eye me-1"></i> Ver Detalles
+      <i class="bi bi-eye me-2"></i> Ver Detalles
     </button>
   </div>
 </div>

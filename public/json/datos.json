@@ -502,6 +502,7 @@
       "active": true
     },
     {
+      "id": "3",
       "title": "Clase Yoga",
       "categoryId": "3",
       "organizerId": "5",
@@ -512,8 +513,7 @@
       "description": "Yoga y relajación",
       "active": true,
       "timeRange": "08:30 - 11:00",
-      "photoUrl": "https://www.boomlive.in/wp-content/uploads/2014/08/sunset_yoga.jpg",
-      "id": "3"
+      "photoUrl": "https://www.boomlive.in/wp-content/uploads/2014/08/sunset_yoga.jpg"
     },
     {
       "id": "4",
