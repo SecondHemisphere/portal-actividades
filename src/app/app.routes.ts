@@ -9,45 +9,49 @@ import { EnrollmentCrud } from './components/enrollments/enrollment-crud/enrollm
 import { ActivitiesPage } from './components/activities/activities-page/activities-page';
 import { MyEnrollmentsPage } from './components/enrollments/my-enrollments-page/my-enrollments-page';
 import { ActivityView } from './components/activities/activity-view/activity-view';
+import { Login } from './components/auth/login/login';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'catalog', pathMatch: 'full' },
-    { path: 'activities', component: ActivitiesPage },
-    { path: 'activity-view/:id', component: ActivityView },
-    
-    {
-        path: 'student',
-        children: [
-          { path: 'enrollment-list', component: MyEnrollmentsPage },
-          // { path: 'history', component: StudentHistory },
-          // { path: 'profile', component: StudentProfile },
-          { path: '', redirectTo: 'catalog', pathMatch: 'full' }
-        ]
-    },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: Login },
 
-    {
-        path: 'organizer',
-        children: [
-          // { path: 'dashboard', component: OrganizerDashboard },
-          // { path: 'activities', component: OrganizerActivities },
-          // { path: 'reports', component: OrganizerReports },
-          // { path: 'profile', component: OrganizerProfile },
-          { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
-        ]
-    },
-    
-    {
-        path: 'admin',
-        children: [
-            { path: 'activity-crud', component: ActivityCrud },
-            { path: 'category-crud', component: CategoryCrud },
-            { path: 'rating-crud', component: RatingCrud },
-            { path: 'organizer-crud', component: OrganizerCrud },
-            { path: 'student-crud', component: StudentCrud },
-            { path: 'enrollment-crud', component: EnrollmentCrud },
-            { path: 'user-crud', component: UserCrud },
-        ]
-    },
+  { path: 'activities', component: ActivitiesPage },
+  { path: 'activity-view/:id', component: ActivityView },
 
-    { path: '**', redirectTo: 'student/catalog' },
+  {
+    path: 'student',
+    children: [
+      { path: 'enrollment-list', component: MyEnrollmentsPage, canActivate: [authGuard] },
+      // { path: 'history', component: StudentHistory, canActivate: [authGuard] },
+      // { path: 'profile', component: StudentProfile, canActivate: [authGuard] },
+      { path: '', redirectTo: 'catalog', pathMatch: 'full' }
+    ]
+  },
+
+  {
+    path: 'organizer',
+    children: [
+      // { path: 'dashboard', component: OrganizerDashboard, canActivate: [authGuard] },
+      // { path: 'activities', component: OrganizerActivities, canActivate: [authGuard] },
+      // { path: 'reports', component: OrganizerReports, canActivate: [authGuard] },
+      // { path: 'profile', component: OrganizerProfile, canActivate: [authGuard] },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
+  },
+
+  {
+    path: 'admin',
+    children: [
+      { path: 'activity-crud', component: ActivityCrud, canActivate: [authGuard] },
+      { path: 'category-crud', component: CategoryCrud, canActivate: [authGuard] },
+      { path: 'rating-crud', component: RatingCrud, canActivate: [authGuard] },
+      { path: 'organizer-crud', component: OrganizerCrud, canActivate: [authGuard] },
+      { path: 'student-crud', component: StudentCrud, canActivate: [authGuard] },
+      { path: 'enrollment-crud', component: EnrollmentCrud, canActivate: [authGuard] },
+      { path: 'user-crud', component: UserCrud, canActivate: [authGuard] },
+    ]
+  },
+
+  { path: '**', redirectTo: 'student/catalog' },
 ];

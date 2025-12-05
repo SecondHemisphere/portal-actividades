@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { UserRole } from '../../models/User';
+import { AuthService } from '../../services/auth/auth-service';
 
 @Component({
   selector: 'app-portal-layout',
@@ -10,11 +11,10 @@ import { UserRole } from '../../models/User';
   styleUrl: './portal-layout.css',
 })
 export class PortalLayout {
+  public UserRole = UserRole;
+  currentRole: UserRole = UserRole.Estudiante;
+  isLoggedIn = false;
 
-  public UserRole = UserRole; // roles para usuario
-  currentRole: UserRole = UserRole.Estudiante; // rol actual seleccionado
-
-  // Opciones de menú para estudiantes
   studentNav = [
     { label: 'Explorar Actividades', link: '/activities' },
     { label: 'Mis Inscripciones', link: '/student/enrollment-list' },
@@ -22,15 +22,13 @@ export class PortalLayout {
     { label: 'Mi Perfil', link: '/student/profile' }
   ];
 
-  // Opciones de menú para organizadores
   organizerNav = [
     { label: 'Dashboard', link: '/organizer/dashboard' },
     { label: 'Gestión Actividades', link: '/organizer/activities' },
     { label: 'Reportes', link: '/organizer/reports' },
     { label: 'Mi Perfil', link: '/organizer/profile' }
   ];
-  
-  // Opciones de menú para administradores
+
   adminNav = [
     { label: 'Actividades', link: '/admin/activity-crud' },
     { label: 'Categorías', link: '/admin/category-crud' },
@@ -41,30 +39,33 @@ export class PortalLayout {
     { label: 'Usuarios', link: '/admin/user-crud' },
   ];
 
-  constructor(private router: Router) {}
+  guestNav = [
+    { label: 'Explorar Actividades', link: '/activities' },
+    { label: 'Iniciar Sesión', link: '/login' }
+  ];
 
-  /** Cambia el rol actual y redirige a la página correspondiente */
-  setCurrentRole(role: UserRole): void {
-    this.currentRole = role;
-    let targetRoute = '';
-
-    switch (role) {
-      case UserRole.Estudiante:
-        targetRoute = '/student/catalog';
-        break;
-
-      case UserRole.Organizador:
-        targetRoute = '/organizer/dashboard';
-        break;
-
-      case UserRole.Admin:
-        targetRoute = '/admin/activity-crud';
-        break;
-
-      default:
-        targetRoute = '/';
+  constructor(private router: Router, private authService: AuthService) {
+    this.isLoggedIn = this.authService.isLoggedIn();
+    if (this.isLoggedIn) {
+      const user = this.authService.getCurrentUserValue();
+      this.currentRole = user?.role || UserRole.Estudiante;
     }
-
-    this.router.navigate([targetRoute]);
   }
+
+  get navItems() {
+    switch (this.currentRole) {
+      case UserRole.Estudiante: return this.studentNav;
+      case UserRole.Organizador: return this.organizerNav;
+      case UserRole.Admin: return this.adminNav;
+      default: return this.guestNav;
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.isLoggedIn = false;
+    this.currentRole = UserRole.Estudiante;
+    this.router.navigate(['/login']);
+  }
+
 }

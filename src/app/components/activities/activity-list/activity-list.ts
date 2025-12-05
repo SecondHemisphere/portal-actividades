@@ -81,7 +81,7 @@ export class ActivityList {
   }
 
   getAvailableCapacity(activity: Activity): number {
-    return activity.capacity; // temporal
+    return activity.capacity;
   }
 
   search(filters: any) {

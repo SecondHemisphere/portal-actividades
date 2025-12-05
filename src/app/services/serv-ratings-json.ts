@@ -21,6 +21,12 @@ export class ServRatingsJson {
     return this.httpclient.get<Rating>(`${this.ratingsUrl}/${id}`);
   }
 
+  getRatingsByActivity(activityId: number): Observable<Rating[]> {
+    return this.httpclient.get<Rating[]>(this.ratingsUrl).pipe(
+      map(ratings => ratings.filter(r => r.activityId === activityId))
+    );
+  }
+
   //search
   searchRatings(filters: any): Observable<Rating[]> {
     return this.httpclient.get<Rating[]>(this.ratingsUrl).pipe(

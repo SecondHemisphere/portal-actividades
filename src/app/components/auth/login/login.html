@@ -1,0 +1,24 @@
+<div class="d-flex justify-content-center" style="padding-top: 80px">
+  <div class="card p-4" style="width: 400px">
+    <h2 class="mb-4 text-center">Iniciar Sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="mb-3">
+        <label class="form-label">Correo</label>
+        <input type="email" class="form-control" formControlName="email" />
+
+        <span class="error text-danger small">
+          @if(loginForm.get("email")?.invalid && (loginForm.get("email")?.dirty ||
+          loginForm.get("email")?.touched)) { @if(loginForm.get("email")?.errors?.["required"]) { Es
+          requerido } @if(loginForm.get("email")?.errors?.["email"]) { Debe ser un correo válido } }
+        </span>
+      </div>
+
+      <div class="d-grid mb-3">
+        <button class="btn btn-primary" type="submit">Ingresar</button>
+      </div>
+
+      <span class="error text-danger"> @if(error) { {{ error }} } </span>
+    </form>
+  </div>
+</div>
