@@ -1,18 +1,23 @@
 <div class="header-container">
-  <button class="btn btn-secondary" (click)="prevMonth()">Mes anterior</button>
+  <button class="btn btn-secondary" (click)="prevMonth()">
+    <i class="bi bi-chevron-left"></i>
+    Mes anterior
+  </button>
   <h2 class="title">{{ months[selectedMonth] }} {{ selectedYear }}</h2>
-  <button class="btn btn-secondary" (click)="nextMonth()">Mes siguiente</button>
+  <button class="btn btn-secondary" (click)="nextMonth()">
+    Mes siguiente<i class="bi bi-chevron-right"></i>
+  </button>
 </div>
 
 @for (d of filteredDays; track $index) {
 <div class="days-container mb-4">
   <div class="day-card">
-    <!-- FECHA DE LA ACTIVIDAD -->
+    <!-- FECHA DEL EVENTO -->
     <div class="day-title">
       {{ d.date | date : 'EEE d MMM' }}
     </div>
 
-    <!-- DATOS DE LA ACTIVIDAD -->
+    <!-- DATOS DE LAS ACTIVIDADES -->
     @for (a of d.activities; track $index) {
     <div class="activity">
       <div class="activity-left">
@@ -21,16 +26,21 @@
 
         <!-- FECHA DE INSCRIPCIÓN -->
         <div class="enroll-date text-secondary">
-          <strong>Inscrito creada el:</strong>
-          {{ a.enrollmentDate | date : 'EEE d MMM' }}
+          <strong>Inscripción creada el:</strong> {{ a.enrollmentDate | date : 'EEE d MMM' }}
+        </div>
+
+        <!-- ESTADO DE INSCRIPCIÓN -->
+        <div class="activity-status" [class.canceled]="a.status === 'Cancelado'">
+          {{ a.status }}
         </div>
       </div>
 
-      <div class="activity-status" [class.canceled]="a.status === 'Cancelado'">
-        {{ a.status }}
+      <!-- BOTÓN DE VER ACTIVIDAD -->
+      <div class="activity-actions">
+        <button class="btn btn-primary btn-lg" (click)="view(a.id)">
+          <i class="bi bi-eye me-2"></i> Ver Actividad
+        </button>
       </div>
-
-      <button class="btn btn-primary" (click)="view(a.id)">Ver</button>
     </div>
     }
   </div>

@@ -138,4 +138,8 @@ export class EnrollmentsCalendar {
   view(id: number) {
     this.router.navigate(['/activity-view', id]);
   }
+
+  cancel(id: number) {
+    this.router.navigate(['/activity-view', id]);
+  }
 }

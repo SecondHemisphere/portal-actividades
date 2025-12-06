@@ -4,19 +4,11 @@
   align-items: center;
   margin-bottom: 20px;
 }
-
 .title {
   font-size: 1.6rem;
   font-weight: bold;
   color: var(--bs-dark);
 }
-
-.days-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
 .day-card {
   border-radius: 12px;
   padding: 15px;
@@ -34,18 +26,20 @@
 
 .activity {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   background: var(--bs-white);
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
   margin-bottom: 10px;
-  border: 2px solid #eee;
+  border: 1px solid #eee;
+  flex-direction: row;
 }
 
 .activity-left {
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  max-width: 70%;
 }
 
 .activity-title {
@@ -54,7 +48,8 @@
   color: var(--bs-dark);
 }
 
-.activity-time {
+.activity-time,
+.enroll-date {
   font-size: 0.9rem;
   color: var(--bs-secondary);
 }
@@ -65,6 +60,7 @@
   border-radius: 8px;
   background: rgba(72, 187, 120, 0.15);
   color: var(--bs-success);
+  margin-top: 6px;
 }
 
 .activity-status.canceled {
@@ -72,17 +68,13 @@
   color: var(--bs-danger);
 }
 
-.btn-view {
-  background: var(--bs-primary);
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.2s;
+.activity-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
-.btn-view:hover {
-  background: #434aa0;
+.activity-actions .btn {
+  font-size: 1rem;
+  padding: 6px 14px;
 }
