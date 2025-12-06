@@ -477,11 +477,11 @@
       "title": "Taller de Fotografía",
       "categoryId": "1",
       "organizerId": "3",
-      "date": "2025-11-22",
-      "registrationDeadline": "2025-11-20",
+      "date": "2025-12-07",
+      "registrationDeadline": "2025-12-06",
       "location": "Sala A1",
       "capacity": 25,
-      "description": "Aprende fotografía básica aaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "description": "Aprende fotografía básica, composición, manejo de luz y edición digital. Este taller intensivo de un día te proporcionará las herramientas necesarias para capturar imágenes impactantes con cualquier tipo de cámara. Ideal para principiantes que desean mejorar sus habilidades de inmediato. Tendremos una práctica al aire libre para aplicar lo aprendido.",
       "photoUrl": "https://th.bing.com/th/id/R.25f51885e72010543fa8216e0a97df88?rik=7SwmZyjwgO%2bZSg&riu=http%3a%2f%2fwww.dzoom.org.es%2fwp-content%2fuploads%2f2012%2f12%2fqcam.jpg&ehk=NcD7RVxl9NgiRad5BQWq3UP%2fAlkZoMVyISMour6Ha4M%3d&risl=&pid=ImgRaw&r=0",
       "active": true,
       "timeRange": "09:00 - 11:00",
@@ -492,12 +492,12 @@
       "title": "Torneo Fútbol",
       "categoryId": "2",
       "organizerId": "4",
-      "date": "2025-12-05",
-      "registrationDeadline": "2025-12-04",
+      "date": "2025-12-12",
+      "registrationDeadline": "2025-12-11",
       "timeRange": "14:00 - 18:00",
       "location": "Cancha Principal",
       "capacity": 16,
-      "description": "Torneo interfacultades",
+      "description": "Torneo interfacultades de fútbol 7. Se requiere inscripción previa de equipos completos. Habrá premios para los tres primeros lugares y reconocimiento al goleador del campeonato. ¡Prepara tu equipo y vive la emoción de la competencia!",
       "photoUrl": "https://tse1.mm.bing.net/th/id/OIP.nGLSwvgJMNmrDRBQAmcEcAHaD4?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -506,11 +506,11 @@
       "title": "Clase Yoga",
       "categoryId": "3",
       "organizerId": "5",
-      "date": "2025-11-30",
-      "registrationDeadline": "2025-11-29",
+      "date": "2025-12-09",
+      "registrationDeadline": "2025-12-08",
       "location": "Sala Zen",
       "capacity": 40,
-      "description": "Yoga y relajación",
+      "description": "Sesión de Hatha Yoga enfocada en la relajación profunda y la alineación postural. Esta clase es apta para todos los niveles, desde principiantes hasta avanzados. Recuerda traer tu propia colchoneta y una botella de agua. Terminaremos con una meditación corta de 15 minutos.",
       "active": true,
       "timeRange": "08:30 - 11:00",
       "photoUrl": "https://www.boomlive.in/wp-content/uploads/2014/08/sunset_yoga.jpg"
@@ -525,7 +525,7 @@
       "timeRange": "13:00 - 16:00",
       "location": "Sala B1",
       "capacity": 20,
-      "description": "Pintura al óleo",
+      "description": "Introducción y práctica de la pintura al óleo. Exploraremos técnicas de mezcla de colores, sombreado y textura. Todos los materiales están incluidos: lienzo, pinceles y óleos de calidad profesional. Al final, cada participante se llevará su obra terminada.",
       "photoUrl": "https://i1.wp.com/www.sonria.com/wp-content/uploads/2016/05/pintura2.jpg?resize=1080%2C675",
       "active": true
     },
@@ -539,7 +539,7 @@
       "timeRange": "07:00 - 08:00",
       "location": "Pista Atlética",
       "capacity": 200,
-      "description": "Competencia deportiva",
+      "description": "Gran competencia deportiva universitaria de 5 kilómetros. Abierta a estudiantes, personal administrativo y profesores. Se entregará un kit de corredor (camiseta y dorsal) al momento de la inscripción. Habrá puestos de hidratación a lo largo de la ruta.",
       "photoUrl": "https://th.bing.com/th/id/R.a2df894bc8dee10a400bb386006c34e3?rik=G8wg9Pm3SyH7tw&riu=http%3a%2f%2fadex5k.adexperu.edu.pe%2f_astro%2fsection1_bg.81e84748.png&ehk=lcOGzeTPH%2brI8sEVzOC6PG7EEAMP%2fthCMDbeddeoVsM%3d&risl=&pid=ImgRaw&r=0",
       "active": true
     },
@@ -548,12 +548,12 @@
       "title": "Taller Danza Moderna",
       "categoryId": "1",
       "organizerId": "7",
-      "date": "2025-11-28",
-      "registrationDeadline": "2025-11-27",
+      "date": "2025-12-06",
+      "registrationDeadline": "2025-12-05",
       "timeRange": "10:00 - 12:00",
       "location": "Estudio 3",
       "capacity": 30,
-      "description": "Fundamentos de danza",
+      "description": "Exploración de los fundamentos de la danza contemporánea y moderna. Se trabajarán secuencias coreográficas básicas, improvisación y conciencia corporal. No se requiere experiencia previa, solo ganas de moverse y expresarse. Se recomienda ropa cómoda.",
       "photoUrl": "https://tse4.mm.bing.net/th/id/OIP.Q2O6lAIl8ep07jOstWimSQHaE8?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -567,7 +567,7 @@
       "timeRange": "18:00 - 20:00",
       "location": "Auditorio Central",
       "capacity": 120,
-      "description": "Presentación musical",
+      "description": "Noche de presentación musical íntima con artistas locales e invitados especiales. Disfruta de un ambiente relajado con baladas, pop acústico y bossa nova. La entrada es gratuita, pero el aforo es limitado. ¡Una velada perfecta para desconectar!",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.LijxDjdzwrHNEiokYhaNEgHaEK?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -576,12 +576,12 @@
       "title": "Meditación Intensiva",
       "categoryId": "3",
       "organizerId": "5",
-      "date": "2025-12-02",
-      "registrationDeadline": "2025-12-01",
+      "date": "2025-12-10",
+      "registrationDeadline": "2025-12-09",
       "timeRange": "09:30 - 10:30",
       "location": "Sala Zen",
       "capacity": 35,
-      "description": "Sesión guiada",
+      "description": "Sesión guiada de meditación *mindfulness* de una hora. Aprenderás a enfocar la respiración, reducir el estrés y aumentar la concentración. Ideal para estudiantes en época de exámenes. No requiere experiencia previa.",
       "photoUrl": "https://img.europapress.es/fotoweb/fotonoticia_20170826085952_1200.jpg",
       "active": true
     },
@@ -590,12 +590,12 @@
       "title": "Torneo Baloncesto",
       "categoryId": "2",
       "organizerId": "4",
-      "date": "2025-12-03",
-      "registrationDeadline": "2025-12-02",
+      "date": "2025-12-11",
+      "registrationDeadline": "2025-12-10",
       "timeRange": "15:00 - 18:00",
       "location": "Coliseo Deportivo",
       "capacity": 40,
-      "description": "Competencia rápida",
+      "description": "Competencia rápida 3x3 de baloncesto. Se valorará la agilidad, el trabajo en equipo y la estrategia. Los equipos se formarán al inicio del evento o puedes venir con tu propio trío.",
       "photoUrl": "https://wallpapers.com/images/featured/imagenes-de-baloncesto-ofuozdpxcugrqz1l.jpg",
       "active": true
     },
@@ -604,12 +604,12 @@
       "title": "Sesión Calistenia",
       "categoryId": "2",
       "organizerId": "8",
-      "date": "2025-12-01",
-      "registrationDeadline": "2025-11-29",
+      "date": "2025-12-08",
+      "registrationDeadline": "2025-12-07",
       "timeRange": "08:00 - 09:00",
       "location": "Parque Norte",
       "capacity": 50,
-      "description": "Entrenamiento funcional",
+      "description": "Entrenamiento funcional usando el peso corporal. Aprenderás las bases de la calistenia, incluyendo dominadas, flexiones y sentadillas. Sesión de alta intensidad, adecuada para quienes ya tienen una base física.",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.qUor2O248b4-qyZbwW09CQHaEK?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -623,7 +623,7 @@
       "timeRange": "10:00 - 11:30",
       "location": "Biblioteca Central",
       "capacity": 20,
-      "description": "Conversatorio literario",
+      "description": "Conversatorio literario sobre autores latinoamericanos contemporáneos. Discutiremos temas de identidad, cultura y política social. Por favor, lee previamente 'Cien Años de Soledad' (Capítulo 3) para la discusión. Es un espacio de diálogo abierto y respetuoso.",
       "photoUrl": "https://img.genial.ly/61860d099a6bcf00127f980f/83c0f9ae-5b78-47b4-b399-b16942de0ee6.png",
       "active": true
     },
@@ -631,12 +631,12 @@
       "title": "Respiración Consciente",
       "categoryId": "3",
       "organizerId": "5",
-      "date": "2025-11-27",
-      "registrationDeadline": "2025-11-25",
+      "date": "2025-12-06",
+      "registrationDeadline": "2025-12-05",
       "location": "Sala Calm",
       "capacity": 25,
-      "description": "Técnicas de respiración",
-      "active": false,
+      "description": "Técnicas de respiración profunda y controlada para la gestión de la ansiedad. Un taller esencial para manejar el estrés académico. Aprende a usar tu respiración como ancla para el momento presente y a mejorar la calidad de tu sueño.",
+      "active": true,
       "timeRange": "11:00 - 12:00",
       "photoUrl": "https://tse4.mm.bing.net/th/id/OIP.gXrQFpffr4mDrGiI6m7voAHaEK?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "id": "12"
@@ -646,12 +646,12 @@
       "title": "Acuarela Avanzada",
       "categoryId": "4",
       "organizerId": "6",
-      "date": "2025-12-04",
-      "registrationDeadline": "2025-12-03",
+      "date": "2025-12-14",
+      "registrationDeadline": "2025-12-12",
       "timeRange": "14:00 - 16:00",
       "location": "Sala A1",
       "capacity": 15,
-      "description": "Técnicas avanzadas",
+      "description": "Exploración de técnicas avanzadas de acuarela como veladuras, trabajo en negativo y uso de sal y alcohol. Dirigido a estudiantes que ya tienen conocimientos básicos y quieren llevar sus obras al siguiente nivel. El instructor proporcionará ejemplos de maestros modernos.",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.PB4m8mpnMoP8p5bHZifCgwHaEr?cb=ucfimg2&ucfimg=1&w=1024&h=647&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -665,7 +665,7 @@
       "timeRange": "09:00 - 13:00",
       "location": "Sala Multiusos",
       "capacity": 60,
-      "description": "Torneo oficial de ajedrez",
+      "description": "Torneo oficial de ajedrez rápido (Blitz). Se usarán relojes y se aplicarán las reglas de la FIDE. Es una excelente oportunidad para poner a prueba tu estrategia y mejorar tu apertura y medio juego. ¡Inscríbete y demuestra quién es el maestro del campus!",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.hop24G50eMGUc3Vq7mutNAHaEK?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -674,12 +674,12 @@
       "title": "Técnicas Vocales",
       "categoryId": "5",
       "organizerId": "10",
-      "date": "2025-12-06",
-      "registrationDeadline": "2025-12-05",
+      "date": "2025-12-13",
+      "registrationDeadline": "2025-12-12",
       "timeRange": "15:00 - 17:00",
       "location": "Sala Acústica",
       "capacity": 30,
-      "description": "Proyección y técnica vocal",
+      "description": "Taller enfocado en la proyección, resonancia y técnica vocal para canto y oratoria. Aprenderás ejercicios de calentamiento, control diafragmático y cómo evitar la fatiga vocal. Es ideal para futuros líderes, oradores o músicos.",
       "photoUrl": "https://tse3.mm.bing.net/th/id/OIP.r36bG7M14c4OFVSjNcUl6AHaDt?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -688,12 +688,12 @@
       "title": "Pilates Suave",
       "categoryId": "3",
       "organizerId": "5",
-      "date": "2025-12-08",
-      "registrationDeadline": "2025-12-07",
+      "date": "2025-12-16",
+      "registrationDeadline": "2025-12-15",
       "timeRange": "09:00 - 10:00",
       "location": "Sala Zen",
       "capacity": 30,
-      "description": "Estiramiento y fortalecimiento",
+      "description": "Sesión de Pilates de bajo impacto centrada en el fortalecimiento del core y la flexibilidad. Una excelente manera de combatir el dolor de espalda asociado a largas horas de estudio. No se necesita experiencia previa, solo ropa que te permita estirarte.",
       "photoUrl": "https://tse4.mm.bing.net/th/id/OIP.oKeNokswvieznW9BKp-mugHaEo?rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -707,7 +707,7 @@
       "timeRange": "18:30 - 21:00",
       "location": "Auditorio C4",
       "capacity": 150,
-      "description": "Proyección cultural",
+      "description": "Proyección cultural de una película premiada latinoamericana, seguida de un breve debate moderado sobre el impacto social de la obra. Las palomitas corren por cuenta de la casa. ¡Ven a compartir y debatir sobre arte cinematográfico!",
       "photoUrl": "https://th.bing.com/th/id/R.069cd14c746b6ab459beb0f97d40c1d3?rik=AISRJOyqFlLiyw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-g5rKFgFBbCE%2fU7TZOBbpj3I%2fAAAAAAAAAC4%2fMpOiPHT_jz8%2fs1600%2fcine.jpg&ehk=AvcDUDXzRsLg%2bEy8vefuOSkckFFhnRyWLeMWaQB7jfE%3d&risl=&pid=ImgRaw&r=0",
       "active": true
     },
@@ -717,11 +717,11 @@
       "categoryId": "2",
       "organizerId": "4",
       "date": "2025-12-14",
-      "registrationDeadline": "2025-12-14",
+      "registrationDeadline": "2025-12-13",
       "timeRange": "16:00 - 18:00",
       "location": "Coliseo Deportivo",
       "capacity": 80,
-      "description": "Sesión intensa",
+      "description": "Sesión intensa de cardio con ritmos latinos. Quema calorías y diviértete con coreografías sencillas y mucha energía. Trae ropa deportiva y calzado cómodo. El mejor ejercicio para liberar el estrés acumulado.",
       "photoUrl": "https://tse4.mm.bing.net/th/id/OIP.nV-0GYTyzlBw1FWWtxPMHAHaEa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -735,7 +735,7 @@
       "timeRange": "10:00 - 12:00",
       "location": "Sala Letras",
       "capacity": 20,
-      "description": "Mejora tu estilo",
+      "description": "Taller para mejorar tu estilo de escritura, desarrollar personajes convincentes y estructurar narrativas cortas. Usaremos ejercicios de *brainstorming* y *prompts* para desbloquear tu creatividad. Perfecto para cualquier carrera, ¡la escritura es clave!",
       "photoUrl": "https://tse3.mm.bing.net/th/id/OIP.htC6AiXku32_ovvH6OivBgHaEK?cb=ucfimg2&ucfimg=1&w=1280&h=720&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     },
@@ -749,7 +749,7 @@
       "timeRange": "09:00 - 14:00",
       "location": "Plazoleta Central",
       "capacity": 500,
-      "description": "Charlas y stands",
+      "description": "Gran evento con charlas sobre nutrición, salud mental, manejo del tiempo y stands de productos orgánicos. Habrá demostraciones gratuitas de masajes y mini-sesiones de yoga. ¡Cuida tu cuerpo y mente en un solo lugar!",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.Fi5i0siPOY0wFrOIcjotNgHaDU?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
     }
@@ -776,7 +776,7 @@
       "activityId": "3",
       "studentId": "15",
       "date": "2025-11-22",
-      "status": "Pendiente",
+      "status": "Confirmada",
       "note": "Solicitó material adicional por adelantado."
     },
     {
@@ -792,7 +792,7 @@
       "activityId": "5",
       "studentId": "17",
       "date": "2025-11-24",
-      "status": "Cancelada",
+      "status": "Confirmada",
       "note": ""
     },
     {
@@ -808,7 +808,7 @@
       "activityId": "7",
       "studentId": "19",
       "date": "2025-11-26",
-      "status": "Pendiente",
+      "status": "Confirmada",
       "note": ""
     },
     {
@@ -838,25 +838,81 @@
     {
       "id": "2df7",
       "activityId": "2",
-      "studentId": "14",
+      "studentId": "13",
       "date": "2025-12-03",
-      "note": "aaaaaaaaaaaaaa",
-      "status": "Pendiente"
+      "note": "Jugador de reserva, pero muy comprometido.",
+      "status": "Confirmada"
     },
     {
       "activityId": "3",
-      "studentId": "13",
-      "date": "2025-11-07",
-      "note": "",
-      "status": "Cancelada",
+      "studentId": "14",
+      "date": "2025-12-04",
+      "note": "Necesita silla especial.",
+      "status": "Confirmada",
       "id": "62c3"
     },
     {
       "id": "1ffa",
       "activityId": "2",
-      "studentId": "101",
+      "studentId": "15",
+      "date": "2025-12-04",
+      "status": "Confirmada"
+    },
+    {
+      "id": "a1b2",
+      "activityId": "1",
+      "studentId": "14",
+      "date": "2025-11-21",
+      "status": "Confirmada",
+      "note": ""
+    },
+    {
+      "id": "c3d4",
+      "activityId": "4",
+      "studentId": "18",
+      "date": "2025-11-24",
+      "status": "Confirmada",
+      "note": ""
+    },
+    {
+      "id": "e5f6",
+      "activityId": "6",
+      "studentId": "15",
+      "date": "2025-11-26",
+      "status": "Confirmada",
+      "note": ""
+    },
+    {
+      "id": "g7h8",
+      "activityId": "11",
+      "studentId": "16",
+      "date": "2025-11-30",
+      "status": "Confirmada",
+      "note": "Interesado en la sección de Borges."
+    },
+    {
+      "id": "i9j0",
+      "activityId": "14",
+      "studentId": "17",
+      "date": "2025-12-01",
+      "status": "Confirmada",
+      "note": ""
+    },
+    {
+      "id": "k1l2",
+      "activityId": "15",
+      "studentId": "20",
       "date": "2025-12-03",
-      "status": "Pendiente"
+      "status": "Confirmada",
+      "note": "Quiere enfocar el entrenamiento vocal en canto lírico."
+    },
+    {
+      "id": "m3n4",
+      "activityId": "17",
+      "studentId": "22",
+      "date": "2025-12-04",
+      "status": "Confirmada",
+      "note": ""
     }
   ],
   "ratings": [
@@ -865,31 +921,63 @@
       "activityId": "1",
       "studentId": "13",
       "stars": 5,
-      "comment": "Excelente taller",
-      "date": "2025-11-23"
+      "comment": "El taller superó todas mis expectativas. La organizadora, María, explicó los conceptos de composición y luz de una manera muy clara y práctica. Pude mejorar drásticamente mis fotos con solo dos horas de instrucción. ¡Totalmente recomendado para cualquiera que empiece en fotografía!",
+      "date": "2025-12-07"
+    },
+    {
+      "id": "a1",
+      "activityId": "1",
+      "studentId": "14",
+      "stars": 4,
+      "comment": "Muy buen contenido, aunque me hubiera gustado un poco más de tiempo para la práctica de edición digital, que fue muy rápida. La ubicación en Sala A1 fue cómoda y con buena luz. Un excelente inicio, sin duda.",
+      "date": "2025-12-08"
     },
     {
       "id": "2",
       "activityId": "2",
       "studentId": "14",
       "stars": 4,
-      "comment": "Muy divertido",
-      "date": "2025-12-06"
+      "comment": "Fue un evento muy divertido y competitivo. La organización del torneo fue puntual, aunque la cancha principal estaba un poco descuidada en un par de áreas. El ambiente entre facultades fue de respeto y sana rivalidad. ¡Volveré a inscribirme en la próxima edición!",
+      "date": "2025-12-13"
+    },
+    {
+      "id": "b2",
+      "activityId": "2",
+      "studentId": "13",
+      "stars": 5,
+      "comment": "¡Increíble energía! Como jugador de reserva, pude ver la pasión de todos los equipos. La logística de hidratación fue excelente y el ambiente deportivo inmejorable. Un evento que realmente une a la universidad.",
+      "date": "2025-12-14"
     },
     {
       "activityId": "3",
       "studentId": "15",
       "stars": 4,
-      "comment": "Relajante y útil",
-      "date": "2025-12-01",
+      "comment": "Muy relajante y útil para desconectar. La profesora Daniela tiene una voz muy calmante y sus instrucciones de yoga y meditación fueron fáciles de seguir. Definitivamente sentí un alivio del estrés al salir de la Sala Zen. Un poco más de música suave sería ideal.",
+      "date": "2025-12-10",
       "id": "3"
+    },
+    {
+      "id": "c3",
+      "activityId": "3",
+      "studentId": "14",
+      "stars": 5,
+      "comment": "La mejor forma de empezar la semana. La clase de Hatha Yoga fue un respiro. Agradezco que se hiciera énfasis en la alineación correcta. El personal fue muy atento con mi solicitud de tener una silla especial, haciendo la experiencia inclusiva.",
+      "date": "2025-12-11"
     },
     {
       "id": "4",
       "activityId": "4",
       "studentId": "16",
       "stars": 3,
-      "comment": "Bien pero corta duración",
+      "comment": "El taller estuvo bien en contenido (introducción a la pintura al óleo), pero la duración fue muy corta para cubrir adecuadamente las técnicas de sombreado. Se sintió apresurado. Los materiales eran de buena calidad, eso sí fue un punto a favor.",
+      "date": "2025-12-11"
+    },
+    {
+      "id": "d4",
+      "activityId": "4",
+      "studentId": "18",
+      "stars": 4,
+      "comment": "Una gran experiencia para iniciarse en el óleo. El instructor fue muy paciente y explicó muy bien la mezcla de colores. Me hubiera gustado ver más ejemplos de trabajos avanzados, pero la práctica fue intensa y me llevo mi primer cuadro.",
       "date": "2025-12-11"
     },
     {
@@ -897,7 +985,7 @@
       "activityId": "5",
       "studentId": "17",
       "stars": 4,
-      "comment": "Competencia interesante",
+      "comment": "Competencia interesante y muy bien organizada. La hora de inicio a las 7 AM fue difícil, ¡pero valió la pena! La ruta estaba bien señalizada y los puntos de hidratación eran suficientes. Un gran evento para la comunidad universitaria.",
       "date": "2025-12-15"
     },
     {
@@ -905,15 +993,23 @@
       "activityId": "6",
       "studentId": "18",
       "stars": 5,
-      "comment": "Aprendí mucho",
-      "date": "2025-11-29"
+      "comment": "Aprendí mucho sobre mi cuerpo y cómo se mueve. Lucía es una excelente coreógrafa que te motiva a explorar el espacio y la improvisación. La clase de fundamentos de danza moderna fue dinámica y me dejó con ganas de tomar más clases con ella.",
+      "date": "2025-12-07"
+    },
+    {
+      "id": "e6",
+      "activityId": "6",
+      "studentId": "15",
+      "stars": 5,
+      "comment": "Una clase que te desafía físicamente y mentalmente. La combinación de técnica con expresión corporal es genial. Me encantó la energía del grupo. Es un espacio seguro para experimentar y divertirse sin presión de ser un profesional.",
+      "date": "2025-12-08"
     },
     {
       "id": "7",
       "activityId": "7",
       "studentId": "19",
       "stars": 4,
-      "comment": "Música muy buena",
+      "comment": "Música muy buena y variada. Los artistas invitados tenían mucho talento y el ambiente en el Auditorio Central era íntimo y acogedor. El sonido estaba perfectamente balanceado. Solo le pongo 4 estrellas porque la fila para entrar fue un poco larga.",
       "date": "2025-12-19"
     },
     {
@@ -921,32 +1017,56 @@
       "activityId": "8",
       "studentId": "20",
       "stars": 5,
-      "comment": "Muy relajante",
-      "date": "2025-12-02"
+      "comment": "La sesión de meditación fue profundamente relajante y muy necesaria antes de la temporada de exámenes. Las técnicas de *mindfulness* fueron explicadas con claridad y pude aplicarlas inmediatamente. Salí sintiéndome totalmente renovado y enfocado.",
+      "date": "2025-12-11"
     },
     {
       "id": "9",
       "activityId": "9",
       "studentId": "21",
       "stars": 4,
-      "comment": "Competencia rápida",
-      "date": "2025-12-04"
+      "comment": "Competencia rápida y muy emocionante. La modalidad 3x3 es muy exigente y eleva el nivel de adrenalina. Hubo algunos retrasos en la asignación de canchas, pero el espíritu deportivo lo compensó con creces. Una tarde de buen baloncesto.",
+      "date": "2025-12-12"
     },
     {
       "id": "10",
       "activityId": "10",
       "studentId": "22",
       "stars": 5,
-      "comment": "Sesión intensa y útil",
-      "date": "2025-12-02"
+      "comment": "Sesión intensa y útil. El instructor Pedro nos llevó al límite, pero siempre con una técnica impecable. La calistenia en Parque Norte es una manera fantástica de aprovechar el espacio al aire libre. ¡Ya estoy esperando la próxima sesión!",
+      "date": "2025-12-09"
     },
     {
-      "activityId": "4",
-      "studentId": "15",
+      "id": "f10",
+      "activityId": "10",
+      "studentId": "18",
       "stars": 4,
-      "comment": "aaaaaa",
-      "date": "2025-11-12",
-      "id": "0217"
+      "comment": "Un gran entrenamiento. La única razón por la que no es 5 estrellas es porque me gustaría que hubiera una sesión para principiantes absolutos, esta fue un poco demandante. El instructor fue motivador y corrigió posturas constantemente.",
+      "date": "2025-12-10"
+    },
+    {
+      "activityId": "11",
+      "studentId": "16",
+      "stars": 5,
+      "comment": "El conversatorio literario fue fascinante. Discutir 'Cien Años de Soledad' en el contexto social actual abrió mi mente a nuevas interpretaciones. La moderadora (María) dirigió el diálogo con mucha inteligencia y respeto por todas las opiniones. Un tesoro en la Biblioteca Central.",
+      "date": "2025-12-10",
+      "id": "g11"
+    },
+    {
+      "activityId": "14",
+      "studentId": "17",
+      "stars": 5,
+      "comment": "Torneo de Ajedrez perfectamente organizado y muy profesional. El ritmo rápido hizo que cada partida fuera un desafío mental. La Sala Multiusos fue un buen lugar, aunque el ruido de las facultades cercanas a veces distraía. ¡Logré una buena posición y ya practico para el próximo!",
+      "date": "2025-12-12",
+      "id": "h14"
+    },
+    {
+      "activityId": "15",
+      "studentId": "20",
+      "stars": 5,
+      "comment": "Las técnicas vocales enseñadas por Ricardo fueron transformadoras. Pude sentir una mejora inmediata en mi proyección vocal y mi control diafragmático. Los ejercicios de calentamiento son ahora parte de mi rutina diaria. ¡Este taller es oro puro para cualquier orador o cantante!",
+      "date": "2025-12-14",
+      "id": "i15"
     }
   ]
 }

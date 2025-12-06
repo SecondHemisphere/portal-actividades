@@ -14,24 +14,25 @@
         <i class="bi bi-image-fill fs-1"></i> Sin imagen
       </div>
       }
+
+      <span
+        class="badge badge-custom text-white bg-primary shadow-sm py-2 px-3 rounded-pill position-absolute top-0 start-0 m-3"
+      >
+        {{ getCategoryName() }}
+      </span>
+
+      @if (isRegistrationClosed()) {
+      <span class="badge-closed position-absolute bottom-0 end-0 m-3" style="padding: 0.5rem 1rem">
+        <i class="bi bi-x-octagon-fill"></i>
+        Inscripciones Cerradas
+      </span>
+      }
     </div>
 
     <div class="card-body p-4">
       <div class="d-flex justify-content-between align-items-start mb-3">
         <h1 class="card-title display-5 fw-bold text-dark mb-0 me-3">{{ activity.title }}</h1>
-        <span class="badge badge-custom text-white bg-primary shadow-sm py-2 px-3 rounded-pill">
-          {{ getCategoryName() }}
-        </span>
       </div>
-
-      @if (isRegistrationClosed()) {
-      <div class="mb-3">
-        <span class="badge-closed">
-          <i class="bi bi-x-octagon-fill"></i>
-          Inscripciones Cerradas
-        </span>
-      </div>
-      }
 
       <div class="row g-3 mb-4 small text-dark">
         <div class="col-md-4 d-flex align-items-center">
@@ -123,12 +124,15 @@
       </div>
       <hr class="my-4" />
       } @for (r of ratings; track $index) {
-      <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-white shadow-sm">
+      <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-light shadow-sm">
         <div class="d-flex justify-content-between align-items-center mb-1">
           <b class="text-dark">{{ getStudentName(r.studentId) }}</b>
           <span class="text-warning">
             @for (s of [1,2,3,4,5]; track s) {
-            <i class="bi" [ngClass]="s <= r.stars ? 'bi-star-fill' : 'bi-star text-muted'"></i>
+            <i
+              class="bi me-2 fs-5"
+              [ngClass]="s <= r.stars ? 'bi-star-fill' : 'bi-star text-muted'"
+            ></i>
             }
           </span>
         </div>
