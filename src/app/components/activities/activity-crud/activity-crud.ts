@@ -10,6 +10,7 @@ import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
+import { Router } from '@angular/router';
 
 declare const bootstrap: any;
 
@@ -62,7 +63,8 @@ export class ActivityCrud {
     private miServicio: ServActivitiesJson,
     private categoriesService: ServCategoriesJson,
     private organizersService: ServOrganizersJson,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private router:Router
   ) {
     this.loadActivities();
     this.loadCategories();
@@ -131,6 +133,10 @@ export class ActivityCrud {
   updatePhotoPreview() {
     const url = this.formActivity.get('photoUrl')?.value;
     this.photoPreview = url && url.trim() !== '' ? url : null;
+  }
+
+  view(activity: Activity) {
+    this.router.navigate(['/activity-view', activity.id]);
   }
 
   delete(activity: Activity) {

@@ -35,7 +35,6 @@ export class ActivityCard {
   }
 
   view() {
-    console.log(this.activity.id)
     this.router.navigate(["/activity-view/",this.activity.id]);
   }
 

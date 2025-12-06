@@ -19,6 +19,7 @@
     [colArray]="colArray"
     [gridData]="filteredActivities"
     [showView]="true"
+    (onView)="view($event)"
     (onEdit)="openEdit($event)"
     (onDelete)="delete($event)"
   >
