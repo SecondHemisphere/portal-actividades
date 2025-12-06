@@ -64,7 +64,7 @@ export class EnrollmentCrud {
       studentId: ['', Validators.required],
       date: ['', Validators.required],
       note: ['', [Validators.minLength(5), Validators.maxLength(300)]],
-      status: [EnrollmentStatus.Pendiente, Validators.required]
+      status: [EnrollmentStatus.Inscrito, Validators.required]
     });
   }
 
@@ -149,7 +149,7 @@ export class EnrollmentCrud {
       studentId: '',
       date: '',
       note: '',
-      status: EnrollmentStatus.Pendiente
+      status: EnrollmentStatus.Inscrito
     });
     this.modalRef.show();
   }

@@ -114,7 +114,6 @@ export class StudentProfile {
         this.modalRef.hide();
       },
       error: (err) => {
-        console.error('Error al actualizar el perfil del estudiante:', err);
         alert("Ocurrió un error al actualizar el perfil.");
       }
     });

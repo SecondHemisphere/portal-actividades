@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Activity } from '../../../models/Activity';
 import { ServActivitiesJson } from '../../../services/serv-activities-json';
 import { Category } from '../../../models/Category';
@@ -12,6 +12,10 @@ import { ServRatingsJson } from '../../../services/serv-ratings-json';
 import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { ServStudentsJson } from '../../../services/serv-students-json';
+import { AuthService } from '../../../services/auth/auth-service';
+import { UserRole } from '../../../models/User';
+import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
+import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
 
 @Component({
   selector: 'app-activity-view',
@@ -26,63 +30,83 @@ export class ActivityView {
   organizers: Organizer[] = [];
   ratings: Rating[] = [];
   students: Student[] = [];
-  availableCapacity = 0;
 
-  studentId: number = 1; // ID del usuario actual
-  rating: number = 0;    // Rating temporal para el review
-  reviewText: string = '';
+  userId: number = 0;
+  role: 'student' | 'organizer' | 'public' = 'public';
 
   isEnrolled: boolean = false;
   isMyActivity: boolean = false;
   canReview: boolean = false;
 
-  role: 'student' | 'organizer' | 'public' = 'public';
-   
+  currentEnrollment?: Enrollment;
+
+  rating: number = 0;
+  reviewText: string = '';
+
   constructor(
     private activitiesService: ServActivitiesJson,
     private categoriesService: ServCategoriesJson,
     private organizersService: ServOrganizersJson,
     private studentsService: ServStudentsJson,
+    private enrollmentsService: ServEnrollmentsJson,
     private ratingsService: ServRatingsJson,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit() {
+    this.loadCurrentUser();
+
     const id = Number(this.route.snapshot.paramMap.get("id"));
-    this.activitiesService.getActivityById(id).subscribe((dato: Activity) => {
-      this.activity = dato;
-      this.loadRatings();
+
+    this.activitiesService.getActivityById(id).subscribe(activity => {
+      this.activity = activity;
+
       this.loadCategories();
       this.loadOrganizers();
       this.loadStudents();
+      this.loadRatings();
+
       this.checkEnrollment();
+      this.checkOrganizerOwnership();
     });
+  }
+
+  loadCurrentUser() {
+    const user = this.authService.getCurrentUserValue();
+
+    if (!user) {
+      this.role = 'public';
+      return;
+    }
+
+    this.userId = Number(user.id);
+
+    if (user.role === UserRole.Estudiante) this.role = 'student';
+    else if (user.role === UserRole.Organizador) this.role = 'organizer';
+    else this.role = 'public';
   }
 
   loadRatings() {
     if (!this.activity) return;
-    this.ratingsService.getRatingsByActivity(this.activity.id!).subscribe((data: Rating[]) => {
-      this.ratings = data;
-    });
+    this.ratingsService.getRatingsByActivity(this.activity.id!)
+      .subscribe(data => this.ratings = data);
   }
 
   loadCategories() {
-    this.categoriesService.getCategories().subscribe((data: Category[]) => {
-      this.categories = data;
-    });
+    this.categoriesService.getCategories()
+      .subscribe(data => this.categories = data);
   }
 
   loadOrganizers() {
-    this.organizersService.getOrganizers().subscribe((data: Organizer[]) => {
-      this.organizers = data;
-    });
+    this.organizersService.getOrganizers()
+      .subscribe(data => this.organizers = data);
   }
 
   loadStudents() {
-    this.studentsService.getStudents().subscribe((data: Student[]) => {
-      this.students = data;
-    });
+    this.studentsService.getStudents()
+      .subscribe(data => this.students = data);
   }
 
   getCategoryName(): string {
@@ -98,28 +122,86 @@ export class ActivityView {
   }
 
   checkEnrollment() {
-    // Aquí deberías comprobar en tu servicio si el estudiante está inscrito
-    // Por ahora simulamos:
-    this.isEnrolled = false; // cambiar según lógica real
-    this.canReview = this.isEnrolled && !this.isRegistrationClosed();
+    if (this.role !== 'student') {
+      this.isEnrolled = false;
+      return;
+    }
+
+    this.enrollmentsService
+      .getEnrollmentsByStudent(this.userId)
+      .subscribe(enrollments => {
+        const active = enrollments.find(e =>
+          e.activityId == this.activity.id &&
+          e.status === EnrollmentStatus.Inscrito
+        );
+
+        this.currentEnrollment = active;
+        this.isEnrolled = !!active;
+
+        this.checkIfCanReview();
+      });
+  }
+
+  checkOrganizerOwnership() {
+    if (this.role !== 'organizer') {
+      this.isMyActivity = false;
+      return;
+    }
+
+    this.isMyActivity = Number(this.activity.organizerId) === Number(this.userId);
+  }
+
+  hasActivityEnded(): boolean {
+    const eventDate = new Date(this.activity.date);
+    return eventDate < new Date();
+  }
+
+  checkIfCanReview() {
+    this.canReview =
+      this.role === 'student' &&
+      this.isEnrolled &&
+      this.hasActivityEnded();
   }
 
   enroll() {
-    if (!this.activity) return;
-    // Aquí agregarías la llamada a tu servicio de inscripciones
-    console.log(`Estudiante ${this.studentId} se inscribe en actividad ${this.activity.id}`);
-    this.isEnrolled = true;
-    this.canReview = true;
+    if (this.role !== 'student') return;
+    if (this.isRegistrationClosed()) return;
+
+    const confirmed = window.confirm('¿Estás seguro de que deseas inscribirte en esta actividad?');
+    if (!confirmed) return;
+
+    const enrollment: Enrollment = {
+      id: 0,
+      activityId: this.activity.id!,
+      studentId: this.userId,
+      date: new Date().toISOString(),
+      status: EnrollmentStatus.Inscrito
+    };
+
+    this.enrollmentsService.create(enrollment).subscribe(e => {
+      this.isEnrolled = true;
+      this.currentEnrollment = e;
+      this.checkIfCanReview();
+    });
   }
 
   cancelEnrollment() {
-    if (!this.activity) return;
-    console.log(`Estudiante ${this.studentId} cancela inscripción en actividad ${this.activity.id}`);
-    this.isEnrolled = false;
-    this.canReview = false;
+    if (!this.currentEnrollment) return;
+
+    const updated: Enrollment = {
+      ...this.currentEnrollment,
+      status: EnrollmentStatus.Cancelado
+    };
+
+    this.enrollmentsService.update(updated).subscribe(e => {
+      this.isEnrolled = false;
+      this.currentEnrollment = e;
+      this.checkIfCanReview();
+    });
   }
 
   edit() {
+    if (this.role !== 'organizer' || !this.isMyActivity) return;
     this.router.navigate(['/activities/edit', this.activity.id]);
   }
 
@@ -128,17 +210,18 @@ export class ActivityView {
   }
 
   submitReview() {
-    if (!this.activity || this.rating <= 0) return;
-    const newRating: Rating = {
+    if (!this.canReview) return;
+    if (this.rating <= 0) return;
+
+    const review: Rating = {
       activityId: this.activity.id!,
-      studentId: this.studentId,
+      studentId: this.userId,
       stars: this.rating,
       comment: this.reviewText,
       date: new Date().toISOString()
     };
 
-    this.ratingsService.create(newRating).subscribe((r) => {
-      console.log('Review enviada', r);
+    this.ratingsService.create(review).subscribe(r => {
       this.ratings.push(r);
       this.rating = 0;
       this.reviewText = '';
@@ -146,13 +229,9 @@ export class ActivityView {
   }
 
   isRegistrationClosed(): boolean {
-    if (!this.activity) return true;
+    if (!this.activity.registrationDeadline) return true;
     const deadline = new Date(this.activity.registrationDeadline);
     return deadline < new Date();
-  }
-
-  getAvailableCapacity(): number {
-    return this.activity?.capacity || 0;
   }
 
 }

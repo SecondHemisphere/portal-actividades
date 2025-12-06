@@ -78,7 +78,7 @@ export class ServEnrollmentsJson {
   cancelEnrollment(id: number): Observable<Enrollment> {
     return this.getEnrollmentById(id).pipe(
       map(enrollment => {
-        const updated = { ...enrollment, status: 'Cancelada' as EnrollmentStatus };
+        const updated = { ...enrollment, status: 'Cancelado' as EnrollmentStatus };
         return updated;
       }),
       switchMap(updated => this.update(updated))

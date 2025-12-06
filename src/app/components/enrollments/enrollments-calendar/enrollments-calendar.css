@@ -1,0 +1,88 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--bs-dark);
+}
+
+.days-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.day-card {
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--bs-primary);
+  background: var(--bs-light);
+}
+
+.day-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--bs-dark);
+  margin-bottom: 12px;
+}
+
+.activity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bs-white);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #eee;
+}
+
+.activity-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--bs-dark);
+}
+
+.activity-time {
+  font-size: 0.9rem;
+  color: var(--bs-secondary);
+}
+
+.activity-status {
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(72, 187, 120, 0.15);
+  color: var(--bs-success);
+}
+
+.activity-status.canceled {
+  background: rgba(229, 62, 62, 0.15);
+  color: var(--bs-danger);
+}
+
+.btn-view {
+  background: var(--bs-primary);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-view:hover {
+  background: #434aa0;
+}

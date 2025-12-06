@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { EnrollmentsList } from '../enrollments-list/enrollments-list';
+import { EnrollmentsCalendar } from '../enrollments-calendar/enrollments-calendar';
 
 @Component({
   selector: 'app-my-enrollments-page',
-  imports: [EnrollmentsList],
+  imports: [EnrollmentsCalendar],
   templateUrl: './my-enrollments-page.html',
   styleUrl: './my-enrollments-page.css',
 })

@@ -19,12 +19,13 @@ export class PortalLayout implements OnInit, OnDestroy {
 
   studentNav = [
     { label: 'Explorar Actividades', link: '/activities' },
-    { label: 'Mis Inscripciones', link: '/student/enrollment-list' },
-    { label: 'Historial y Valorar', link: '/student/history' },
+    { label: 'Mis Inscripciones', link: '/student/my-enrollments' },
+    { label: 'Historial De Valoraciones', link: '/student/history' },
     { label: 'Mi Perfil', link: '/student/profile' }
   ];
 
   organizerNav = [
+    { label: 'Explorar Actividades', link: '/activities' },
     { label: 'Dashboard', link: '/organizer/dashboard' },
     { label: 'Gestión Actividades', link: '/organizer/activities' },
     { label: 'Reportes', link: '/organizer/reports' },

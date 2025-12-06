@@ -23,7 +23,7 @@ export const routes: Routes = [
   {
     path: 'student',
     children: [
-      { path: 'enrollment-list', component: MyEnrollmentsPage, canActivate: [authGuard] },
+      { path: 'my-enrollments', component: MyEnrollmentsPage, canActivate: [authGuard] },
       // { path: 'history', component: StudentHistory, canActivate: [authGuard] },
       { path: 'profile', component: StudentProfile, canActivate: [authGuard] },
       { path: '', redirectTo: 'catalog', pathMatch: 'full' }

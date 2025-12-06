@@ -1,0 +1,38 @@
+<div class="header-container">
+  <button class="btn btn-secondary" (click)="prevMonth()">Mes anterior</button>
+  <h2 class="title">{{ months[selectedMonth] }} {{ selectedYear }}</h2>
+  <button class="btn btn-secondary" (click)="nextMonth()">Mes siguiente</button>
+</div>
+
+@for (d of filteredDays; track $index) {
+<div class="days-container mb-4">
+  <div class="day-card">
+    <!-- FECHA DE LA ACTIVIDAD -->
+    <div class="day-title">
+      {{ d.date | date : 'EEE d MMM' }}
+    </div>
+
+    <!-- DATOS DE LA ACTIVIDAD -->
+    @for (a of d.activities; track $index) {
+    <div class="activity">
+      <div class="activity-left">
+        <div class="activity-title">{{ a.title }}</div>
+        <div class="activity-time">{{ a.start }} - {{ a.end }}</div>
+
+        <!-- FECHA DE INSCRIPCIÓN -->
+        <div class="enroll-date text-secondary">
+          <strong>Inscrito creada el:</strong>
+          {{ a.enrollmentDate | date : 'EEE d MMM' }}
+        </div>
+      </div>
+
+      <div class="activity-status" [class.canceled]="a.status === 'Cancelado'">
+        {{ a.status }}
+      </div>
+
+      <button class="btn btn-primary" (click)="view(a.id)">Ver</button>
+    </div>
+    }
+  </div>
+</div>
+}

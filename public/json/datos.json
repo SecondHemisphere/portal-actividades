@@ -589,7 +589,7 @@
       "title": "Torneo Fútbol",
       "categoryId": "2",
       "organizerId": "4",
-      "date": "2025-12-12",
+      "date": "2025-12-5",
       "registrationDeadline": "2025-12-11",
       "timeRange": "14:00 - 18:00",
       "location": "Cancha Principal",
@@ -857,7 +857,7 @@
       "activityId": "1",
       "studentId": "13",
       "date": "2025-11-20",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": "Prefiere sentarse cerca de la ventana."
     },
     {
@@ -865,7 +865,7 @@
       "activityId": "2",
       "studentId": "14",
       "date": "2025-11-21",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -873,7 +873,7 @@
       "activityId": "3",
       "studentId": "15",
       "date": "2025-11-22",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": "Solicitó material adicional por adelantado."
     },
     {
@@ -881,7 +881,7 @@
       "activityId": "4",
       "studentId": "16",
       "date": "2025-11-23",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -889,7 +889,7 @@
       "activityId": "5",
       "studentId": "17",
       "date": "2025-11-24",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -897,7 +897,7 @@
       "activityId": "6",
       "studentId": "18",
       "date": "2025-11-25",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -905,7 +905,7 @@
       "activityId": "7",
       "studentId": "19",
       "date": "2025-11-26",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -913,7 +913,7 @@
       "activityId": "8",
       "studentId": "20",
       "date": "2025-11-27",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -921,7 +921,7 @@
       "activityId": "9",
       "studentId": "21",
       "date": "2025-11-28",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -929,7 +929,7 @@
       "activityId": "10",
       "studentId": "22",
       "date": "2025-11-29",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": "Desea participar en el grupo de discusión posterior."
     },
     {
@@ -938,14 +938,14 @@
       "studentId": "13",
       "date": "2025-12-03",
       "note": "Jugador de reserva, pero muy comprometido.",
-      "status": "Confirmada"
+      "status": "Inscrito"
     },
     {
       "activityId": "3",
       "studentId": "14",
       "date": "2025-12-04",
       "note": "Necesita silla especial.",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "id": "62c3"
     },
     {
@@ -953,14 +953,14 @@
       "activityId": "2",
       "studentId": "15",
       "date": "2025-12-04",
-      "status": "Confirmada"
+      "status": "Inscrito"
     },
     {
       "id": "a1b2",
       "activityId": "1",
       "studentId": "14",
       "date": "2025-11-21",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -968,7 +968,7 @@
       "activityId": "4",
       "studentId": "18",
       "date": "2025-11-24",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -976,7 +976,7 @@
       "activityId": "6",
       "studentId": "15",
       "date": "2025-11-26",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -984,7 +984,7 @@
       "activityId": "11",
       "studentId": "16",
       "date": "2025-11-30",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": "Interesado en la sección de Borges."
     },
     {
@@ -992,7 +992,7 @@
       "activityId": "14",
       "studentId": "17",
       "date": "2025-12-01",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": ""
     },
     {
@@ -1000,16 +1000,16 @@
       "activityId": "15",
       "studentId": "20",
       "date": "2025-12-03",
-      "status": "Confirmada",
+      "status": "Inscrito",
       "note": "Quiere enfocar el entrenamiento vocal en canto lírico."
     },
     {
-      "id": "m3n4",
       "activityId": "17",
       "studentId": "22",
       "date": "2025-12-04",
-      "status": "Confirmada",
-      "note": ""
+      "note": "",
+      "status": "Cancelado",
+      "id": "m3n4"
     }
   ],
   "ratings": [
@@ -1164,6 +1164,14 @@
       "comment": "Las técnicas vocales enseñadas por Ricardo fueron transformadoras. Pude sentir una mejora inmediata en mi proyección vocal y mi control diafragmático. Los ejercicios de calentamiento son ahora parte de mi rutina diaria. ¡Este taller es oro puro para cualquier orador o cantante!",
       "date": "2025-12-14",
       "id": "i15"
+    },
+    {
+      "id": "2a1f",
+      "activityId": "2",
+      "studentId": 13,
+      "stars": 3,
+      "comment": "uwu",
+      "date": "2025-12-06T18:05:47.373Z"
     }
   ]
 }

@@ -78,13 +78,21 @@
       <p class="card-text text-secondary lead">{{ activity.description }}</p>
 
       <div class="d-flex gap-3 mt-4 pt-2 border-top">
-        @if (role === 'student') { @if (!isEnrolled) {
+        @if (role === 'student') { @if (isEnrolled) {
+        <div class="alert alert-success d-flex align-items-center gap-2 mb-0">
+          <i class="bi bi-check-circle-fill fs-5"></i>
+          <span>Ya estás inscrito en esta actividad</span>
+        </div>
+
+        } @else if (isRegistrationClosed()) {
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
+          <i class="bi bi-x-octagon-fill fs-5"></i>
+          <span>Inscripciones cerradas</span>
+        </div>
+
+        } @else {
         <button class="btn btn-primary btn-lg shadow-sm" (click)="enroll()">
           <i class="bi bi-plus-circle me-2"></i> Inscribirme
-        </button>
-        } @else {
-        <button class="btn btn-outline-danger btn-lg" (click)="cancelEnrollment()">
-          <i class="bi bi-x-circle me-2"></i> Cancelar inscripción
         </button>
         } } @if (role === 'organizer') { @if (isMyActivity) {
         <button class="btn btn-secondary btn-lg" (click)="edit()">

@@ -8,7 +8,6 @@ export interface Enrollment {
 }
 
 export enum EnrollmentStatus {
-  Pendiente = 'Pendiente',
-  Confirmada = 'Confirmada',
-  Cancelada = 'Cancelada'
+  Inscrito = 'Inscrito',
+  Cancelado = 'Cancelado'
 }
