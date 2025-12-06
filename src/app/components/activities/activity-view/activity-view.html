@@ -1,65 +1,108 @@
 <div class="container py-4 activity-view-container">
-  <!-- Imagen principal -->
-  <div class="card mb-4 shadow-sm">
-    @if (activity.photoUrl) {
-    <img [src]="activity.photoUrl" alt="{{ activity.title }}" class="card-img-top activity-image" />
-    } @else {
-    <div class="card-img-top activity-no-image d-flex justify-content-center align-items-center">
-      Sin imagen
+  <div class="card mb-4 shadow-lg border-0 rounded-3">
+    <div class="position-relative">
+      @if (activity.photoUrl) {
+      <img
+        [src]="activity.photoUrl"
+        alt="{{ activity.title }}"
+        class="card-img-top activity-image rounded-top-3"
+      />
+      } @else {
+      <div
+        class="card-img-top activity-no-image d-flex justify-content-center align-items-center rounded-top-3"
+      >
+        <i class="bi bi-image-fill fs-1"></i> Sin imagen
+      </div>
+      }
     </div>
-    }
-    <div class="card-body">
-      <!-- Título y categoría -->
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h2 class="card-title mb-0">{{ activity.title }}</h2>
-        <span class="badge badge-custom bg-secondary">{{ getCategoryName() }}</span>
+
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <h1 class="card-title display-5 fw-bold text-dark mb-0 me-3">{{ activity.title }}</h1>
+        <span class="badge badge-custom text-white bg-primary shadow-sm py-2 px-3 rounded-pill">
+          {{ getCategoryName() }}
+        </span>
       </div>
 
-      <!-- ESTADO DE INSCRIPCIÓN -->
       @if (isRegistrationClosed()) {
-      <span class="badge-closed mb-2">
-        <i class="bi bi-x-octagon-fill"></i>
-        Inscripciones Cerradas
-      </span>
+      <div class="mb-3">
+        <span class="badge-closed">
+          <i class="bi bi-x-octagon-fill"></i>
+          Inscripciones Cerradas
+        </span>
+      </div>
       }
 
-      <!-- Información general -->
-      <ul class="list-group list-group-flush mb-3">
-        <li class="list-group-item"><b>Fecha:</b> {{ activity.date | date : 'fullDate' }}</li>
-        <li class="list-group-item"><b>Horario:</b> {{ activity.timeRange }}</li>
-        <li class="list-group-item"><b>Lugar:</b> {{ activity.location }}</li>
-        <li class="list-group-item"><b>Organiza:</b> {{ getOrganizerName() }}</li>
-        <li class="list-group-item"><b>Cupo:</b> {{ activity.capacity }}</li>
-      </ul>
+      <div class="row g-3 mb-4 small text-dark">
+        <div class="col-md-4 d-flex align-items-center">
+          <i class="bi bi-calendar-event me-2 text-primary fs-5"></i>
+          <div>
+            <b class="d-block">Fecha</b>
+            {{ activity.date | date : 'fullDate' }}
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+          <i class="bi bi-clock me-2 text-primary fs-5"></i>
+          <div>
+            <b class="d-block">Horario</b>
+            {{ activity.timeRange }}
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+          <i class="bi bi-geo-alt me-2 text-primary fs-5"></i>
+          <div>
+            <b class="d-block">Lugar</b>
+            {{ activity.location }}
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+          <i class="bi bi-person-badge me-2 text-secondary fs-5"></i>
+          <div>
+            <b class="d-block">Organiza</b>
+            {{ getOrganizerName() }}
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+          <i class="bi bi-people me-2 text-secondary fs-5"></i>
+          <div>
+            <b class="d-block">Cupo</b>
+            {{ activity.capacity }}
+          </div>
+        </div>
+      </div>
 
-      <!-- Descripción -->
-      <p class="card-text">{{ activity.description }}</p>
+      <hr class="mb-4" />
 
-      <!-- Botones según rol -->
-      <div class="d-flex gap-2 mt-3">
+      <h4 class="fw-semibold text-primary mb-2">Acerca de la Actividad</h4>
+      <p class="card-text text-secondary lead">{{ activity.description }}</p>
+
+      <div class="d-flex gap-3 mt-4 pt-2 border-top">
         @if (role === 'student') { @if (!isEnrolled) {
-        <button class="btn btn-primary" (click)="enroll()">Inscribirme</button>
+        <button class="btn btn-primary btn-lg shadow-sm" (click)="enroll()">
+          <i class="bi bi-plus-circle me-2"></i> Inscribirme
+        </button>
         } @else {
-        <button class="btn btn-outline-danger" (click)="cancelEnrollment()">
-          Cancelar inscripción
+        <button class="btn btn-outline-danger btn-lg" (click)="cancelEnrollment()">
+          <i class="bi bi-x-circle me-2"></i> Cancelar inscripción
         </button>
         } } @if (role === 'organizer') { @if (isMyActivity) {
-        <button class="btn btn-secondary" (click)="edit()">Editar actividad</button>
+        <button class="btn btn-secondary btn-lg" (click)="edit()">
+          <i class="bi bi-pencil-square me-2"></i> Editar actividad
+        </button>
         } }
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN DE COMENTARIOS Y VALORACIONES -->
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h4 class="card-title mb-3">Comentarios y valoraciones</h4>
+  <div class="card shadow-lg border-0 rounded-3 mt-4">
+    <div class="card-body p-4">
+      <h3 class="card-title mb-4 fw-bold text-dark">Opiniones de los Participantes</h3>
 
-      <!-- Comentario del usuario -->
       @if (canReview) {
-      <div class="mb-3">
-        <label class="form-label">Tu calificación:</label>
-        <div class="mb-2">
+      <div class="mb-4 p-3 border rounded-3 bg-light">
+        <h5 class="mb-3 text-primary">Deja tu valoración</h5>
+        <label class="form-label small fw-semibold">Tu calificación:</label>
+        <div class="mb-2 stars">
           @for (s of [1,2,3,4,5]; track s) {
           <i
             class="bi"
@@ -68,26 +111,35 @@
           ></i>
           }
         </div>
-        <textarea class="form-control mb-2" rows="3" [(ngModel)]="reviewText"></textarea>
-        <button class="btn btn-primary" (click)="submitReview()">Enviar</button>
+        <textarea
+          class="form-control mb-2"
+          rows="3"
+          [(ngModel)]="reviewText"
+          placeholder="Escribe tu comentario..."
+        ></textarea>
+        <button class="btn btn-primary" (click)="submitReview()">
+          <i class="bi bi-send me-1"></i> Enviar Opinión
+        </button>
       </div>
-      <hr />
-      }
-
-      <!-- Lista de comentarios -->
-      @for (r of ratings; track $index) {
-      <div class="border rounded p-3 mb-2 bg-light">
+      <hr class="my-4" />
+      } @for (r of ratings; track $index) {
+      <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-white shadow-sm">
         <div class="d-flex justify-content-between align-items-center mb-1">
-          <b>{{ getStudentName(r.studentId) }}</b>
+          <b class="text-dark">{{ getStudentName(r.studentId) }}</b>
           <span class="text-warning">
             @for (s of [1,2,3,4,5]; track s) {
-            <i class="bi" [ngClass]="s <= r.stars ? 'bi-star-fill' : 'bi-star'"></i>
+            <i class="bi" [ngClass]="s <= r.stars ? 'bi-star-fill' : 'bi-star text-muted'"></i>
             }
           </span>
         </div>
         @if(r.comment) {
-        <p class="mb-0">{{ r.comment }}</p>
+        <p class="mb-0 text-muted small">{{ r.comment }}</p>
         }
+      </div>
+      } @if(ratings.length === 0 && !canReview) {
+      <div class="mensaje-vacio">
+        <i class="bi bi-chat-dots icono-vacio"></i>
+        <p class="texto-vacio">Aún no hay opiniones. ¡Sé el primero en dejar una!</p>
       </div>
       }
     </div>

@@ -16,7 +16,7 @@
     (onPageChange)="handlePageChange($event)"
     (onTotalPagesChange)="handleTotalPages($event)"
   >
-    <div class="row g-4">
+    <div class="row g-4 mt-1">
       @for(activity of pagedData; track $index){
       <div class="col-12" [ngClass]="activity.widthClass">
         <app-activity-card

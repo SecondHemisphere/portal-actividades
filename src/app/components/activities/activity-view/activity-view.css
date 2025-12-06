@@ -20,8 +20,9 @@
 }
 
 .stars i {
-  font-size: 1.5rem;
   cursor: pointer;
+  margin-right: 0.2rem;
+  transition: color 0.2s;
 }
 
 .badge-custom {

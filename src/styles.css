@@ -11,6 +11,8 @@
 
   --bs-body-bg: #ffffff;
   --bs-body-color: var(--bs-dark);
+
+  --border-primary: #5a67d8;
 }
 
 body {
