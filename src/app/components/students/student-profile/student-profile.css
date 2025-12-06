@@ -1,0 +1,12 @@
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form {
+  border-radius: 12px;
+}
+
+button {
+  margin-top: 10px;
+}

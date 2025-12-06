@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { Modality, Schedule, Student } from '../../../models/Student';
@@ -10,7 +10,7 @@ declare const bootstrap:any;
 
 @Component({
   selector: 'app-student-crud',
-  imports: [ReactiveFormsModule, DataTable, SearchForm],
+  imports: [ReactiveFormsModule, DataTable, SearchForm, FormsModule],
   templateUrl: './student-crud.html',
   styleUrl: './student-crud.css',
 })

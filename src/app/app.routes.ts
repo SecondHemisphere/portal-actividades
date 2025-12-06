@@ -11,6 +11,7 @@ import { MyEnrollmentsPage } from './components/enrollments/my-enrollments-page/
 import { ActivityView } from './components/activities/activity-view/activity-view';
 import { Login } from './components/auth/login/login';
 import { authGuard } from './guards/auth-guard';
+import { StudentProfile } from './components/students/student-profile/student-profile';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,7 +25,7 @@ export const routes: Routes = [
     children: [
       { path: 'enrollment-list', component: MyEnrollmentsPage, canActivate: [authGuard] },
       // { path: 'history', component: StudentHistory, canActivate: [authGuard] },
-      // { path: 'profile', component: StudentProfile, canActivate: [authGuard] },
+      { path: 'profile', component: StudentProfile, canActivate: [authGuard] },
       { path: '', redirectTo: 'catalog', pathMatch: 'full' }
     ]
   },

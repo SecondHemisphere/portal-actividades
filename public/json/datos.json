@@ -1,32 +1,71 @@
 {
   "categories": [
-    { "id": "1", "name": "Cultura", "active": true },
-    { "id": "2", "name": "Deporte", "active": true },
-    { "id": "3", "name": "Bienestar", "active": true },
-    { "id": "4", "name": "Arte", "active": true },
-    { "id": "5", "name": "Música", "active": true },
-    { "id": "6", "name": "Tecnología", "active": true },
-    { "id": "7", "name": "Ciencia", "active": true }
+    {
+      "id": "1",
+      "name": "Cultura",
+      "active": true
+    },
+    {
+      "id": "2",
+      "name": "Deporte",
+      "active": true
+    },
+    {
+      "id": "3",
+      "name": "Bienestar",
+      "active": true
+    },
+    {
+      "id": "4",
+      "name": "Arte",
+      "active": true
+    },
+    {
+      "id": "5",
+      "name": "Música",
+      "active": true
+    },
+    {
+      "id": "6",
+      "name": "Tecnología",
+      "active": true
+    },
+    {
+      "id": "7",
+      "name": "Ciencia",
+      "active": true
+    }
   ],
   "faculties": [
     {
       "faculty": "CIENCIAS ADMINISTRATIVAS",
-      "careers": ["ADMINISTRACIÓN DE EMPRESAS", "COMERCIO EXTERIOR"],
+      "careers": [
+        "ADMINISTRACIÓN DE EMPRESAS",
+        "COMERCIO EXTERIOR"
+      ],
       "id": "db46"
     },
     {
       "faculty": "CIENCIAS MEDICAS",
-      "careers": ["MEDICINA", "ENFERMERÍA"],
+      "careers": [
+        "MEDICINA",
+        "ENFERMERÍA"
+      ],
       "id": "8187"
     },
     {
       "faculty": "INGENIERIA INDUSTRIAL",
-      "careers": ["INGENIERÍA INDUSTRIAL", "INGENIERÍA DE LA PRODUCCIÓN"],
+      "careers": [
+        "INGENIERÍA INDUSTRIAL",
+        "INGENIERÍA DE LA PRODUCCIÓN"
+      ],
       "id": "c376"
     },
     {
       "faculty": "FILOSOFIA, LETRAS Y CIENCIAS DE LA EDUCACION",
-      "careers": ["PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"],
+      "careers": [
+        "PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"
+      ],
       "id": "6716"
     }
   ],
@@ -219,8 +258,20 @@
       "department": "Cultura",
       "position": "Coordinadora",
       "bio": "Apasionada por actividades artísticas.",
-      "shifts": ["Mañana", "Noche", "Tarde"],
-      "workDays": ["Lunes", "Martes", "Domingo", "Miércoles", "Jueves", "Sábado", "Viernes"]
+      "shifts": [
+        "Mañana",
+        "Noche",
+        "Tarde"
+      ],
+      "workDays": [
+        "Lunes",
+        "Martes",
+        "Domingo",
+        "Miércoles",
+        "Jueves",
+        "Sábado",
+        "Viernes"
+      ]
     },
     {
       "id": "4",
@@ -232,8 +283,13 @@
       "department": "Deportes",
       "position": "Entrenador",
       "bio": "Instructor con experiencia en preparación física.",
-      "shifts": ["Tarde"],
-      "workDays": ["Miércoles", "Viernes"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Miércoles",
+        "Viernes"
+      ]
     },
     {
       "id": "5",
@@ -245,8 +301,14 @@
       "department": "Bienestar",
       "position": "Facilitadora",
       "bio": "Especialista en meditación y bienestar.",
-      "shifts": ["Mañana", "Tarde"],
-      "workDays": ["Martes", "Jueves"]
+      "shifts": [
+        "Mañana",
+        "Tarde"
+      ],
+      "workDays": [
+        "Martes",
+        "Jueves"
+      ]
     },
     {
       "id": "6",
@@ -258,8 +320,13 @@
       "department": "Arte",
       "position": "Instructor de Teatro",
       "bio": "Actor profesional.",
-      "shifts": ["Noche"],
-      "workDays": ["Viernes", "Sábado"]
+      "shifts": [
+        "Noche"
+      ],
+      "workDays": [
+        "Viernes",
+        "Sábado"
+      ]
     },
     {
       "id": "7",
@@ -271,8 +338,13 @@
       "department": "Danza",
       "position": "Coreógrafa",
       "bio": "Experta en danza contemporánea.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Miércoles"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Miércoles"
+      ]
     },
     {
       "id": "8",
@@ -284,8 +356,13 @@
       "department": "Deportes",
       "position": "Instructor de Fútbol",
       "bio": "Entrenador certificado.",
-      "shifts": ["Tarde"],
-      "workDays": ["Martes", "Jueves"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Martes",
+        "Jueves"
+      ]
     },
     {
       "id": "9",
@@ -297,8 +374,13 @@
       "department": "Bienestar",
       "position": "Psicóloga",
       "bio": "Especialista en bienestar emocional.",
-      "shifts": ["Mañana"],
-      "workDays": ["Miércoles", "Viernes"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Miércoles",
+        "Viernes"
+      ]
     },
     {
       "id": "10",
@@ -310,8 +392,13 @@
       "department": "Música",
       "position": "Instructor de Música",
       "bio": "Músico profesional.",
-      "shifts": ["Tarde"],
-      "workDays": ["Lunes", "Miércoles"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Lunes",
+        "Miércoles"
+      ]
     },
     {
       "id": "11",
@@ -323,8 +410,13 @@
       "department": "Danza",
       "position": "Instructora de Ballet",
       "bio": "Bailarina profesional.",
-      "shifts": ["Noche"],
-      "workDays": ["Martes", "Viernes"]
+      "shifts": [
+        "Noche"
+      ],
+      "workDays": [
+        "Martes",
+        "Viernes"
+      ]
     },
     {
       "id": "12",
@@ -336,21 +428,26 @@
       "department": "Deportes",
       "position": "Entrenador de Natación",
       "bio": "Instructor con experiencia.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Jueves"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Jueves"
+      ]
     }
   ],
   "students": [
     {
       "id": "13",
-      "name": "Ana Pérez",
+      "name": "Ana Pérezax",
       "email": "ana.perez@ug.edu.ec",
-      "phone": "+593987654321",
+      "phone": "+593987654324",
       "role": "Estudiante",
       "active": true,
-      "faculty": "CIENCIAS ADMINISTRATIVAS",
-      "career": "ADMINISTRACIÓN DE EMPRESAS",
-      "semester": 2,
+      "faculty": "CIENCIAS MEDICAS",
+      "career": "MEDICINA",
+      "semester": 4,
       "modality": "Presencial",
       "schedule": "Matutina"
     },

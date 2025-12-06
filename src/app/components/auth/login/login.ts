@@ -31,7 +31,6 @@ export class Login {
 
     this.authService.login(email).subscribe({
       next: user => {
-        console.log('Usuario logueado:', user);
         this.error = '';
 
         switch (user.role) {
