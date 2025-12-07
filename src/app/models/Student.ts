@@ -6,6 +6,7 @@ export interface Student extends User {
   semester: number;
   modality: Modality;
   schedule: Schedule;
+  photoUrl?: string;
 }
 
 export enum Modality {

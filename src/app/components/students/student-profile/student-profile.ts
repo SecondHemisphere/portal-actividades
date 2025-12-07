@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { ServFacultiesJson, Faculty } from '../../../services/serv-faculties-json';
 import { User } from '../../../models/User';
 import { AuthService } from '../../../services/auth/auth-service';
-import { ServUsersJson } from '../../../services/serv-users-json';
 
 declare const bootstrap:any;
 
@@ -27,62 +26,67 @@ export class StudentProfile {
   modalities = Object.values(Modality);
   schedules = Object.values(Schedule);
 
+  photoPreview: string | null = null;
+  studentEdit:Student ={} as Student; //para foto
+
   constructor(
     private fb: FormBuilder,
     private studentService: ServStudentsJson,
     private facultiesService: ServFacultiesJson,
     private authService: AuthService,
-    private userService: ServUsersJson,
   ) {}
 
   ngOnInit() {
-    this.formStudent = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      faculty: ['', Validators.required],
-      career: ['', Validators.required],
-      semester: [1, [Validators.required, Validators.min(1), Validators.max(10)]],
-      modality: ['', Validators.required],
-      schedule: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
-    });
-
     const user = this.authService.getCurrentUserValue();
-
-    if (user) {
-      this.user = user;
-    } else {
-      return;
-    }
+    if (!user) return;
+    this.user = user;
 
     this.facultiesService.getFaculties().subscribe(f => {
       this.faculties = f;
-    });
 
-    this.studentService.getStudentById(Number(user.id)).subscribe(st => {
-      this.student = st;
-      this.formStudent.patchValue(st);
+      this.studentService.getStudentById(Number(user.id)).subscribe(st => {
+        this.student = st;
+        this.photoPreview = st.photoUrl || null;
 
-      const facultyObj = this.faculties.find(x => x.faculty === st.faculty);
-      this.careers = facultyObj ? facultyObj.careers : [];
-    });
+        this.formStudent = this.fb.group({
+          name: [st.name, [Validators.required, Validators.minLength(3)]],
+          email: [st.email, [Validators.required, Validators.email]],
+          faculty: [st.faculty, Validators.required],
+          career: [st.career, Validators.required],
+          semester: [st.semester, [Validators.required, Validators.min(1), Validators.max(10)]],
+          modality: [st.modality, Validators.required],
+          schedule: [st.schedule, Validators.required],
+          phone: [st.phone, [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
+          photoUrl: [st.photoUrl || '']
+        });
 
-    this.formStudent.get('faculty')?.valueChanges.subscribe(facName => {
-      const selected = this.faculties.find(f => f.faculty === facName);
-      this.careers = selected ? selected.careers : [];
-      this.formStudent.get('career')?.setValue('');
+        const facultyObj = this.faculties.find(x => x.faculty === st.faculty);
+        this.careers = facultyObj ? facultyObj.careers : [];
+
+        this.formStudent.get('faculty')?.valueChanges.subscribe(facName => {
+          const selected = this.faculties.find(f => f.faculty === facName);
+          this.careers = selected ? selected.careers : [];
+          this.formStudent.get('career')?.setValue('');
+        });
+      });
     });
   }
 
-  
   @ViewChild("studentModalRef") modalElement!: ElementRef;
   ngAfterViewInit() {
     this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
   }
 
-  openEditProfile() {
+  openEditProfile(student: Student) {
+    this.studentEdit = student;
     this.formStudent.patchValue(this.student);
+    this.photoPreview = student.photoUrl || null;
     this.modalRef.show();
+  }
+
+  updatePhotoPreview() {
+    const url = this.formStudent.get('photoUrl')?.value;
+    this.photoPreview = url && url.trim() !== '' ? url : null;
   }
 
   save() {

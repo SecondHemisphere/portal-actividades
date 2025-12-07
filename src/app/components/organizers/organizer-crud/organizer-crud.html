@@ -18,7 +18,7 @@
   <app-data-table
     [colArray]="colArray"
     [gridData]="filteredOrganizers"
-    (onView)="openView($event)"
+    [showView]="false"
     (onEdit)="openEdit($event)"
     (onDelete)="delete($event)"
   ></app-data-table>

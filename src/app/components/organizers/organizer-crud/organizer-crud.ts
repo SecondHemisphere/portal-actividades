@@ -159,10 +159,6 @@ export class OrganizerCrud {
     );
   }
 
-  openView(org: Organizer) {
-
-  }
-
   openNew() {
     this.editingId = null;
 

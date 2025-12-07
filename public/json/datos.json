@@ -260,7 +260,6 @@
       "bio": "Apasionada por actividades artísticas.",
       "shifts": [
         "Mañana",
-        "Noche",
         "Tarde"
       ],
       "workDays": [
@@ -271,7 +270,8 @@
         "Jueves",
         "Sábado",
         "Viernes"
-      ]
+      ],
+      "photoUrl": "https://th.bing.com/th/id/R.cd9ea35a68606155285ca4d97e7f7aa3?rik=3AAgvsmAMydQAQ&pid=ImgRaw&r=0"
     },
     {
       "id": "4",
@@ -449,7 +449,8 @@
       "career": "MEDICINA",
       "semester": 4,
       "modality": "Presencial",
-      "schedule": "Matutina"
+      "schedule": "Matutina",
+      "photoUrl": "https://tse1.mm.bing.net/th/id/OIP.LDCemXrKhbyhvz7V35gfiAHaE7?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3"
     },
     {
       "id": "14",

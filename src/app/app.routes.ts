@@ -12,6 +12,7 @@ import { ActivityView } from './components/activities/activity-view/activity-vie
 import { Login } from './components/auth/login/login';
 import { authGuard } from './guards/auth-guard';
 import { StudentProfile } from './components/students/student-profile/student-profile';
+import { OrganizerProfile } from './components/organizers/organizer-profile/organizer-profile';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,9 +25,8 @@ export const routes: Routes = [
     path: 'student',
     children: [
       { path: 'my-enrollments', component: MyEnrollmentsPage, canActivate: [authGuard] },
-      // { path: 'history', component: StudentHistory, canActivate: [authGuard] },
       { path: 'profile', component: StudentProfile, canActivate: [authGuard] },
-      { path: '', redirectTo: 'catalog', pathMatch: 'full' }
+      // { path: 'history', component: StudentHistory, canActivate: [authGuard] },
     ]
   },
 
@@ -36,8 +36,7 @@ export const routes: Routes = [
       // { path: 'dashboard', component: OrganizerDashboard, canActivate: [authGuard] },
       // { path: 'activities', component: OrganizerActivities, canActivate: [authGuard] },
       // { path: 'reports', component: OrganizerReports, canActivate: [authGuard] },
-      // { path: 'profile', component: OrganizerProfile, canActivate: [authGuard] },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: 'profile', component: OrganizerProfile, canActivate: [authGuard] },
     ]
   },
 
@@ -54,5 +53,5 @@ export const routes: Routes = [
     ]
   },
 
-  { path: '**', redirectTo: 'student/catalog' },
+  { path: '**', redirectTo: 'activities' },
 ];
