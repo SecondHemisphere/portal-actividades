@@ -165,38 +165,96 @@ export class ActivityView {
 
   enroll() {
     if (this.role !== 'student') return;
-    if (this.isRegistrationClosed()) return;
+
+    if (!this.activity) {
+      alert('No se ha cargado la actividad todavía.');
+      return;
+    }
+
+    if (this.isRegistrationClosed()) {
+      alert('Las inscripciones están cerradas.');
+      return;
+    }
 
     const confirmed = window.confirm('¿Estás seguro de que deseas inscribirte en esta actividad?');
     if (!confirmed) return;
 
-    const enrollment: Enrollment = {
-      id: 0,
-      activityId: this.activity.id!,
-      studentId: this.userId,
-      date: new Date().toISOString(),
-      status: EnrollmentStatus.Inscrito
-    };
+    this.enrollmentsService.getEnrollmentsByStudent(this.userId).subscribe(enrollments => {
+      const existing = enrollments.find(e =>
+        e.activityId === this.activity.id && e.studentId === this.userId
+      );
 
-    this.enrollmentsService.create(enrollment).subscribe(e => {
-      this.isEnrolled = true;
-      this.currentEnrollment = e;
-      this.checkIfCanReview();
+      if (existing) {
+        if (existing.status === EnrollmentStatus.Inscrito) {
+          this.isEnrolled = true;
+          this.currentEnrollment = existing;
+          this.checkIfCanReview();
+          alert('Ya estás inscrito en esta actividad.');
+          return;
+        }
+
+        if (existing.status === EnrollmentStatus.Cancelado) {
+          const updated: Enrollment = {
+            ...existing,
+            status: EnrollmentStatus.Inscrito,
+            date: new Date().toISOString()
+          };
+
+          this.enrollmentsService.update(updated).subscribe(e => {
+            this.isEnrolled = true;
+            this.currentEnrollment = e;
+            this.checkIfCanReview();
+            alert('Tu inscripción ha sido reactivada.');
+          });
+          return;
+        }
+      }
+
+      const enrollment: Omit<Enrollment, 'id'> = {
+        activityId: this.activity.id!,
+        studentId: this.userId,
+        date: new Date().toISOString(),
+        status: EnrollmentStatus.Inscrito
+      };
+
+      this.enrollmentsService.create(enrollment).subscribe(e => {
+        this.isEnrolled = true;
+        this.currentEnrollment = e;
+        this.checkIfCanReview();
+        alert('Te has inscrito correctamente.');
+      }, err => {
+        alert('No se pudo completar la inscripción. Intenta nuevamente.');
+      });
     });
   }
 
   cancelEnrollment() {
-    if (!this.currentEnrollment) return;
+    if (!this.currentEnrollment) {
+      alert('No tienes una inscripción activa para cancelar.');
+      return;
+    }
+
+    if (this.currentEnrollment.status === EnrollmentStatus.Cancelado) {
+      alert('La inscripción ya está cancelada.');
+      return;
+    }
+
+    const confirmed = window.confirm('¿Estás seguro de que deseas cancelar tu inscripción en esta actividad?');
+    if (!confirmed) return;
 
     const updated: Enrollment = {
       ...this.currentEnrollment,
-      status: EnrollmentStatus.Cancelado
+      status: EnrollmentStatus.Cancelado,
+      date: new Date().toISOString()
     };
 
     this.enrollmentsService.update(updated).subscribe(e => {
       this.isEnrolled = false;
       this.currentEnrollment = e;
       this.checkIfCanReview();
+      alert('Tu inscripción ha sido cancelada.');
+    }, err => {
+      alert('No se pudo cancelar la inscripción. Intenta nuevamente.');
     });
   }
 

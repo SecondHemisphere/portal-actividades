@@ -9,10 +9,16 @@
   </button>
 </div>
 
-@for (d of filteredDays; track $index) {
+<!-- MENSAJE DE CUANDO NO HAY ACTIVIDADES EN EL MES -->
+@if (filteredDays.length === 0) {
+<div class="mensaje-vacio p-4 text-center border rounded">
+  <i class="bi bi-calendar-x fs-1 mb-2"></i>
+  <div>¡Parece que este mes está libre! Explora nuestras actividades e inscríbete.</div>
+</div>
+} @for (d of filteredDays; track $index) {
 <div class="days-container mb-4">
   <div class="day-card">
-    <!-- FECHA DEL EVENTO -->
+    <!-- FECHA DE LAS ACTVIDADES-->
     <div class="day-title">
       {{ d.date | date : 'EEE d MMM' }}
     </div>

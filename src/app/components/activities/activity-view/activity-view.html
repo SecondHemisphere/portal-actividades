@@ -77,83 +77,98 @@
       <h4 class="fw-semibold text-primary mb-2">Acerca de la Actividad</h4>
       <p class="card-text text-secondary lead">{{ activity.description }}</p>
 
-      <div class="d-flex gap-3 mt-4 pt-2 border-top">
-        @if (role === 'student') { @if (isEnrolled) {
+      <div class="d-flex flex-column gap-3 mt-4 pt-2 border-top">
+        <!-- Botones para estudiantes -->
+        @if (role === 'student' && !hasActivityEnded() && !isRegistrationClosed()) { @if
+        (isEnrolled) {
         <div class="alert alert-success d-flex align-items-center gap-2 mb-0">
           <i class="bi bi-check-circle-fill fs-5"></i>
           <span>Ya estás inscrito en esta actividad</span>
         </div>
 
-        } @else if (isRegistrationClosed()) {
-        <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
-          <i class="bi bi-x-octagon-fill fs-5"></i>
-          <span>Inscripciones cerradas</span>
+        <div
+          class="p-3 border border-danger rounded-3 bg-light-danger d-flex justify-content-between align-items-center"
+        >
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-exclamation-triangle-fill text-danger fs-4"></i>
+            <span class="fw-semibold text-danger">Cancelar inscripción</span>
+          </div>
+          <button class="btn btn-danger btn-lg" (click)="cancelEnrollment()">
+            <i class="bi bi-x-circle me-1"></i> Cancelar
+          </button>
         </div>
-
         } @else {
         <button class="btn btn-primary btn-lg shadow-sm" (click)="enroll()">
           <i class="bi bi-plus-circle me-2"></i> Inscribirme
         </button>
-        } } @if (role === 'organizer') { @if (isMyActivity) {
+        } } @else if (role === 'student' && isRegistrationClosed() && !hasActivityEnded()) {
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
+          <i class="bi bi-x-octagon-fill fs-5"></i>
+          <span>Inscripciones cerradas</span>
+        </div>
+        }
+
+        <!-- Botones para organizadores -->
+        @if (role === 'organizer' && isMyActivity) {
         <button class="btn btn-secondary btn-lg" (click)="edit()">
           <i class="bi bi-pencil-square me-2"></i> Editar actividad
         </button>
-        } }
-      </div>
-    </div>
-  </div>
-
-  <div class="card shadow-lg border-0 rounded-3 mt-4">
-    <div class="card-body p-4">
-      <h3 class="card-title mb-4 fw-bold text-dark">Opiniones de los Participantes</h3>
-
-      @if (canReview) {
-      <div class="mb-4 p-3 border rounded-3 bg-light">
-        <h5 class="mb-3 text-primary">Deja tu valoración</h5>
-        <label class="form-label small fw-semibold">Tu calificación:</label>
-        <div class="mb-2 stars">
-          @for (s of [1,2,3,4,5]; track s) {
-          <i
-            class="bi"
-            [ngClass]="s <= rating ? 'bi-star-fill text-warning' : 'bi-star'"
-            (click)="setRating(s)"
-          ></i>
-          }
-        </div>
-        <textarea
-          class="form-control mb-2"
-          rows="3"
-          [(ngModel)]="reviewText"
-          placeholder="Escribe tu comentario..."
-        ></textarea>
-        <button class="btn btn-primary" (click)="submitReview()">
-          <i class="bi bi-send me-1"></i> Enviar Opinión
-        </button>
-      </div>
-      <hr class="my-4" />
-      } @for (r of ratings; track $index) {
-      <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-light shadow-sm">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-          <b class="text-dark">{{ getStudentName(r.studentId) }}</b>
-          <span class="text-warning">
-            @for (s of [1,2,3,4,5]; track s) {
-            <i
-              class="bi me-2 fs-5"
-              [ngClass]="s <= r.stars ? 'bi-star-fill' : 'bi-star text-muted'"
-            ></i>
-            }
-          </span>
-        </div>
-        @if(r.comment) {
-        <p class="mb-0 text-muted small">{{ r.comment }}</p>
         }
       </div>
-      } @if(ratings.length === 0 && !canReview) {
-      <div class="mensaje-vacio">
-        <i class="bi bi-chat-dots icono-vacio"></i>
-        <p class="texto-vacio">Aún no hay opiniones. ¡Sé el primero en dejar una!</p>
+
+      <div class="card shadow-lg border-0 rounded-3 mt-4">
+        <div class="card-body p-4">
+          <h3 class="card-title mb-4 fw-bold text-dark">Opiniones de los Participantes</h3>
+
+          @if (canReview) {
+          <div class="mb-4 p-3 border rounded-3 bg-light">
+            <h5 class="mb-3 text-primary">Deja tu valoración</h5>
+            <label class="form-label small fw-semibold">Tu calificación:</label>
+            <div class="mb-2 stars">
+              @for (s of [1,2,3,4,5]; track s) {
+              <i
+                class="bi"
+                [ngClass]="s <= rating ? 'bi-star-fill text-warning' : 'bi-star'"
+                (click)="setRating(s)"
+              ></i>
+              }
+            </div>
+            <textarea
+              class="form-control mb-2"
+              rows="3"
+              [(ngModel)]="reviewText"
+              placeholder="Escribe tu comentario..."
+            ></textarea>
+            <button class="btn btn-primary" (click)="submitReview()">
+              <i class="bi bi-send me-1"></i> Enviar Opinión
+            </button>
+          </div>
+          <hr class="my-4" />
+          } @for (r of ratings; track $index) {
+          <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-light shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <b class="text-dark">{{ getStudentName(r.studentId) }}</b>
+              <span class="text-warning">
+                @for (s of [1,2,3,4,5]; track s) {
+                <i
+                  class="bi me-2 fs-5"
+                  [ngClass]="s <= r.stars ? 'bi-star-fill' : 'bi-star text-muted'"
+                ></i>
+                }
+              </span>
+            </div>
+            @if(r.comment) {
+            <p class="mb-0 text-muted small">{{ r.comment }}</p>
+            }
+          </div>
+          } @if(ratings.length === 0 && !canReview) {
+          <div class="mensaje-vacio">
+            <i class="bi bi-chat-dots icono-vacio"></i>
+            <p class="texto-vacio">Aún no hay opiniones. ¡Sé el primero en dejar una!</p>
+          </div>
+          }
+        </div>
       </div>
-      }
     </div>
   </div>
 </div>

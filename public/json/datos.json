@@ -827,7 +827,7 @@
       "title": "Escritura Creativa",
       "categoryId": "1",
       "organizerId": "3",
-      "date": "2025-12-12",
+      "date": "2025-10-12",
       "registrationDeadline": "2025-12-11",
       "timeRange": "10:00 - 12:00",
       "location": "Sala Letras",
@@ -841,7 +841,7 @@
       "title": "Feria Bienestar",
       "categoryId": "3",
       "organizerId": "5",
-      "date": "2025-12-16",
+      "date": "2025-11-16",
       "registrationDeadline": "2025-12-15",
       "timeRange": "09:00 - 14:00",
       "location": "Plazoleta Central",
@@ -933,10 +933,10 @@
       "note": "Desea participar en el grupo de discusión posterior."
     },
     {
-      "id": "2df7",
+      "id": "11",
       "activityId": "2",
       "studentId": "13",
-      "date": "2025-12-03",
+      "date": "2025-12-07T00:16:38.340Z",
       "note": "Jugador de reserva, pero muy comprometido.",
       "status": "Inscrito"
     },
@@ -946,17 +946,17 @@
       "date": "2025-12-04",
       "note": "Necesita silla especial.",
       "status": "Inscrito",
-      "id": "62c3"
+      "id": "12"
     },
     {
-      "id": "1ffa",
+      "id": "13",
       "activityId": "2",
       "studentId": "15",
       "date": "2025-12-04",
       "status": "Inscrito"
     },
     {
-      "id": "a1b2",
+      "id": "14",
       "activityId": "1",
       "studentId": "14",
       "date": "2025-11-21",
@@ -964,7 +964,7 @@
       "note": ""
     },
     {
-      "id": "c3d4",
+      "id": "15",
       "activityId": "4",
       "studentId": "18",
       "date": "2025-11-24",
@@ -972,7 +972,7 @@
       "note": ""
     },
     {
-      "id": "e5f6",
+      "id": "16",
       "activityId": "6",
       "studentId": "15",
       "date": "2025-11-26",
@@ -980,7 +980,7 @@
       "note": ""
     },
     {
-      "id": "g7h8",
+      "id": "17",
       "activityId": "11",
       "studentId": "16",
       "date": "2025-11-30",
@@ -988,7 +988,7 @@
       "note": "Interesado en la sección de Borges."
     },
     {
-      "id": "i9j0",
+      "id": "18",
       "activityId": "14",
       "studentId": "17",
       "date": "2025-12-01",
@@ -996,7 +996,7 @@
       "note": ""
     },
     {
-      "id": "k1l2",
+      "id": "19",
       "activityId": "15",
       "studentId": "20",
       "date": "2025-12-03",
@@ -1009,20 +1009,20 @@
       "date": "2025-12-04",
       "note": "",
       "status": "Cancelado",
-      "id": "m3n4"
+      "id": "20"
     },
     {
-      "id": 0,
-      "activityId": "3",
+      "id": "79b6",
+      "activityId": "19",
       "studentId": 13,
-      "date": "2025-12-06T21:47:32.370Z",
+      "date": "2025-12-07T05:25:30.459Z",
       "status": "Inscrito"
     },
     {
-      "id": 0,
-      "activityId": "4",
+      "id": "01d9",
+      "activityId": "7",
       "studentId": 13,
-      "date": "2025-12-06T21:54:27.284Z",
+      "date": "2025-12-07T05:38:03.867Z",
       "status": "Inscrito"
     }
   ],
@@ -1186,6 +1186,30 @@
       "stars": 3,
       "comment": "uwu",
       "date": "2025-12-06T18:05:47.373Z"
+    },
+    {
+      "id": "dc2d",
+      "activityId": "1",
+      "studentId": 13,
+      "stars": 4,
+      "comment": "z",
+      "date": "2025-12-07T05:08:11.954Z"
+    },
+    {
+      "id": "5806",
+      "activityId": "19",
+      "studentId": 13,
+      "stars": 4,
+      "comment": "z",
+      "date": "2025-12-07T05:25:03.675Z"
+    },
+    {
+      "id": "ad82",
+      "activityId": "19",
+      "studentId": 13,
+      "stars": 5,
+      "comment": "asdddds",
+      "date": "2025-12-07T05:25:08.538Z"
     }
   ]
 }
