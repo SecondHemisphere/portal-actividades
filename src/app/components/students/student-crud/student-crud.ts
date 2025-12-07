@@ -27,6 +27,9 @@ export class StudentCrud {
   modalities = Object.values(Modality);
   schedules = Object.values(Schedule);
 
+  photoPreview: string | null = null;
+  studentEdit:Student ={} as Student; //para foto
+
   studentFilters: SearchFilter[] = [
     { type: 'text', field: 'name', label: 'Nombre' },
     { type: 'text', field: 'faculty', label: 'Facultad' },
@@ -75,6 +78,7 @@ export class StudentCrud {
       modality: ['',Validators.required],
       schedule: ['',Validators.required],
       phone: ['',[Validators.required,Validators.pattern(/^\+?[0-9]{7,15}$/)]],
+      photoUrl: [''],
       active: [true]
     });
 
@@ -132,12 +136,20 @@ export class StudentCrud {
       phone: '',
       active: true
     });
+    this.photoPreview = null;
     this.modalRef.show();
   }
 
+  updatePhotoPreview() {
+    const url = this.formStudent.get('photoUrl')?.value;
+    this.photoPreview = url && url.trim() !== '' ? url : null;
+  }
+
   openEdit(student: Student) {
+    this.studentEdit = student;
     this.editingId = student.id ? student.id : null;
     this.formStudent.patchValue(student);
+    this.photoPreview = student.photoUrl || null;
     this.modalRef.show();
   }
 

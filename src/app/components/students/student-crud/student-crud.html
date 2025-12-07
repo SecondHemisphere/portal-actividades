@@ -183,6 +183,40 @@
               </span>
             </div>
 
+            <!-- FOTO -->
+            <div class="mb-3">
+              <label class="form-label">Foto (URL)</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="photoUrl"
+                (input)="updatePhotoPreview()"
+              />
+              <!-- VISTA PREVIA -->
+              <div class="mt-2">
+                @if(photoPreview){
+                <img
+                  [src]="photoPreview"
+                  (error)="photoPreview = null"
+                  style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
+                />
+                } @else {
+                <div
+                  class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                  style="
+                    width: 140px;
+                    height: 140px;
+                    color: white;
+                    border-radius: 8px;
+                    border: 1px solid #ccc;
+                  "
+                >
+                  Sin imagen
+                </div>
+                }
+              </div>
+            </div>
+
             <!-- ACTIVA -->
             @if(editingId){
             <div class="form-check mb-3">

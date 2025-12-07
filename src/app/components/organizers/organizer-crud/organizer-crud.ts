@@ -25,6 +25,7 @@ export class OrganizerCrud {
   days = Object.values(WeekDay);
 
   photoPreview: string | null = null;
+  organizerEdit:Organizer ={} as Organizer; //para foto
 
   organizerFilters: SearchFilter[] = [
     { type: 'text', field: 'name', label: 'Nombre' },
@@ -66,7 +67,7 @@ export class OrganizerCrud {
       bio: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]],
       shifts: [[], [Validators.required]],
       workDays: [[], [Validators.required]],
-      // photoUrl: [''],
+      photoUrl: [''],
       active: [true]
     });
   }
@@ -109,19 +110,6 @@ export class OrganizerCrud {
     }
 
     this.formOrganizer.get('workDays')?.setValue(selected);
-  }
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.photoPreview = reader.result as string;
-      this.formOrganizer.patchValue({ photoUrl: this.photoPreview });
-    };
-
-    reader.readAsDataURL(file);
   }
 
   loadOrganizers() {
@@ -169,11 +157,17 @@ export class OrganizerCrud {
 
     this.formOrganizer.get('shifts')?.setValue([]);
     this.formOrganizer.get('workDays')?.setValue([]);
-
+    this.photoPreview = null;
     this.modalRef.show();
   }
 
+  updatePhotoPreview() {
+    const url = this.formOrganizer.get('photoUrl')?.value;
+    this.photoPreview = url && url.trim() !== '' ? url : null;
+  }
+
   openEdit(org: Organizer) {
+    this.organizerEdit = org;
     this.editingId = org.id ?? null;
 
     this.formOrganizer.patchValue({
@@ -189,7 +183,7 @@ export class OrganizerCrud {
 
     this.formOrganizer.get('shifts')?.setValue(org.shifts || []);
     this.formOrganizer.get('workDays')?.setValue(org.workDays || []);
-
+    this.photoPreview = org.photoUrl || null;
     this.modalRef.show();
   }
 
