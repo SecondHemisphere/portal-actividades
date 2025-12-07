@@ -27,7 +27,7 @@ export class PortalLayout implements OnInit, OnDestroy {
   organizerNav = [
     { label: 'Explorar Actividades', link: '/activities' },
     { label: 'Dashboard', link: '/organizer/dashboard' },
-    { label: 'Gestión Actividades', link: '/organizer/activities' },
+    { label: 'Mis Actividades', link: '/organizer/my-activities' },
     { label: 'Reportes', link: '/organizer/reports' },
     { label: 'Mi Perfil', link: '/organizer/profile' }
   ];

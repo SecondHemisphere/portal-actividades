@@ -2,21 +2,21 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Enrollment } from '../../../models/Enrollment';
-import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { Activity } from '../../../models/Activity';
+import { Organizer } from '../../../models/Organizer';
 import { AuthService } from '../../../services/auth/auth-service';
 
 @Component({
-  selector: 'app-enrollments-calendar',
+  selector: 'app-activities-calendar',
   imports: [CommonModule, FormsModule],
-  templateUrl: './enrollments-calendar.html',
-  styleUrl: './enrollments-calendar.css',
+  templateUrl: './activities-calendar.html',
+  styleUrl: './activities-calendar.css',
 })
-export class EnrollmentsCalendar {
+export class ActivitiesCalendar {
 
-  enrollments: Enrollment[] = [];
+  organizers: Organizer[] = [];
   activities: Activity[] = [];
   userId = 0;
 
@@ -25,11 +25,11 @@ export class EnrollmentsCalendar {
     activities: {
       id: number;
       title: string;
-      status: string;
+      active: boolean;
       start: string;
       end: string;
       eventDate: string | undefined;
-      enrollmentDate: string;
+      organizer?: Organizer;
     }[];
   }[] = [];
 
@@ -42,8 +42,8 @@ export class EnrollmentsCalendar {
   ];
 
   constructor(
-    private enrollmentsService: ServEnrollmentsJson,
     private activitiesService: ServActivitiesJson,
+    private organizersService: ServOrganizersJson,
     private auth: AuthService,
     private router: Router
   ) {}
@@ -53,17 +53,27 @@ export class EnrollmentsCalendar {
     if (!user) return;
 
     this.userId = Number(user.id);
-    this.loadEnrollments();
+    this.loadData();
   }
 
-  loadEnrollments() {
-    this.enrollmentsService.getEnrollmentsByStudent(this.userId).subscribe(enrs => {
-      this.enrollments = enrs || [];
+  loadData() {
+    const user = this.auth.getCurrentUserValue();
+    if (!user) return;
 
-      const ids = this.enrollments.map(e => e.activityId);
+    this.organizersService.getOrganizers().subscribe(orgs => {
 
-      this.activitiesService.getActivities().subscribe(actList => {
-        this.activities = actList.filter(a => ids.includes(a.id!));
+      this.organizers = orgs;
+
+      const organizer = orgs.find(o => o.id === user.id);
+
+      if (!organizer) {
+        this.activities = [];
+        this.filteredDays = [];
+        return;
+      }
+
+      this.activitiesService.getActivities().subscribe(list => {
+        this.activities = list.filter(a => a.organizerId === organizer.id);
         this.generateFilteredDays();
       });
     });
@@ -72,15 +82,15 @@ export class EnrollmentsCalendar {
   generateFilteredDays() {
     this.filteredDays = [];
 
-    this.enrollments.forEach(e => {
-      const act = this.activities.find(a => a.id === e.activityId);
-      if (!act) return;
+    this.activities.forEach(act => {
+      if (!act.date) return;
 
-      const eventDateObj = new Date(act.date);
-      const year = eventDateObj.getFullYear();
-      const month = eventDateObj.getMonth();
+      const eventDateObj = new Date(act.date + 'T00:00:00');
 
-      if (year === this.selectedYear && month === this.selectedMonth) {
+      if (
+        eventDateObj.getFullYear() === this.selectedYear &&
+        eventDateObj.getMonth() === this.selectedMonth
+      ) {
 
         let day = this.filteredDays.find(d =>
           d.date.getFullYear() === eventDateObj.getFullYear() &&
@@ -89,24 +99,23 @@ export class EnrollmentsCalendar {
         );
 
         if (!day) {
-          day = {
-            date: eventDateObj,
-            activities: []
-          };
+          day = { date: eventDateObj, activities: [] };
           this.filteredDays.push(day);
         }
+
+        const organizer = this.organizers.find(o => o.id === act.organizerId);
 
         const [startRaw, endRaw] =
           act.timeRange?.split('-').map(t => t.trim()) ?? [];
 
         day.activities.push({
-          id: e.activityId,
-          title: act.title || 'Actividad',
-          status: e.status,
+          id: act.id!,
+          title: act.title ?? 'Actividad',
+          active: act.active,
           start: startRaw || '—',
           end: endRaw || '—',
           eventDate: act.date,
-          enrollmentDate: e.date
+          organizer: organizer
         });
       }
     });
@@ -135,10 +144,6 @@ export class EnrollmentsCalendar {
   }
 
   view(id: number) {
-    this.router.navigate(['/activity-view', id]);
-  }
-
-  cancel(id: number) {
     this.router.navigate(['/activity-view', id]);
   }
 }

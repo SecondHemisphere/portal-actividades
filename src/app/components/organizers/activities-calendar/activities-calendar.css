@@ -1,0 +1,59 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--bs-dark);
+}
+.day-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.day-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.activity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid #eee;
+}
+
+.activity:first-child {
+  border-top: none;
+}
+
+.activity-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.activity-status {
+  margin-top: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.activity-status.active {
+  background: #d4f5d0;
+  color: #217a00;
+}
+
+.activity-status.inactive {
+  background: #ffd5d5;
+  color: #b80000;
+}

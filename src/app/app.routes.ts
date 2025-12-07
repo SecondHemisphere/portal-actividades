@@ -13,6 +13,7 @@ import { Login } from './components/auth/login/login';
 import { authGuard } from './guards/auth-guard';
 import { StudentProfile } from './components/students/student-profile/student-profile';
 import { OrganizerProfile } from './components/organizers/organizer-profile/organizer-profile';
+import { MyActivitiesPage } from './components/organizers/my-activities-page/my-activities-page';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -34,9 +35,9 @@ export const routes: Routes = [
     path: 'organizer',
     children: [
       // { path: 'dashboard', component: OrganizerDashboard, canActivate: [authGuard] },
-      // { path: 'activities', component: OrganizerActivities, canActivate: [authGuard] },
-      // { path: 'reports', component: OrganizerReports, canActivate: [authGuard] },
+      { path: 'my-activities', component: MyActivitiesPage, canActivate: [authGuard] },
       { path: 'profile', component: OrganizerProfile, canActivate: [authGuard] },
+      // { path: 'reports', component: OrganizerReports, canActivate: [authGuard] },
     ]
   },
 
