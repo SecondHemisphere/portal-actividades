@@ -57,3 +57,22 @@
   background: #ffd5d5;
   color: #b80000;
 }
+
+.fab-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50px;
+  padding: 12px 22px;
+  font-size: 16px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.fab-btn i {
+  font-size: 18px;
+}
+
+.header-container h2 {
+  font-weight: 600;
+}

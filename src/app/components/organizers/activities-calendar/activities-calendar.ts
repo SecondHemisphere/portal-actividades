@@ -146,4 +146,12 @@ export class ActivitiesCalendar {
   view(id: number) {
     this.router.navigate(['/activity-view', id]);
   }
+
+  edit(id: number) {
+    this.router.navigate(['/activity-view', id]);
+  }
+
+  openNew() {
+
+  }
 }
