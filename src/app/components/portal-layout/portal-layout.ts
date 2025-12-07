@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component} from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserRole, User } from '../../models/User';
@@ -11,28 +11,30 @@ import { Subscription } from 'rxjs';
   templateUrl: './portal-layout.html',
   styleUrl: './portal-layout.css',
 })
-export class PortalLayout implements OnInit, OnDestroy {
+export class PortalLayout {
   public UserRole = UserRole;
   currentRole: UserRole = UserRole.Estudiante;
   isLoggedIn = false;
   private sub!: Subscription;
 
+  currentUserName = '';
+  currentUserInitials = '';
+  profileLink = '/profile';
+
   studentNav = [
     { label: 'Explorar Actividades', link: '/activities' },
     { label: 'Mis Inscripciones', link: '/student/my-enrollments' },
     { label: 'Historial De Valoraciones', link: '/student/history' },
-    { label: 'Mi Perfil', link: '/student/profile' }
   ];
 
   organizerNav = [
     { label: 'Explorar Actividades', link: '/activities' },
-    { label: 'Dashboard', link: '/organizer/dashboard' },
     { label: 'Mis Actividades', link: '/organizer/my-activities' },
     { label: 'Reportes', link: '/organizer/reports' },
-    { label: 'Mi Perfil', link: '/organizer/profile' }
   ];
 
   adminNav = [
+    { label: 'Dashboard', link: '/admin/dashboard' },
     { label: 'Actividades', link: '/admin/activity-crud' },
     { label: 'Categorías', link: '/admin/category-crud' },
     { label: 'Inscripciones', link: '/admin/enrollment-crud' },
@@ -53,6 +55,20 @@ export class PortalLayout implements OnInit, OnDestroy {
     this.sub = this.authService.getCurrentUser().subscribe((user: User | null) => {
       this.isLoggedIn = !!user;
       this.currentRole = user?.role || UserRole.Estudiante;
+
+      if (user) {
+        this.currentUserName = user.name;
+        this.currentUserInitials = user.name
+          .split(' ')
+          .map(p => p[0])
+          .join('')
+          .toUpperCase();
+
+        this.profileLink =
+          user.role === UserRole.Organizador ? '/organizer/profile'
+        : user.role === UserRole.Admin ? '/admin/user-crud'
+        : '/student/profile';
+      }
     });
   }
 
