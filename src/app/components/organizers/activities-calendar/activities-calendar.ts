@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,6 +15,9 @@ import { AuthService } from '../../../services/auth/auth-service';
   styleUrl: './activities-calendar.css',
 })
 export class ActivitiesCalendar {
+
+  @Output() editActivity = new EventEmitter<number>();
+  @Output() newActivity = new EventEmitter<void>();
 
   organizers: Organizer[] = [];
   activities: Activity[] = [];
@@ -148,10 +151,11 @@ export class ActivitiesCalendar {
   }
 
   edit(id: number) {
-    this.router.navigate(['/activity-view', id]);
+    this.editActivity.emit(id);
   }
 
-  openNew() {
-
+  new() {
+    this.newActivity.emit();
   }
+
 }

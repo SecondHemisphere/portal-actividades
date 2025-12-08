@@ -222,8 +222,6 @@ export class ActivityView {
         this.currentEnrollment = e;
         this.checkIfCanReview();
         alert('Te has inscrito correctamente.');
-      }, err => {
-        alert('No se pudo completar la inscripción. Intenta nuevamente.');
       });
     });
   }
@@ -253,14 +251,11 @@ export class ActivityView {
       this.currentEnrollment = e;
       this.checkIfCanReview();
       alert('Tu inscripción ha sido cancelada.');
-    }, err => {
-      alert('No se pudo cancelar la inscripción. Intenta nuevamente.');
     });
   }
 
   edit() {
-    if (this.role !== 'organizer' || !this.isMyActivity) return;
-    this.router.navigate(['/activities/edit', this.activity.id]);
+    this.router.navigate(['/organizer/my-activities']);
   }
 
   setRating(stars: number) {
