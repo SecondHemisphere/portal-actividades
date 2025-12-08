@@ -1,0 +1,55 @@
+.dashboard-container {
+  padding: 15px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 8px 0 4px;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.card p.number {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 4px;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.icon {
+  font-size: 35px;
+  color: var(--bs-primary);
+  margin-bottom: 8px;
+  line-height: 1;
+}

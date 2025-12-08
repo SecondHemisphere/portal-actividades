@@ -14,7 +14,7 @@ import { authGuard } from './guards/auth-guard';
 import { StudentProfile } from './components/students/student-profile/student-profile';
 import { OrganizerProfile } from './components/organizers/organizer-profile/organizer-profile';
 import { MyActivitiesPage } from './components/organizers/my-activities-page/my-activities-page';
-import { Dashboard } from './components/dashboard/dashboard';
+import { Dashboard } from './components/admin/dashboard/dashboard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

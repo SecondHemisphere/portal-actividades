@@ -1,8 +1,8 @@
 import { Component} from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { UserRole, User } from '../../models/User';
-import { AuthService } from '../../services/auth/auth-service';
+import { UserRole, User } from '../../../models/User';
+import { AuthService } from '../../../services/auth/auth-service';
 import { Subscription } from 'rxjs';
 
 @Component({

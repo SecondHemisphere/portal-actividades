@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
-import { PortalLayout } from './components/portal-layout/portal-layout';
+import { PortalLayout } from './components/shared/portal-layout/portal-layout';
 
 @Component({
   selector: 'app-root',
