@@ -572,15 +572,15 @@
     {
       "title": "Taller de Fotografía",
       "categoryId": "1",
-      "organizerId": "3",
       "date": "2025-12-07",
       "registrationDeadline": "2025-12-06",
       "location": "Sala A1",
-      "capacity": 25,
+      "capacity": 40,
       "description": "Aprende fotografía básica, composición, manejo de luz y edición digital. Este taller intensivo de un día te proporcionará las herramientas necesarias para capturar imágenes impactantes con cualquier tipo de cámara. Ideal para principiantes que desean mejorar sus habilidades de inmediato. Tendremos una práctica al aire libre para aplicar lo aprendido.",
       "photoUrl": "https://th.bing.com/th/id/R.25f51885e72010543fa8216e0a97df88?rik=7SwmZyjwgO%2bZSg&riu=http%3a%2f%2fwww.dzoom.org.es%2fwp-content%2fuploads%2f2012%2f12%2fqcam.jpg&ehk=NcD7RVxl9NgiRad5BQWq3UP%2fAlkZoMVyISMour6Ha4M%3d&risl=&pid=ImgRaw&r=0",
       "active": true,
-      "timeRange": "09:00 - 11:00",
+      "timeRange": "09:00 - 12:00",
+      "organizerId": "3",
       "id": "1"
     },
     {
@@ -710,18 +710,18 @@
       "active": true
     },
     {
-      "id": "11",
       "title": "Círculo de Lectura",
       "categoryId": "1",
-      "organizerId": "3",
       "date": "2025-12-09",
       "registrationDeadline": "2025-12-07",
-      "timeRange": "10:00 - 11:30",
       "location": "Biblioteca Central",
-      "capacity": 20,
+      "capacity": 33,
       "description": "Conversatorio literario sobre autores latinoamericanos contemporáneos. Discutiremos temas de identidad, cultura y política social. Por favor, lee previamente 'Cien Años de Soledad' (Capítulo 3) para la discusión. Es un espacio de diálogo abierto y respetuoso.",
       "photoUrl": "https://img.genial.ly/61860d099a6bcf00127f980f/83c0f9ae-5b78-47b4-b399-b16942de0ee6.png",
-      "active": true
+      "active": true,
+      "timeRange": "10:00 - 11:30",
+      "organizerId": "3",
+      "id": "11"
     },
     {
       "title": "Respiración Consciente",
@@ -752,18 +752,18 @@
       "active": true
     },
     {
-      "id": "14",
       "title": "Ajedrez Universitario",
       "categoryId": "7",
-      "organizerId": "3",
       "date": "2025-12-11",
       "registrationDeadline": "2025-12-10",
-      "timeRange": "09:00 - 13:00",
       "location": "Sala Multiusos",
-      "capacity": 60,
+      "capacity": 68,
       "description": "Torneo oficial de ajedrez rápido (Blitz). Se usarán relojes y se aplicarán las reglas de la FIDE. Es una excelente oportunidad para poner a prueba tu estrategia y mejorar tu apertura y medio juego. ¡Inscríbete y demuestra quién es el maestro del campus!",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.hop24G50eMGUc3Vq7mutNAHaEK?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
-      "active": true
+      "active": true,
+      "timeRange": "09:00 - 13:00",
+      "organizerId": "3",
+      "id": "14"
     },
     {
       "id": "15",
@@ -794,18 +794,18 @@
       "active": true
     },
     {
-      "id": "17",
       "title": "Noche de Cine",
       "categoryId": "1",
-      "organizerId": "3",
       "date": "2025-12-13",
       "registrationDeadline": "2025-12-12",
-      "timeRange": "18:30 - 21:00",
       "location": "Auditorio C4",
-      "capacity": 150,
+      "capacity": 155,
       "description": "Proyección cultural de una película premiada latinoamericana, seguida de un breve debate moderado sobre el impacto social de la obra. Las palomitas corren por cuenta de la casa. ¡Ven a compartir y debatir sobre arte cinematográfico!",
       "photoUrl": "https://th.bing.com/th/id/R.069cd14c746b6ab459beb0f97d40c1d3?rik=AISRJOyqFlLiyw&riu=http%3a%2f%2f2.bp.blogspot.com%2f-g5rKFgFBbCE%2fU7TZOBbpj3I%2fAAAAAAAAAC4%2fMpOiPHT_jz8%2fs1600%2fcine.jpg&ehk=AvcDUDXzRsLg%2bEy8vefuOSkckFFhnRyWLeMWaQB7jfE%3d&risl=&pid=ImgRaw&r=0",
-      "active": true
+      "active": true,
+      "timeRange": "18:30 - 21:00",
+      "organizerId": "3",
+      "id": "17"
     },
     {
       "id": "18",
@@ -848,6 +848,20 @@
       "description": "Gran evento con charlas sobre nutrición, salud mental, manejo del tiempo y stands de productos orgánicos. Habrá demostraciones gratuitas de masajes y mini-sesiones de yoga. ¡Cuida tu cuerpo y mente en un solo lugar!",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.Fi5i0siPOY0wFrOIcjotNgHaDU?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
+    },
+    {
+      "title": "aaaaaaaaaaaaa",
+      "categoryId": "3",
+      "date": "2026-01-13",
+      "registrationDeadline": "2025-12-24",
+      "location": "saaaaaaaaaaa",
+      "capacity": 20,
+      "description": "asdddddddddddddddddddd",
+      "photoUrl": "https://tse1.mm.bing.net/th/id/OIP.ZIxO5agdPXPAgxgIYxrqLwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "active": true,
+      "timeRange": "18:38 - 23:35",
+      "organizerId": "3",
+      "id": "8055"
     }
   ],
   "enrollments": [

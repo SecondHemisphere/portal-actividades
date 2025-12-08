@@ -32,6 +32,7 @@ export class ServActivitiesJson {
       map(activities =>
         activities.filter(a => {
           let ok = true;
+          
           // Filtro por titulo
           if (filters.title && filters.title.trim() !== '') {
             ok = ok && a.title.toLowerCase()

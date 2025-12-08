@@ -10,6 +10,7 @@ import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
 import { ActivitiesCalendar } from '../activities-calendar/activities-calendar';
+import { AuthService } from '../../../services/auth/auth-service';
 
 declare const bootstrap: any;
 
@@ -20,47 +21,86 @@ declare const bootstrap: any;
   styleUrl: './my-activities-page.css'
 })
 export class MyActivitiesPage {
+
   activities: Activity[] = [];
-  filteredActivities: Activity[] = [];
+  categories: Category[] = [];
+  organizers: Organizer[] = [];
+
   formActivity!: FormGroup;
   editingId: number | null = null;
-  modalRef: any;
-
-  photoPreview: string | null = null;
 
   minDate:string = "2020-01-01";
   maxDate = new Date().toISOString().split("T")[0]; ///fecha con formato yyyy-mm-dd
 
-  categories: Category[] = [];
-  organizers: Organizer[] = [];
+  photoPreview: string | null = null;
+  modalRef: any;
 
-  activityEdit:Activity ={} as Activity; //para foto
+  userId = 0;
 
   constructor(
     private activitiesService: ServActivitiesJson,
     private categoriesService: ServCategoriesJson,
     private organizersService: ServOrganizersJson,
+    private authService: AuthService,
     private formbuilder: FormBuilder,
-    private router:Router
+    private router: Router
   ) {
-    this.loadActivities();
-    this.loadCategories();
-    this.loadOrganizers();
 
     this.formActivity = this.formbuilder.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
       categoryId: ['', Validators.required],
-      organizerId: ['', Validators.required],
       date: ['', Validators.required],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
-      registrationDeadline: ['', Validators.required ],
+      registrationDeadline: ['', Validators.required],
       location: ['', [Validators.required, Validators.minLength(3)]],
-      capacity: [1, [Validators.required, Validators.min(10), Validators.max(500)]],
+      capacity: [10, [Validators.required, Validators.min(10), Validators.max(500)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       photoUrl: [''],
       active: [true]
     }, { validators: [horaRangeValidator, registrationDeadlineValidator] });
+
+  }
+
+  ngOnInit() {
+    this.loadActivities();
+    this.loadCategories();
+    this.loadData();
+  }
+
+  loadActivities(){
+    this.activitiesService.getActivities().subscribe(data => {
+      this.activities = data;
+    });
+  }
+
+  loadCategories(){
+    this.categoriesService.getCategories().subscribe(data => {
+      this.categories = data;
+    });
+  }
+
+  loadData() {
+    const user = this.authService.getCurrentUserValue();
+    if (!user) return;
+
+    this.userId = Number(user.id);
+
+    this.organizersService.getOrganizers().subscribe(orgs => {
+
+      this.organizers = orgs;
+      const organizer = orgs.find(o => o.id === user.id);
+
+      if (!organizer) {
+        this.activities = [];
+        return;
+      }
+
+      this.activitiesService.getActivities().subscribe(list => {
+        this.activities = list.filter(a => a.organizerId === organizer.id);
+      });
+
+    });
   }
 
   @ViewChild("activityModalRef") modalElement!: ElementRef;
@@ -68,64 +108,18 @@ export class MyActivitiesPage {
     this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
   }
 
-  get maxDeadlineDate() {
-    return this.formActivity.get('date')?.value || this.maxDate;
-  }
-
-  loadActivities() {
-    this.activitiesService.getActivities().subscribe((data: Activity[]) => {
-      this.activities = data;
-      this.filteredActivities = [...data];
-    });
-  }
-
-  loadCategories() {
-    this.categoriesService.getCategories().subscribe((data: Category[]) => {
-      this.categories = data;
-    });
-  }
-
-  loadOrganizers() {
-    this.organizersService.getOrganizers().subscribe((data: Organizer[]) => {
-      this.organizers = data;
-    });
-  }
-
-  getCategoryName(id: number): string {
-    return this.categories.find(c => Number(c.id) === Number(id))?.name || 'Sin categoría';
-  }
-
-  getOrganizerName(id: number): string {
-    return this.organizers.find(o => Number(o.id) === Number(id))?.name || 'Sin organizador';
-  }
-
-  updatePhotoPreview() {
-    const url = this.formActivity.get('photoUrl')?.value;
-    this.photoPreview = url && url.trim() !== '' ? url : null;
-  }
-
-  view(activity: Activity) {
-    this.router.navigate(['/activity-view', activity.id]);
-  }
-
-  delete(activity: Activity) {
-    const confirmado = confirm(`¿Seguro deseas eliminar la actividad? ${activity.title}`);
-    if (confirmado) {
-      this.activitiesService.delete(activity.id).subscribe(() => {
-        alert("Actividad eliminada");
-        this.loadActivities();
-      });
-    }
-  }
+  get maxDeadlineDate() { return this.formActivity.get('date')?.value || this.maxDate; }
 
   openNew() {
     this.editingId = null;
+
     this.formActivity.reset({
       title: '',
       categoryId: '',
-      organizerId: '',
       date: '',
-      timeRange: '',
+      startTime: '',
+      endTime: '',
+      registrationDeadline: '',
       location: '',
       capacity: 10,
       description: '',
@@ -134,30 +128,24 @@ export class MyActivitiesPage {
     });
 
     this.photoPreview = null;
-    
     this.modalRef.show();
   }
 
   openEditById(id: number) {
     const activity = this.activities.find(a => a.id === id);
     if (!activity) return;
-    this.openEdit(activity);
-  }
 
-  openEdit(activity: Activity) {
-    this.activityEdit = activity;
-    this.editingId = activity.id ?? null;
+    this.editingId = id;
 
-    const [startTime, endTime] = activity.timeRange?.split(' - ') || ['', ''];
+    const [startTime, endTime] = activity.timeRange?.split(' - ') ?? ['', ''];
 
     this.formActivity.patchValue({
       ...activity,
-      startTime: startTime,
-      endTime: endTime
+      startTime,
+      endTime
     });
 
-    this.photoPreview = activity.photoUrl || null;
-
+    this.photoPreview = activity.photoUrl ?? null;
     this.modalRef.show();
   }
 
@@ -167,23 +155,22 @@ export class MyActivitiesPage {
       return;
     }
 
-    let datos = this.formActivity.value;
+    const datos = this.formActivity.value;
 
     datos.timeRange = `${datos.startTime} - ${datos.endTime}`;
-
     delete datos.startTime;
     delete datos.endTime;
 
+    datos.organizerId = String(this.userId);
+
     if (this.editingId) {
-      let activity: Activity = { ...datos, id: this.editingId };
-      this.activitiesService.update(activity).subscribe(() => {
+      this.activitiesService.update({ ...datos, id: this.editingId }).subscribe(() => {
         alert("Actividad actualizada");
         this.modalRef.hide();
         this.loadActivities();
       });
     } else {
-      let activity: Activity = { ...datos };
-      this.activitiesService.create(activity).subscribe(() => {
+      this.activitiesService.create(datos).subscribe(() => {
         alert("Actividad creada");
         this.modalRef.hide();
         this.loadActivities();
@@ -191,4 +178,22 @@ export class MyActivitiesPage {
     }
   }
 
+  delete(activity: Activity) {
+    const confirmado = confirm(`¿Eliminar actividad "${activity.title}"?`);
+    if (!confirmado) return;
+
+    this.activitiesService.delete(activity.id).subscribe(() => {
+      alert("Actividad eliminada");
+      this.loadActivities();
+    });
+  }
+
+  view(activity: Activity) {
+    this.router.navigate(['/activity-view', activity.id]);
+  }
+
+  updatePhotoPreview() {
+    const url = this.formActivity.get('photoUrl')?.value;
+    this.photoPreview = url?.trim() ? url : null;
+  }
 }

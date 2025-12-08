@@ -47,26 +47,22 @@ export class ActivitiesCalendar {
   constructor(
     private activitiesService: ServActivitiesJson,
     private organizersService: ServOrganizersJson,
-    private auth: AuthService,
+    private authService: AuthService,
     private router: Router
-  ) {}
-
-  ngOnInit() {
-    const user = this.auth.getCurrentUserValue();
-    if (!user) return;
-
-    this.userId = Number(user.id);
+  )
+  {
     this.loadData();
   }
 
   loadData() {
-    const user = this.auth.getCurrentUserValue();
+    const user = this.authService.getCurrentUserValue();
     if (!user) return;
+
+    this.userId = Number(user.id);
 
     this.organizersService.getOrganizers().subscribe(orgs => {
 
       this.organizers = orgs;
-
       const organizer = orgs.find(o => o.id === user.id);
 
       if (!organizer) {
