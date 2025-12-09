@@ -5,8 +5,6 @@ import { Organizer } from '../../../models/Organizer';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-export type ActivityCardMode = 'read-only' | 'my-enrollment';
-
 @Component({
   selector: 'app-activity-card',
   templateUrl: './activity-card.html',
@@ -27,11 +25,6 @@ export class ActivityCard {
 
   getOrganizerName(): string {
     return this.organizers.find(o => Number(o.id) === Number(this.activity.organizerId))?.name || 'Sin organizador';
-  }
-
-  isRegistrationClosed(): boolean {
-    const deadline = new Date(this.activity.registrationDeadline);
-    return deadline < new Date();
   }
 
   view() {

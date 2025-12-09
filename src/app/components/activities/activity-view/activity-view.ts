@@ -120,7 +120,7 @@ export class ActivityView {
   getStudentName(id: number): string {
     return this.students.find(s => Number(s.id) === Number(id))?.name || 'Estudiante Desconocido';
   }
-
+  
   checkEnrollment() {
     if (this.role !== 'student') {
       this.isEnrolled = false;

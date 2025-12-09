@@ -20,18 +20,13 @@
       >
         {{ getCategoryName() }}
       </span>
-
-      @if (isRegistrationClosed()) {
-      <span class="badge-closed position-absolute bottom-0 end-0 m-3" style="padding: 0.5rem 1rem">
-        <i class="bi bi-x-octagon-fill"></i>
-        Inscripciones Cerradas
-      </span>
-      }
     </div>
 
     <div class="card-body p-4">
       <div class="d-flex justify-content-between align-items-start mb-3">
-        <h1 class="card-title display-5 fw-bold text-dark mb-0 me-3">{{ activity.title }}</h1>
+        <h1 class="card-title display-5 fw-bold text-dark mb-0 me-3">
+          {{ activity.title }}
+        </h1>
       </div>
 
       <div class="row g-3 mb-4 small text-dark">
@@ -42,6 +37,7 @@
             {{ activity.date | date : 'fullDate' }}
           </div>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <i class="bi bi-clock me-2 text-primary fs-5"></i>
           <div>
@@ -49,6 +45,7 @@
             {{ activity.timeRange }}
           </div>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <i class="bi bi-geo-alt me-2 text-primary fs-5"></i>
           <div>
@@ -56,6 +53,7 @@
             {{ activity.location }}
           </div>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <i class="bi bi-person-badge me-2 text-secondary fs-5"></i>
           <div>
@@ -63,6 +61,7 @@
             {{ getOrganizerName() }}
           </div>
         </div>
+
         <div class="col-md-4 d-flex align-items-center">
           <i class="bi bi-people me-2 text-secondary fs-5"></i>
           <div>
@@ -78,9 +77,17 @@
       <p class="card-text text-secondary lead">{{ activity.description }}</p>
 
       <div class="d-flex flex-column gap-3 mt-4 pt-2 border-top">
-        <!-- Botones para estudiantes -->
-        @if (role === 'student' && !hasActivityEnded() && !isRegistrationClosed()) { @if
-        (isEnrolled) {
+        @if (hasActivityEnded()) {
+        <div class="alert alert-secondary d-flex align-items-center gap-2 mb-0">
+          <i class="bi bi-flag-fill fs-5"></i>
+          <span>Esta actividad ya ha concluido.</span>
+        </div>
+        } @else if (isRegistrationClosed()) {
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
+          <i class="bi bi-x-octagon-fill fs-5"></i>
+          <span>Inscripciones cerradas</span>
+        </div>
+        } @else if (role === 'student') { @if (isEnrolled) {
         <div class="alert alert-success d-flex align-items-center gap-2 mb-0">
           <i class="bi bi-check-circle-fill fs-5"></i>
           <span>Ya estás inscrito en esta actividad</span>
@@ -93,20 +100,17 @@
             <i class="bi bi-exclamation-triangle-fill text-danger fs-4"></i>
             <span class="fw-semibold text-danger">Cancelar inscripción</span>
           </div>
+
           <button type="button" class="btn btn-danger btn-lg" (click)="cancelEnrollment()">
             <i class="bi bi-x-circle me-1"></i> Cancelar
           </button>
         </div>
+
         } @else {
         <button type="button" class="btn btn-primary btn-lg shadow-sm" (click)="enroll()">
           <i class="bi bi-plus-circle me-2"></i> Inscribirme
         </button>
-        } } @else if (role === 'student' && isRegistrationClosed() && !hasActivityEnded()) {
-        <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
-          <i class="bi bi-x-octagon-fill fs-5"></i>
-          <span>Inscripciones cerradas</span>
-        </div>
-        } @if (role === 'organizer' && isMyActivity) {
+        } } @if (role === 'organizer' && isMyActivity) {
         <div class="alert alert-info d-flex align-items-center gap-2">
           <i class="bi bi-info-circle-fill fs-5"></i>
           <span class="fw-semibold">Esta actividad es tuya.</span>
@@ -121,6 +125,7 @@
           @if (canReview) {
           <div class="mb-4 p-3 border rounded-3 bg-light">
             <h5 class="mb-3 text-primary">Deja tu valoración</h5>
+
             <label class="form-label small fw-semibold">Tu calificación:</label>
             <div class="mb-2 stars">
               @for (s of [1,2,3,4,5]; track s) {
@@ -131,21 +136,25 @@
               ></i>
               }
             </div>
+
             <textarea
               class="form-control mb-2"
               rows="3"
               [(ngModel)]="reviewText"
               placeholder="Escribe tu comentario..."
             ></textarea>
+
             <button type="button" class="btn btn-primary" (click)="submitReview()">
               <i class="bi bi-send me-1"></i> Enviar Opinión
             </button>
           </div>
+
           <hr class="my-4" />
           } @for (r of ratings; track $index) {
           <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-light shadow-sm">
             <div class="d-flex justify-content-between align-items-center mb-1">
               <b class="text-dark">{{ getStudentName(r.studentId) }}</b>
+
               <span class="text-warning">
                 @for (s of [1,2,3,4,5]; track s) {
                 <i
@@ -155,11 +164,12 @@
                 }
               </span>
             </div>
-            @if(r.comment) {
+
+            @if (r.comment) {
             <p class="mb-0 text-muted small">{{ r.comment }}</p>
             }
           </div>
-          } @if(ratings.length === 0 && !canReview) {
+          } @if (ratings.length === 0 && !canReview) {
           <div class="mensaje-vacio">
             <i class="bi bi-chat-dots icono-vacio"></i>
             <p class="texto-vacio">Aún no hay opiniones. ¡Sé el primero en dejar una!</p>
