@@ -121,36 +121,8 @@
       <div class="card shadow-lg border-0 rounded-3 mt-4">
         <div class="card-body p-4">
           <h3 class="card-title mb-4 fw-bold text-dark">Opiniones de los Participantes</h3>
-
-          @if (canReview) {
-          <div class="mb-4 p-3 border rounded-3 bg-light">
-            <h5 class="mb-3 text-primary">Deja tu valoración</h5>
-
-            <label class="form-label small fw-semibold">Tu calificación:</label>
-            <div class="mb-2 stars">
-              @for (s of [1,2,3,4,5]; track s) {
-              <i
-                class="bi"
-                [ngClass]="s <= rating ? 'bi-star-fill text-warning' : 'bi-star'"
-                (click)="setRating(s)"
-              ></i>
-              }
-            </div>
-
-            <textarea
-              class="form-control mb-2"
-              rows="3"
-              [(ngModel)]="reviewText"
-              placeholder="Escribe tu comentario..."
-            ></textarea>
-
-            <button type="button" class="btn btn-primary" (click)="submitReview()">
-              <i class="bi bi-send me-1"></i> Enviar Opinión
-            </button>
-          </div>
-
           <hr class="my-4" />
-          } @for (r of ratings; track $index) {
+          @for (r of ratings; track $index) {
           <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-light shadow-sm">
             <div class="d-flex justify-content-between align-items-center mb-1">
               <b class="text-dark">{{ getStudentName(r.studentId) }}</b>
@@ -180,3 +152,58 @@
     </div>
   </div>
 </div>
+
+@if (canReview) {
+<div class="modal fade" id="ratingModal" tabindex="-1" #ratingModalRef>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo Comentario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form [formGroup]="formRating">
+        <div class="modal-body">
+          <!-- FORMULARIO DE RATING -->
+          <div class="mb-4 p-3 border rounded-3 bg-light">
+            <h5 class="mb-3 text-primary">Deja tu valoración</h5>
+
+            <label class="form-label small fw-semibold">Tu calificación:</label>
+            <div class="mb-2 stars">
+              @for (s of [1,2,3,4,5]; track s) {
+              <i
+                class="bi"
+                [ngClass]="
+                  s <= formRating.get('stars')?.value ? 'bi-star-fill text-warning' : 'bi-star'
+                "
+                (click)="formRating.get('stars')?.setValue(s)"
+              ></i>
+              }
+            </div>
+
+            <textarea
+              class="form-control mb-2"
+              rows="3"
+              formControlName="comment"
+              placeholder="Escribe tu comentario..."
+            ></textarea>
+            @if (formRating.get('comment')?.hasError('maxlength') &&
+            formRating.get('comment')?.touched) {
+            <span class="text-danger">Máximo 250 caracteres</span>
+            }
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+            Cancelar
+          </button>
+          <button class="btn btn-primary" type="button" (click)="submitReview()">
+            Enviar Opinión
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+}

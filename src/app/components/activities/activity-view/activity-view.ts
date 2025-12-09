@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Activity } from '../../../models/Activity';
 import { ServActivitiesJson } from '../../../services/serv-activities-json';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Rating } from '../../../models/Rating';
 import { Student } from '../../../models/Student';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
@@ -17,9 +17,11 @@ import { UserRole } from '../../../models/User';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
 
+declare const bootstrap: any;
+
 @Component({
   selector: 'app-activity-view',
-  imports: [DatePipe, FormsModule, CommonModule],
+  imports: [DatePipe, ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './activity-view.html',
   styleUrl: './activity-view.css',
 })
@@ -43,6 +45,9 @@ export class ActivityView {
   rating: number = 0;
   reviewText: string = '';
 
+  formRating!: FormGroup;
+  modalRef: any;
+
   constructor(
     private activitiesService: ServActivitiesJson,
     private categoriesService: ServCategoriesJson,
@@ -52,8 +57,12 @@ export class ActivityView {
     private ratingsService: ServRatingsJson,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
   ) {}
+
+  @ViewChild('ratingModalRef') modalElement!: ElementRef;
+  ngAfterViewInit() {
+    this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
+  }
 
   ngOnInit() {
     this.loadCurrentUser();
@@ -259,21 +268,24 @@ export class ActivityView {
   }
 
   submitReview() {
-    if (!this.canReview) return;
-    if (this.rating <= 0) return;
+    if (this.formRating.invalid) {
+      this.formRating.markAllAsTouched();
+      return;
+    }
 
     const review: Rating = {
       activityId: this.activity.id!,
       studentId: this.userId,
-      stars: this.rating,
-      comment: this.reviewText,
+      stars: this.formRating.get('stars')?.value,
+      comment: this.formRating.get('comment')?.value,
       date: new Date().toISOString()
     };
 
     this.ratingsService.create(review).subscribe(r => {
       this.ratings.push(r);
-      this.rating = 0;
-      this.reviewText = '';
+      this.formRating.reset({ stars: 0, comment: '' });
+      alert('¡Valoración enviada!');
+      this.modalRef.hide();
     });
   }
 
