@@ -5,7 +5,7 @@ import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Rating } from '../../../models/Rating';
 import { Student } from '../../../models/Student';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
@@ -57,7 +57,13 @@ export class ActivityView {
     private ratingsService: ServRatingsJson,
     private authService: AuthService,
     private route: ActivatedRoute,
-  ) {}
+    private formbuilder: FormBuilder
+  ) {
+    this.formRating = this.formbuilder.group({
+      stars: [0, Validators.required],
+      comment: ['', [Validators.maxLength(250)]]
+    });
+  }
 
   @ViewChild('ratingModalRef') modalElement!: ElementRef;
   ngAfterViewInit() {
