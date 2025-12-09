@@ -254,10 +254,6 @@ export class ActivityView {
     });
   }
 
-  edit() {
-    this.router.navigate(['/organizer/my-activities']);
-  }
-
   setRating(stars: number) {
     this.rating = stars;
   }

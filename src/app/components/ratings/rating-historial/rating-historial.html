@@ -1,0 +1,30 @@
+<div class="container py-4">
+  <h2 class="mb-4 fw-bold text-primary">Historial de Opiniones</h2>
+
+  @if(ratings.length === 0) {
+  <div class="alert alert-info">Aún no has dejado opiniones en actividades.</div>
+  } @for(r of ratings; track r.id) {
+  <div class="card mb-3 shadow rounded-3 p-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h4 class="mb-1">{{ r.activity?.title || 'Actividad desconocida' }}</h4>
+        <small class="text-muted">{{ r.date | date : 'mediumDate' }}</small>
+      </div>
+
+      <div class="text-warning fs-5">
+        @for (s of [1,2,3,4,5]; track s) {
+        <i class="bi" [ngClass]="s <= r.stars ? 'bi-star-fill' : 'bi-star text-muted'"></i>
+        }
+      </div>
+    </div>
+
+    @if(r.comment) {
+    <p class="mt-2">{{ r.comment }}</p>
+    }
+
+   <!-- <a class="btn btn-sm btn-outline-primary mt-2" [routerLink]="['/activity', r.activityId]">
+      Ver actividad
+    </a> -->
+  </div>
+  }
+</div>

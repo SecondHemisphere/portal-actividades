@@ -335,3 +335,9 @@ form img {
   font-size: 1.25rem;
   margin-top: 1rem;
 }
+
+.alert-info {
+  background-color: var(--bs-secondary) !important;
+  color: #fff !important;
+  border-color: var(--bs-secondary) !important;
+}

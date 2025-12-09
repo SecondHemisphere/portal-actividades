@@ -9,7 +9,7 @@ import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
-import { ActivitiesCalendar } from '../activities-calendar/activities-calendar';
+import { ActivitiesCalendar } from '../../activities/activities-calendar/activities-calendar';
 import { AuthService } from '../../../services/auth/auth-service';
 
 declare const bootstrap: any;

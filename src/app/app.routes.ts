@@ -15,6 +15,7 @@ import { StudentProfile } from './components/students/student-profile/student-pr
 import { OrganizerProfile } from './components/organizers/organizer-profile/organizer-profile';
 import { MyActivitiesPage } from './components/organizers/my-activities-page/my-activities-page';
 import { Dashboard } from './components/admin/dashboard/dashboard';
+import { RatingHistorial } from './components/ratings/rating-historial/rating-historial';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -28,7 +29,7 @@ export const routes: Routes = [
     children: [
       { path: 'my-enrollments', component: MyEnrollmentsPage, canActivate: [authGuard] },
       { path: 'profile', component: StudentProfile, canActivate: [authGuard] },
-      // { path: 'history', component: StudentHistory, canActivate: [authGuard] },
+      { path: 'rating-historial', component: RatingHistorial, canActivate: [authGuard] },
     ]
   },
 
@@ -37,7 +38,6 @@ export const routes: Routes = [
     children: [
       { path: 'my-activities', component: MyActivitiesPage, canActivate: [authGuard] },
       { path: 'profile', component: OrganizerProfile, canActivate: [authGuard] },
-      // { path: 'reports', component: OrganizerReports, canActivate: [authGuard] },
     ]
   },
 

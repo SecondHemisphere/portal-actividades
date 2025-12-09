@@ -24,13 +24,12 @@ export class PortalLayout {
   studentNav = [
     { label: 'Explorar Actividades', link: '/activities' },
     { label: 'Mis Inscripciones', link: '/student/my-enrollments' },
-    { label: 'Historial De Valoraciones', link: '/student/history' },
+    { label: 'Historial De Valoraciones', link: '/student/rating-historial' },
   ];
 
   organizerNav = [
     { label: 'Explorar Actividades', link: '/activities' },
     { label: 'Mis Actividades', link: '/organizer/my-activities' },
-    { label: 'Reportes', link: '/organizer/reports' },
   ];
 
   adminNav = [
