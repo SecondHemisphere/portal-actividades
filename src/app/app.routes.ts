@@ -4,7 +4,7 @@ import { ActivityCrud } from './components/activities/activity-crud/activity-cru
 import { RatingCrud } from './components/ratings/rating-crud/rating-crud';
 import { OrganizerCrud } from './components/organizers/organizer-crud/organizer-crud';
 import { StudentCrud } from './components/students/student-crud/student-crud';
-import { UserCrud } from './components/users/user-crud/user-crud';
+import { UserCrud } from './components/auth/users/user-crud/user-crud';
 import { EnrollmentCrud } from './components/enrollments/enrollment-crud/enrollment-crud';
 import { ActivitiesPage } from './components/activities/activities-page/activities-page';
 import { MyEnrollmentsPage } from './components/enrollments/my-enrollments-page/my-enrollments-page';

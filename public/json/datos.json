@@ -848,20 +848,6 @@
       "description": "Gran evento con charlas sobre nutrición, salud mental, manejo del tiempo y stands de productos orgánicos. Habrá demostraciones gratuitas de masajes y mini-sesiones de yoga. ¡Cuida tu cuerpo y mente en un solo lugar!",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.Fi5i0siPOY0wFrOIcjotNgHaDU?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
-    },
-    {
-      "title": "aaaaaaaaaaaaa",
-      "categoryId": "3",
-      "date": "2026-01-13",
-      "registrationDeadline": "2025-12-24",
-      "location": "saaaaaaaaaaa",
-      "capacity": 20,
-      "description": "asdddddddddddddddddddd",
-      "photoUrl": "https://tse1.mm.bing.net/th/id/OIP.ZIxO5agdPXPAgxgIYxrqLwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
-      "active": true,
-      "timeRange": "18:38 - 23:35",
-      "organizerId": "3",
-      "id": "8055"
     }
   ],
   "enrollments": [

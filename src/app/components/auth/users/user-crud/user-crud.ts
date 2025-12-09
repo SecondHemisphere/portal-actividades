@@ -1,9 +1,9 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
-import { DataTable, TableColumn } from '../../shared/data-table/data-table';
-import { User, UserRole } from '../../../models/User';
-import { ServUsersJson } from '../../../services/serv-users-json';
+import { SearchFilter, SearchForm } from '../../../shared/search-form/search-form';
+import { DataTable, TableColumn } from '../../../shared/data-table/data-table';
+import { User, UserRole } from '../../../../models/User';
+import { ServUsersJson } from '../../../../services/serv-users-json';
 
 declare const bootstrap: any;
 
