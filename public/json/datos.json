@@ -39,33 +39,22 @@
   "faculties": [
     {
       "faculty": "CIENCIAS ADMINISTRATIVAS",
-      "careers": [
-        "ADMINISTRACIÓN DE EMPRESAS",
-        "COMERCIO EXTERIOR"
-      ],
+      "careers": ["ADMINISTRACIÓN DE EMPRESAS", "COMERCIO EXTERIOR"],
       "id": "db46"
     },
     {
       "faculty": "CIENCIAS MEDICAS",
-      "careers": [
-        "MEDICINA",
-        "ENFERMERÍA"
-      ],
+      "careers": ["MEDICINA", "ENFERMERÍA"],
       "id": "8187"
     },
     {
       "faculty": "INGENIERIA INDUSTRIAL",
-      "careers": [
-        "INGENIERÍA INDUSTRIAL",
-        "INGENIERÍA DE LA PRODUCCIÓN"
-      ],
+      "careers": ["INGENIERÍA INDUSTRIAL", "INGENIERÍA DE LA PRODUCCIÓN"],
       "id": "c376"
     },
     {
       "faculty": "FILOSOFIA, LETRAS Y CIENCIAS DE LA EDUCACION",
-      "careers": [
-        "PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"
-      ],
+      "careers": ["PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"],
       "id": "6716"
     }
   ],
@@ -255,19 +244,8 @@
       "department": "Cultura",
       "position": "Coordinadora",
       "bio": "Apasionada por actividades artísticas.",
-      "shifts": [
-        "Mañana",
-        "Tarde"
-      ],
-      "workDays": [
-        "Lunes",
-        "Martes",
-        "Domingo",
-        "Miércoles",
-        "Jueves",
-        "Sábado",
-        "Viernes"
-      ],
+      "shifts": ["Mañana", "Tarde"],
+      "workDays": ["Lunes", "Martes", "Domingo", "Miércoles", "Jueves", "Sábado", "Viernes"],
       "photoUrl": "https://th.bing.com/th/id/R.cd9ea35a68606155285ca4d97e7f7aa3?rik=3AAgvsmAMydQAQ&pid=ImgRaw&r=0",
       "active": true,
       "id": "3"
@@ -282,13 +260,8 @@
       "department": "Deportes",
       "position": "Entrenador",
       "bio": "Instructor con experiencia en preparación física.",
-      "shifts": [
-        "Tarde"
-      ],
-      "workDays": [
-        "Miércoles",
-        "Viernes"
-      ]
+      "shifts": ["Tarde"],
+      "workDays": ["Miércoles", "Viernes"]
     },
     {
       "id": "5",
@@ -300,14 +273,8 @@
       "department": "Bienestar",
       "position": "Facilitadora",
       "bio": "Especialista en meditación y bienestar.",
-      "shifts": [
-        "Mañana",
-        "Tarde"
-      ],
-      "workDays": [
-        "Martes",
-        "Jueves"
-      ]
+      "shifts": ["Mañana", "Tarde"],
+      "workDays": ["Martes", "Jueves"]
     },
     {
       "id": "6",
@@ -319,13 +286,8 @@
       "department": "Arte",
       "position": "Instructor de Teatro",
       "bio": "Actor profesional.",
-      "shifts": [
-        "Noche"
-      ],
-      "workDays": [
-        "Viernes",
-        "Sábado"
-      ]
+      "shifts": ["Noche"],
+      "workDays": ["Viernes", "Sábado"]
     },
     {
       "id": "7",
@@ -337,13 +299,8 @@
       "department": "Danza",
       "position": "Coreógrafa",
       "bio": "Experta en danza contemporánea.",
-      "shifts": [
-        "Mañana"
-      ],
-      "workDays": [
-        "Lunes",
-        "Miércoles"
-      ]
+      "shifts": ["Mañana"],
+      "workDays": ["Lunes", "Miércoles"]
     },
     {
       "id": "8",
@@ -355,13 +312,8 @@
       "department": "Deportes",
       "position": "Instructor de Fútbol",
       "bio": "Entrenador certificado.",
-      "shifts": [
-        "Tarde"
-      ],
-      "workDays": [
-        "Martes",
-        "Jueves"
-      ]
+      "shifts": ["Tarde"],
+      "workDays": ["Martes", "Jueves"]
     },
     {
       "id": "9",
@@ -373,13 +325,8 @@
       "department": "Bienestar",
       "position": "Psicóloga",
       "bio": "Especialista en bienestar emocional.",
-      "shifts": [
-        "Mañana"
-      ],
-      "workDays": [
-        "Miércoles",
-        "Viernes"
-      ]
+      "shifts": ["Mañana"],
+      "workDays": ["Miércoles", "Viernes"]
     },
     {
       "id": "10",
@@ -391,13 +338,8 @@
       "department": "Música",
       "position": "Instructor de Música",
       "bio": "Músico profesional.",
-      "shifts": [
-        "Tarde"
-      ],
-      "workDays": [
-        "Lunes",
-        "Miércoles"
-      ]
+      "shifts": ["Tarde"],
+      "workDays": ["Lunes", "Miércoles"]
     },
     {
       "id": "11",
@@ -409,13 +351,8 @@
       "department": "Danza",
       "position": "Instructora de Ballet",
       "bio": "Bailarina profesional.",
-      "shifts": [
-        "Noche"
-      ],
-      "workDays": [
-        "Martes",
-        "Viernes"
-      ]
+      "shifts": ["Noche"],
+      "workDays": ["Martes", "Viernes"]
     },
     {
       "id": "12",
@@ -427,13 +364,8 @@
       "department": "Deportes",
       "position": "Entrenador de Natación",
       "bio": "Instructor con experiencia.",
-      "shifts": [
-        "Mañana"
-      ],
-      "workDays": [
-        "Lunes",
-        "Jueves"
-      ]
+      "shifts": ["Mañana"],
+      "workDays": ["Lunes", "Jueves"]
     }
   ],
   "students": [
@@ -848,34 +780,6 @@
       "description": "Gran evento con charlas sobre nutrición, salud mental, manejo del tiempo y stands de productos orgánicos. Habrá demostraciones gratuitas de masajes y mini-sesiones de yoga. ¡Cuida tu cuerpo y mente en un solo lugar!",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.Fi5i0siPOY0wFrOIcjotNgHaDU?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
-    },
-    {
-      "id": "2e9a",
-      "title": "dsxzzzzzzzz",
-      "categoryId": "2",
-      "date": "2025-12-04",
-      "registrationDeadline": "2025-12-03",
-      "location": "dddddddd",
-      "capacity": 102,
-      "description": "dsaaaaaaaaaa",
-      "photoUrl": "",
-      "active": true,
-      "timeRange": "18:19 - 19:19",
-      "organizerId": "3"
-    },
-    {
-      "title": "miasuasdsasdsddsd",
-      "categoryId": "1",
-      "date": "2025-12-11",
-      "registrationDeadline": "2025-12-11",
-      "location": "sdddda",
-      "capacity": 10,
-      "description": "dsaaaaaaaaaaaaaaaaa",
-      "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.OaA1Q2iyzbeIjgRUmqCT_AHaEc?rs=1&pid=ImgDetMain&o=7&rm=3",
-      "active": true,
-      "timeRange": "15:27 - 19:27",
-      "organizerId": "3",
-      "id": "4ca5"
     }
   ],
   "enrollments": [
@@ -1037,27 +941,6 @@
       "note": "",
       "status": "Cancelado",
       "id": "20"
-    },
-    {
-      "id": "79b6",
-      "activityId": "19",
-      "studentId": 13,
-      "date": "2025-12-07T05:25:30.459Z",
-      "status": "Inscrito"
-    },
-    {
-      "id": "01d9",
-      "activityId": "7",
-      "studentId": 13,
-      "date": "2025-12-07T05:38:03.867Z",
-      "status": "Inscrito"
-    },
-    {
-      "id": "3b22",
-      "activityId": "15",
-      "studentId": 13,
-      "date": "2025-12-09T16:47:09.209Z",
-      "status": "Cancelado"
     }
   ],
   "ratings": [
@@ -1212,174 +1095,6 @@
       "comment": "Las técnicas vocales enseñadas por Ricardo fueron transformadoras. Pude sentir una mejora inmediata en mi proyección vocal y mi control diafragmático. Los ejercicios de calentamiento son ahora parte de mi rutina diaria. ¡Este taller es oro puro para cualquier orador o cantante!",
       "date": "2025-12-14",
       "id": "i15"
-    },
-    {
-      "id": "2a1f",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 3,
-      "comment": "uwu",
-      "date": "2025-12-06T18:05:47.373Z"
-    },
-    {
-      "id": "dc2d",
-      "activityId": "1",
-      "studentId": 13,
-      "stars": 4,
-      "comment": "z",
-      "date": "2025-12-07T05:08:11.954Z"
-    },
-    {
-      "id": "5806",
-      "activityId": "19",
-      "studentId": 13,
-      "stars": 4,
-      "comment": "z",
-      "date": "2025-12-07T05:25:03.675Z"
-    },
-    {
-      "id": "ad82",
-      "activityId": "19",
-      "studentId": 13,
-      "stars": 5,
-      "comment": "asdddds",
-      "date": "2025-12-07T05:25:08.538Z"
-    },
-    {
-      "id": "e110",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 3,
-      "comment": "owo owo",
-      "date": "2025-12-07T18:32:46.196Z"
-    },
-    {
-      "id": "cfc5",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 4,
-      "comment": "a",
-      "date": "2025-12-09T02:29:57.691Z"
-    },
-    {
-      "id": "86cf",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 4,
-      "comment": "aaa",
-      "date": "2025-12-09T02:30:03.364Z"
-    },
-    {
-      "id": "ab85",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 4,
-      "comment": "xddddd",
-      "date": "2025-12-09T02:30:08.966Z"
-    },
-    {
-      "id": "0b53",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 3,
-      "comment": "aaa",
-      "date": "2025-12-09T02:49:00.107Z"
-    },
-    {
-      "id": "aa13",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 4,
-      "comment": "hola",
-      "date": "2025-12-09T02:53:33.952Z"
-    },
-    {
-      "id": "53f1",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 3,
-      "comment": "jaa",
-      "date": "2025-12-09T02:53:42.206Z"
-    },
-    {
-      "id": "bfc5",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 3,
-      "comment": "aas",
-      "date": "2025-12-09T02:59:39.024Z"
-    },
-    {
-      "id": "07e8",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 2,
-      "comment": "sassaass",
-      "date": "2025-12-09T02:59:43.804Z"
-    },
-    {
-      "id": "8b88",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 4,
-      "comment": "sdkskasds",
-      "date": "2025-12-09T17:20:26.612Z"
-    },
-    {
-      "id": "3273",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 1,
-      "comment": "manten a tus amgios cerca",
-      "date": "2025-12-09T17:20:39.080Z"
-    },
-    {
-      "id": "f139",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 5,
-      "comment": "no soy tu man",
-      "date": "2025-12-09T17:20:48.159Z"
-    },
-    {
-      "id": "62c7",
-      "activityId": "2",
-      "studentId": 13,
-      "stars": 5,
-      "comment": "",
-      "date": "2025-12-09T17:23:59.638Z"
-    },
-    {
-      "id": "9507",
-      "activityId": "19",
-      "studentId": 13,
-      "stars": 5,
-      "comment": "ssssss",
-      "date": "2025-12-09T17:34:59.378Z"
-    },
-    {
-      "id": "0d68",
-      "activityId": "19",
-      "studentId": 13,
-      "stars": 2,
-      "comment": "aaaaaaaaaa",
-      "date": "2025-12-09T17:36:05.892Z"
-    },
-    {
-      "id": "2308",
-      "activityId": "19",
-      "studentId": 13,
-      "stars": 5,
-      "comment": "sxsa",
-      "date": "2025-12-09T17:36:15.533Z"
-    },
-    {
-      "id": "2272",
-      "activityId": "19",
-      "studentId": 13,
-      "stars": 3,
-      "comment": "dssd",
-      "date": "2025-12-09T17:38:16.667Z"
     }
   ]
 }
