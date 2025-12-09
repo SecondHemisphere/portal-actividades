@@ -25,9 +25,11 @@
     <p class="mt-2">{{ r.comment }}</p>
     }
 
-    <!-- <a class="btn btn-sm btn-outline-primary mt-2" [routerLink]="['/activity', r.activityId]">
-      Ver actividad
-    </a> -->
+    <div class="activity-actions d-flex justify-content-end">
+      <button type="button" class="btn btn-primary" (click)="view(r.activity?.id!)">
+        <i class="bi bi-eye me-2"></i> Ver Actividad
+      </button>
+    </div>
   </div>
   }
 </div>

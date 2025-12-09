@@ -5,6 +5,7 @@ import { ServActivitiesJson } from '../../../services/serv-activities-json';
 import { AuthService } from '../../../services/auth/auth-service';
 import { Rating } from '../../../models/Rating';
 import { Activity } from '../../../models/Activity';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-rating-historial',
@@ -20,7 +21,8 @@ export class RatingHistorial {
   constructor(
     private ratingsService: ServRatingsJson,
     private activitiesService: ServActivitiesJson,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -33,7 +35,7 @@ export class RatingHistorial {
   }
 
   loadRatings() {
-/*     this.ratingsService.getRatingsByStudent(this.userId).subscribe(ratings => {
+    this.ratingsService.getRatingsByStudent(this.userId).subscribe(ratings => {
       this.ratings = ratings;
 
       this.ratings.forEach(r => {
@@ -41,6 +43,10 @@ export class RatingHistorial {
           r.activity = activity;
         });
       });
-    }); */
+    });
+  }
+
+  view(id: number) {
+    this.router.navigate(['/activity-view', id]);
   }
 }
