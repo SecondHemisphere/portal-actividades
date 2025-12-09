@@ -2,11 +2,10 @@
   <div class="container-fluid">
     <!-- LOGO -->
     <a class="navbar-brand fw-bold text-primary d-flex align-items-center">
-      <img src="/favicon.ico" height="32" class="me-2" alt="Logo" />
+      <img src="favicon.ico" height="32" class="me-2" alt="Logo" />
       Portal de Actividades
     </a>
 
-    <!-- Toggle -->
     <button
       class="navbar-toggler"
       type="button"
@@ -19,12 +18,91 @@
     <!-- MENU -->
     <div class="collapse navbar-collapse" id="mainMenu">
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <!-- Menú dinámico por rol -->
-        @if (isLoggedIn) { @for (item of navItems; track item.label) {
+        @if (isLoggedIn) { @if (currentRole !== UserRole.Admin) { @for (item of navItems; track
+        item.label) {
         <li class="nav-item">
           <a class="nav-link top-link mx-1" [routerLink]="item.link" routerLinkActive="active">
             {{ item.label }}
           </a>
+        </li>
+        } } @if (currentRole === UserRole.Admin) {
+        <li class="nav-item">
+          <a class="nav-link top-link mx-1" routerLink="/admin/dashboard" routerLinkActive="active">
+            Dashboard
+          </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle top-link mx-1"
+            href="#"
+            data-bs-toggle="dropdown"
+            routerLinkActive="active"
+            [class.active]="isAdminSectionActive()"
+          >
+            Administración
+          </a>
+          <ul class="dropdown-menu admin-submenu">
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="'/admin/activity-crud'"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-calendar-event me-2"></i>Actividades
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="'/admin/category-crud'"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-tags me-2"></i>Categorías
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="'/admin/enrollment-crud'"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-clipboard-check me-2"></i>Inscripciones
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="'/admin/organizer-crud'"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-people me-2"></i>Organizadores
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="'/admin/student-crud'"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-person-vcard me-2"></i>Estudiantes
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                [routerLink]="'/admin/rating-crud'"
+                routerLinkActive="active"
+              >
+                <i class="bi bi-star me-2"></i>Valoraciones
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" [routerLink]="'/admin/user-crud'" routerLinkActive="active">
+                <i class="bi bi-person-gear me-2"></i>Usuarios
+              </a>
+            </li>
+          </ul>
         </li>
         } } @else { @for (item of guestNav; track item.label) {
         <li class="nav-item">
@@ -32,20 +110,17 @@
             {{ item.label }}
           </a>
         </li>
-        } }
-
-        <!-- DROPDOWN DE USUARIO -->
-        @if (isLoggedIn) {
+        } } @if (isLoggedIn) {
         <li class="nav-item dropdown ms-3">
           <a
             class="nav-link dropdown-toggle d-flex align-items-center user-dropdown"
             href="#"
             data-bs-toggle="dropdown"
+            [title]="currentUserName"
           >
             <div class="user-avatar">{{ currentUserInitials }}</div>
-            <span class="ms-2 fw-semibold">{{ currentUserName }}</span>
+            <span class="ms-2 fw-semibold user-name-text">{{ displayUserName }}</span>
           </a>
-
           <ul class="dropdown-menu dropdown-menu-end shadow">
             <li class="dropdown-header text-muted small">Bienvenido(a)</li>
             <li>
