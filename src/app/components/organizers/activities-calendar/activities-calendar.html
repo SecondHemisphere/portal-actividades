@@ -1,7 +1,7 @@
 <!-- CONTENEDOR DEL HEADER -->
 <div class="header-container d-flex justify-content-between align-items-center mb-3">
   <!-- Botón MES ANTERIOR -->
-  <button class="btn btn-secondary" (click)="prevMonth()">
+  <button type="button" class="btn btn-secondary" (click)="prevMonth()">
     <i class="bi bi-chevron-left"></i>
     Mes anterior
   </button>
@@ -10,7 +10,7 @@
   <h2 class="title text-center m-0">{{ months[selectedMonth] }} {{ selectedYear }}</h2>
 
   <!-- Botón MES SIGUIENTE -->
-  <button class="btn btn-secondary" (click)="nextMonth()">
+  <button type="button" class="btn btn-secondary" (click)="nextMonth()">
     Mes siguiente <i class="bi bi-chevron-right"></i>
   </button>
 </div>
@@ -47,10 +47,10 @@
 
       <!-- BOTONES DE ACCIONES -->
       <div class="activity-actions d-flex gap-2">
-        <button class="btn btn-secondary me-2" (click)="view(a.id)">
+        <button type="button" class="btn btn-secondary me-2" (click)="view(a.id)">
           <i class="bi bi-eye-fill"></i>
         </button>
-        <button class="btn btn-primary me-2" (click)="edit(a.id)">
+        <button type="button" class="btn btn-primary me-2" (click)="edit(a.id)">
           <i class="bi bi-pencil-fill"></i>
         </button>
       </div>
@@ -61,7 +61,11 @@
 }
 
 <!-- CREAR ACTIVIDAD -->
-<button class="btn btn-primary fab-btn d-flex align-items-center gap-2" (click)="new()">
+<button
+  type="button"
+  class="btn btn-primary fab-btn d-flex align-items-center gap-2"
+  (click)="new()"
+>
   <i class="bi bi-plus-lg"></i>
   Crear Actividad
 </button>

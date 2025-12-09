@@ -72,15 +72,15 @@
             @if (showView || showEdit || showDelete) {
             <td class="px-3 py-2">
               @if (showView) {
-              <button class="btn btn-secondary btn-sm me-2" (click)="view(row)">
+              <button type="button" class="btn btn-secondary btn-sm me-2" (click)="view(row)">
                 <i class="bi bi-eye-fill"></i>
               </button>
               } @if (showEdit) {
-              <button class="btn btn-primary btn-sm me-2" (click)="edit(row)">
+              <button type="button" class="btn btn-primary btn-sm me-2" (click)="edit(row)">
                 <i class="bi bi-pencil-fill"></i>
               </button>
               } @if (showDelete) {
-              <button class="btn btn-danger btn-sm me-2" (click)="delete(row)">
+              <button type="button" class="btn btn-danger btn-sm me-2" (click)="delete(row)">
                 <i class="bi bi-trash-fill"></i>
               </button>
               }
@@ -112,7 +112,7 @@
     <div class="custom-modal-content">
       <div class="custom-modal-header">
         <h5>{{ modalTitle }}</h5>
-        <button class="close-btn" (click)="closeModal()">×</button>
+        <button type="button" class="close-btn" (click)="closeModal()">×</button>
       </div>
 
       <div class="custom-modal-body">
@@ -120,7 +120,7 @@
       </div>
 
       <div class="custom-modal-footer">
-        <button class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
       </div>
     </div>
   </div>

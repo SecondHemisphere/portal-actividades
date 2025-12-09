@@ -31,7 +31,7 @@
         <p class="mt-2"><strong>Teléfono:</strong> {{ student.phone }}</p>
 
         <!-- BOTÓN ACTUALIZAR DATOS -->
-        <button class="btn btn-primary mt-3" (click)="openEditProfile(student)">
+        <button type="button" class="btn btn-primary mt-3" (click)="openEditProfile(student)">
           Actualizar datos
         </button>
       </div>
@@ -220,16 +220,13 @@
               }
             </div>
           </div>
-
-          <!-- BOTONES DEL MODAL -->
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
-              Cancelar
-            </button>
-            <button class="btn btn-primary" type="button" (click)="save()">Guardar</button>
-          </div>
         </div>
       </form>
+      <!-- BOTONES DEL MODAL -->
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">Cancelar</button>
+        <button class="btn btn-primary" type="button" (click)="save()">Guardar</button>
+      </div>
     </div>
   </div>
 </div>

@@ -4,7 +4,11 @@
     <div class="d-flex flex-wrap gap-3 align-items-center">
       <app-search-form [filters]="userFilters" (onSearch)="search($event)"> </app-search-form>
 
-      <button class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
+      <button
+        type="button"
+        class="btn btn-primary d-flex align-items-center gap-2"
+        (click)="openNew()"
+      >
         <i class="bi bi-person-plus"></i>
         Crear Usuario
       </button>
