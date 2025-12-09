@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Rating } from '../models/Rating';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +9,10 @@ import { map, Observable } from 'rxjs';
 export class ServRatingsJson {
 
   private ratingsUrl = "http://localhost:3000/ratings";
+
+  private reviewRequestedSource = new Subject<number>();
+
+  public reviewRequested$ = this.reviewRequestedSource.asObservable();
 
   constructor(private httpclient: HttpClient) {}
 

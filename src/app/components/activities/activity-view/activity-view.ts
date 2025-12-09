@@ -45,8 +45,10 @@ export class ActivityView {
   rating: number = 0;
   reviewText: string = '';
 
-  formRating!: FormGroup;
+  editingId: number | null = null;
+
   modalRef: any;
+  formRating!: FormGroup;
 
   constructor(
     private activitiesService: ServActivitiesJson,
@@ -60,8 +62,8 @@ export class ActivityView {
     private formbuilder: FormBuilder
   ) {
     this.formRating = this.formbuilder.group({
-      stars: [0, Validators.required],
-      comment: ['', [Validators.maxLength(250)]]
+      stars: [null, Validators.required],
+      comment: ['', [Validators.required, Validators.maxLength(250)]]
     });
   }
 
@@ -72,8 +74,10 @@ export class ActivityView {
 
   ngOnInit() {
     this.loadCurrentUser();
+    
+    const id = this.route.snapshot.paramMap.get("id");
 
-    const id = Number(this.route.snapshot.paramMap.get("id"));
+    if (!id) return;
 
     this.activitiesService.getActivityById(id).subscribe(activity => {
       this.activity = activity;
@@ -295,10 +299,38 @@ export class ActivityView {
     });
   }
 
+  openNew() {
+    if (!this.modalRef) return;
+
+    this.editingId = null;
+    this.formRating.reset({
+      stars: 5,
+      comment: ''
+    });
+    this.modalRef.show();
+  }
+
+  openEdit(rating: Rating) {
+    this.editingId = rating.id ?? null;
+
+    this.formRating.patchValue({
+      stars: rating.stars,
+      comment: rating.comment
+    });
+
+    this.modalRef.show();
+  }
+
   isRegistrationClosed(): boolean {
     if (!this.activity.registrationDeadline) return true;
     const deadline = new Date(this.activity.registrationDeadline);
     return deadline < new Date();
+  }
+
+  selectStar(rating: number): void {
+    this.formRating.get('stars')?.setValue(rating);
+    
+    this.formRating.get('stars')?.markAsTouched();
   }
 
 }

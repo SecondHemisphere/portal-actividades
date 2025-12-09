@@ -119,13 +119,19 @@
 
       <div class="card shadow-lg border-0 rounded-3 mt-4">
         <div class="card-body p-4">
-          <h3 class="card-title mb-4 fw-bold text-dark">Opiniones de los Participantes</h3>
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="card-title fw-bold text-dark mb-0">Opiniones de los Participantes</h3>
 
-          @if (canReview) {
-          <button type="button" class="btn btn-primary" (click)="modalRef.show()">
-            <i class="bi bi-chat-dots me-1"></i> Comentar
-          </button>
-          }
+            @if (canReview) {
+            <button
+              type="button"
+              class="btn btn-primary d-flex align-items-center gap-2"
+              (click)="openNew()"
+            >
+              <i class="bi bi-chat-dots me-1"></i> Comentar
+            </button>
+            }
+          </div>
 
           <hr class="my-4" />
 
@@ -160,65 +166,62 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-    @if (canReview) {
-    <div class="modal fade" id="ratingModal" tabindex="-1" #ratingModalRef>
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Nuevo Comentario</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Cerrar"
-            ></button>
+<div class="modal fade" id="ratingModal" tabindex="-1" #ratingModalRef>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo Comentario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form [formGroup]="formRating">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Puntuación (1-5)</label>
+            <div class="text-warning fs-4">
+              @for (s of [1, 2, 3, 4, 5]; track s) {
+              <i
+                class="bi star-icon"
+                [ngClass]="
+                  s <= formRating.get('stars')?.value ? 'bi-star-fill' : 'bi-star text-muted'
+                "
+                (click)="selectStar(s)"
+                role="button"
+                tabindex="0"
+              ></i>
+              }
+            </div>
+
+            <span class="error">
+              @if(formRating.get("stars")?.invalid && formRating.get("stars")?.touched){ La
+              puntuación es requerida. }
+            </span>
           </div>
 
-          <form [formGroup]="formRating">
-            <div class="modal-body">
-              <div class="mb-4 p-3 border rounded-3 bg-light">
-                <h5 class="mb-3 text-primary">Deja tu valoración</h5>
-
-                <label class="form-label small fw-semibold">Tu calificación:</label>
-                <div class="mb-2 stars">
-                  @for (s of [1,2,3,4,5]; track $index) {
-                  <i
-                    class="bi cursor-pointer"
-                    [ngClass]="
-                      s <= formRating.get('stars')?.value ? 'bi-star-fill text-warning' : 'bi-star'
-                    "
-                    (click)="formRating.get('stars')?.setValue(s)"
-                  ></i>
-                  }
-                </div>
-
-                <textarea
-                  class="form-control mb-2"
-                  rows="3"
-                  formControlName="comment"
-                  placeholder="Escribe tu comentario..."
-                ></textarea>
-
-                @if ( formRating.get('comment')?.hasError('maxlength') &&
-                formRating.get('comment')?.touched ) {
-                <span class="text-danger">Máximo 250 caracteres</span>
-                }
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
-                Cancelar
-              </button>
-              <button class="btn btn-primary" type="button" (click)="submitReview()">
-                Enviar Opinión
-              </button>
-            </div>
-          </form>
+          <!-- COMENTARIO -->
+          <div class="mb-3">
+            <label class="form-label">Comentario</label>
+            <textarea class="form-control" rows="3" formControlName="comment"></textarea>
+            <span class="error">
+              @if(formRating.get("comment")?.hasError("required") &&
+              formRating.get("comment")?.touched){ El comentario no puede quedar vacío. }
+              @if(formRating.get("comment")?.hasError("maxlength") &&
+              formRating.get("comment")?.touched){ El comentario no puede exceder los 250
+              caracteres. }
+            </span>
+          </div>
         </div>
-      </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+            Cancelar
+          </button>
+          <button class="btn btn-primary" type="button" (click)="submitReview()">Guardar</button>
+        </div>
+      </form>
     </div>
-    }
   </div>
 </div>

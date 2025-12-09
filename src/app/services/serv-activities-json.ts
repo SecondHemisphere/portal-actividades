@@ -17,13 +17,19 @@ export class ServActivitiesJson {
     return this.httpclient.get<Activity[]>(this.activitiesUrl);
   }
 
-  getActivityById(id: number): Observable<Activity> {
+  getActivityById(id: number | string): Observable<Activity> {
     return this.httpclient.get<Activity>(`${this.activitiesUrl}/${id}`);
   }
 
   getActiveActivities(): Observable<Activity[]> {
     return this.httpclient.get<Activity[]>(this.activitiesUrl)
       .pipe(map(activities => activities.filter(a => a.active === true)));
+  }
+
+  getActivitiesByCategory(categoryId: number): Observable<Activity[]> {
+    return this.httpclient.get<Activity[]>(this.activitiesUrl).pipe(
+      map(activities => activities.filter(a => a.categoryId === categoryId))
+    );
   }
 
   //search
@@ -66,7 +72,7 @@ export class ServActivitiesJson {
   create(activity: Activity): Observable<Activity> {
     return this.httpclient.post<Activity>(this.activitiesUrl, activity);
   }
-
+  
   // update (put)
   update(activity: Activity): Observable<Activity> {
     let url = `${this.activitiesUrl}/${activity.id}`;

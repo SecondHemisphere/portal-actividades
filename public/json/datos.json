@@ -579,7 +579,7 @@
       "description": "Aprende fotografía básica, composición, manejo de luz y edición digital. Este taller intensivo de un día te proporcionará las herramientas necesarias para capturar imágenes impactantes con cualquier tipo de cámara. Ideal para principiantes que desean mejorar sus habilidades de inmediato. Tendremos una práctica al aire libre para aplicar lo aprendido.",
       "photoUrl": "https://th.bing.com/th/id/R.25f51885e72010543fa8216e0a97df88?rik=7SwmZyjwgO%2bZSg&riu=http%3a%2f%2fwww.dzoom.org.es%2fwp-content%2fuploads%2f2012%2f12%2fqcam.jpg&ehk=NcD7RVxl9NgiRad5BQWq3UP%2fAlkZoMVyISMour6Ha4M%3d&risl=&pid=ImgRaw&r=0",
       "active": true,
-      "timeRange": "09:00 - 12:00",
+      "timeRange": "10:00 - 12:00",
       "organizerId": "3",
       "id": "1"
     },
@@ -848,6 +848,34 @@
       "description": "Gran evento con charlas sobre nutrición, salud mental, manejo del tiempo y stands de productos orgánicos. Habrá demostraciones gratuitas de masajes y mini-sesiones de yoga. ¡Cuida tu cuerpo y mente en un solo lugar!",
       "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.Fi5i0siPOY0wFrOIcjotNgHaDU?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
       "active": true
+    },
+    {
+      "id": "2e9a",
+      "title": "dsxzzzzzzzz",
+      "categoryId": "2",
+      "date": "2025-12-04",
+      "registrationDeadline": "2025-12-03",
+      "location": "dddddddd",
+      "capacity": 102,
+      "description": "dsaaaaaaaaaa",
+      "photoUrl": "",
+      "active": true,
+      "timeRange": "18:19 - 19:19",
+      "organizerId": "3"
+    },
+    {
+      "title": "miasuasdsasdsddsd",
+      "categoryId": "1",
+      "date": "2025-12-11",
+      "registrationDeadline": "2025-12-11",
+      "location": "sdddda",
+      "capacity": 10,
+      "description": "dsaaaaaaaaaaaaaaaaa",
+      "photoUrl": "https://tse2.mm.bing.net/th/id/OIP.OaA1Q2iyzbeIjgRUmqCT_AHaEc?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "active": true,
+      "timeRange": "15:27 - 19:27",
+      "organizerId": "3",
+      "id": "4ca5"
     }
   ],
   "enrollments": [
@@ -1028,7 +1056,7 @@
       "id": "3b22",
       "activityId": "15",
       "studentId": 13,
-      "date": "2025-12-09T02:38:28.906Z",
+      "date": "2025-12-09T16:47:09.209Z",
       "status": "Cancelado"
     }
   ],
@@ -1288,6 +1316,70 @@
       "stars": 2,
       "comment": "sassaass",
       "date": "2025-12-09T02:59:43.804Z"
+    },
+    {
+      "id": "8b88",
+      "activityId": "2",
+      "studentId": 13,
+      "stars": 4,
+      "comment": "sdkskasds",
+      "date": "2025-12-09T17:20:26.612Z"
+    },
+    {
+      "id": "3273",
+      "activityId": "2",
+      "studentId": 13,
+      "stars": 1,
+      "comment": "manten a tus amgios cerca",
+      "date": "2025-12-09T17:20:39.080Z"
+    },
+    {
+      "id": "f139",
+      "activityId": "2",
+      "studentId": 13,
+      "stars": 5,
+      "comment": "no soy tu man",
+      "date": "2025-12-09T17:20:48.159Z"
+    },
+    {
+      "id": "62c7",
+      "activityId": "2",
+      "studentId": 13,
+      "stars": 5,
+      "comment": "",
+      "date": "2025-12-09T17:23:59.638Z"
+    },
+    {
+      "id": "9507",
+      "activityId": "19",
+      "studentId": 13,
+      "stars": 5,
+      "comment": "ssssss",
+      "date": "2025-12-09T17:34:59.378Z"
+    },
+    {
+      "id": "0d68",
+      "activityId": "19",
+      "studentId": 13,
+      "stars": 2,
+      "comment": "aaaaaaaaaa",
+      "date": "2025-12-09T17:36:05.892Z"
+    },
+    {
+      "id": "2308",
+      "activityId": "19",
+      "studentId": 13,
+      "stars": 5,
+      "comment": "sxsa",
+      "date": "2025-12-09T17:36:15.533Z"
+    },
+    {
+      "id": "2272",
+      "activityId": "19",
+      "studentId": 13,
+      "stars": 3,
+      "comment": "dssd",
+      "date": "2025-12-09T17:38:16.667Z"
     }
   ]
 }
