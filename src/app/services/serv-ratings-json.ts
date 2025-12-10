@@ -31,7 +31,7 @@ export class ServRatingsJson {
     );
   }
 
-  getRatingsByStudent(studentId: number): Observable<Rating[]> {
+  getRatingsByStudent(studentId: number | string): Observable<Rating[]> {
     return this.httpclient.get<Rating[]>(this.ratingsUrl).pipe(
       map(ratings => ratings.filter(r => r.studentId === studentId))
     );

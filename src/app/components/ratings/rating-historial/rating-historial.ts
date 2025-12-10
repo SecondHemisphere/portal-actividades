@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class RatingHistorial {
 
   ratings: (Rating & { activity?: Activity })[] = [];
-  userId!: number;
+  userId!: number | string;
 
   constructor(
     private ratingsService: ServRatingsJson,
@@ -29,19 +29,21 @@ export class RatingHistorial {
     const user = this.authService.getCurrentUserValue();
     if (!user) return;
 
-    this.userId = Number(user.id);
+    this.userId = user.id!;
 
     this.loadRatings();
   }
 
   loadRatings() {
-    this.ratingsService.getRatingsByStudent(this.userId).subscribe(ratings => {
+    this.ratingsService.getRatingsByStudent(String(this.userId)).subscribe(ratings => {
       this.ratings = ratings;
 
       this.ratings.forEach(r => {
-        this.activitiesService.getActivityById(r.activityId).subscribe(activity => {
-          r.activity = activity;
-        });
+        if (r.activityId !== undefined && r.activityId !== null) {
+          this.activitiesService.getActivityById(r.activityId).subscribe(activity => {
+            r.activity = activity;
+          });
+        }
       });
     });
   }
