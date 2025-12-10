@@ -21,7 +21,7 @@ export class ServRatingsJson {
     return this.httpclient.get<Rating[]>(this.ratingsUrl);
   }
 
-  getRatingById(id: number): Observable<Rating> {
+  getRatingById(id: number | string): Observable<Rating> {
     return this.httpclient.get<Rating>(`${this.ratingsUrl}/${id}`);
   }
 
@@ -32,8 +32,9 @@ export class ServRatingsJson {
   }
 
   getRatingsByStudent(studentId: number | string): Observable<Rating[]> {
+    const id = Number(studentId);
     return this.httpclient.get<Rating[]>(this.ratingsUrl).pipe(
-      map(ratings => ratings.filter(r => r.studentId === studentId))
+      map(ratings => ratings.filter(r => Number(r.studentId) === id))
     );
   }
 

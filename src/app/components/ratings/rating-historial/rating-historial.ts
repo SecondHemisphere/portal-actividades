@@ -35,7 +35,7 @@ export class RatingHistorial {
   }
 
   loadRatings() {
-    this.ratingsService.getRatingsByStudent(String(this.userId)).subscribe(ratings => {
+    this.ratingsService.getRatingsByStudent(this.userId).subscribe(ratings => {
       this.ratings = ratings;
 
       this.ratings.forEach(r => {

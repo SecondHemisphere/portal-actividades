@@ -35,13 +35,13 @@ export class Login {
 
         switch (user.role) {
           case UserRole.Admin:
-            this.router.navigate(['/admin/activity-crud']);
+            this.router.navigate(['/admin/dashboard']);
             break;
           case UserRole.Organizador:
             this.router.navigate(['/organizer/activities']);
             break;
           case UserRole.Estudiante:
-            this.router.navigate(['/student/my-enrollments']);
+            this.router.navigate(['/student/activities']);
             break;
           default:
             this.router.navigate(['/activities']);

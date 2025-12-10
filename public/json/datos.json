@@ -39,22 +39,33 @@
   "faculties": [
     {
       "faculty": "CIENCIAS ADMINISTRATIVAS",
-      "careers": ["ADMINISTRACIÓN DE EMPRESAS", "COMERCIO EXTERIOR"],
+      "careers": [
+        "ADMINISTRACIÓN DE EMPRESAS",
+        "COMERCIO EXTERIOR"
+      ],
       "id": "db46"
     },
     {
       "faculty": "CIENCIAS MEDICAS",
-      "careers": ["MEDICINA", "ENFERMERÍA"],
+      "careers": [
+        "MEDICINA",
+        "ENFERMERÍA"
+      ],
       "id": "8187"
     },
     {
       "faculty": "INGENIERIA INDUSTRIAL",
-      "careers": ["INGENIERÍA INDUSTRIAL", "INGENIERÍA DE LA PRODUCCIÓN"],
+      "careers": [
+        "INGENIERÍA INDUSTRIAL",
+        "INGENIERÍA DE LA PRODUCCIÓN"
+      ],
       "id": "c376"
     },
     {
       "faculty": "FILOSOFIA, LETRAS Y CIENCIAS DE LA EDUCACION",
-      "careers": ["PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"],
+      "careers": [
+        "PEDAGOGÍA DE LA HISTORIA Y CIENCIAS SOCIALES"
+      ],
       "id": "6716"
     }
   ],
@@ -244,8 +255,19 @@
       "department": "Cultura",
       "position": "Coordinadora",
       "bio": "Apasionada por actividades artísticas.",
-      "shifts": ["Mañana", "Tarde"],
-      "workDays": ["Lunes", "Martes", "Domingo", "Miércoles", "Jueves", "Sábado", "Viernes"],
+      "shifts": [
+        "Mañana",
+        "Tarde"
+      ],
+      "workDays": [
+        "Lunes",
+        "Martes",
+        "Domingo",
+        "Miércoles",
+        "Jueves",
+        "Sábado",
+        "Viernes"
+      ],
       "photoUrl": "https://th.bing.com/th/id/R.cd9ea35a68606155285ca4d97e7f7aa3?rik=3AAgvsmAMydQAQ&pid=ImgRaw&r=0",
       "active": true,
       "id": "3"
@@ -260,8 +282,13 @@
       "department": "Deportes",
       "position": "Entrenador",
       "bio": "Instructor con experiencia en preparación física.",
-      "shifts": ["Tarde"],
-      "workDays": ["Miércoles", "Viernes"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Miércoles",
+        "Viernes"
+      ]
     },
     {
       "id": "5",
@@ -273,8 +300,14 @@
       "department": "Bienestar",
       "position": "Facilitadora",
       "bio": "Especialista en meditación y bienestar.",
-      "shifts": ["Mañana", "Tarde"],
-      "workDays": ["Martes", "Jueves"]
+      "shifts": [
+        "Mañana",
+        "Tarde"
+      ],
+      "workDays": [
+        "Martes",
+        "Jueves"
+      ]
     },
     {
       "id": "6",
@@ -286,8 +319,13 @@
       "department": "Arte",
       "position": "Instructor de Teatro",
       "bio": "Actor profesional.",
-      "shifts": ["Noche"],
-      "workDays": ["Viernes", "Sábado"]
+      "shifts": [
+        "Noche"
+      ],
+      "workDays": [
+        "Viernes",
+        "Sábado"
+      ]
     },
     {
       "id": "7",
@@ -299,8 +337,13 @@
       "department": "Danza",
       "position": "Coreógrafa",
       "bio": "Experta en danza contemporánea.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Miércoles"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Miércoles"
+      ]
     },
     {
       "id": "8",
@@ -312,8 +355,13 @@
       "department": "Deportes",
       "position": "Instructor de Fútbol",
       "bio": "Entrenador certificado.",
-      "shifts": ["Tarde"],
-      "workDays": ["Martes", "Jueves"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Martes",
+        "Jueves"
+      ]
     },
     {
       "id": "9",
@@ -325,8 +373,13 @@
       "department": "Bienestar",
       "position": "Psicóloga",
       "bio": "Especialista en bienestar emocional.",
-      "shifts": ["Mañana"],
-      "workDays": ["Miércoles", "Viernes"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Miércoles",
+        "Viernes"
+      ]
     },
     {
       "id": "10",
@@ -338,8 +391,13 @@
       "department": "Música",
       "position": "Instructor de Música",
       "bio": "Músico profesional.",
-      "shifts": ["Tarde"],
-      "workDays": ["Lunes", "Miércoles"]
+      "shifts": [
+        "Tarde"
+      ],
+      "workDays": [
+        "Lunes",
+        "Miércoles"
+      ]
     },
     {
       "id": "11",
@@ -351,8 +409,13 @@
       "department": "Danza",
       "position": "Instructora de Ballet",
       "bio": "Bailarina profesional.",
-      "shifts": ["Noche"],
-      "workDays": ["Martes", "Viernes"]
+      "shifts": [
+        "Noche"
+      ],
+      "workDays": [
+        "Martes",
+        "Viernes"
+      ]
     },
     {
       "id": "12",
@@ -364,8 +427,13 @@
       "department": "Deportes",
       "position": "Entrenador de Natación",
       "bio": "Instructor con experiencia.",
-      "shifts": ["Mañana"],
-      "workDays": ["Lunes", "Jueves"]
+      "shifts": [
+        "Mañana"
+      ],
+      "workDays": [
+        "Lunes",
+        "Jueves"
+      ]
     }
   ],
   "students": [
