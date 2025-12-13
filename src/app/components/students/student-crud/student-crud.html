@@ -1,19 +1,19 @@
 <div class="container mt-4">
-  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
-    <!-- TÍTULO -->
+  <div class="d-block d-md-flex align-items-center justify-content-between mb-3">
     <h2 class="mb-3 mb-md-0">Gestión de Estudiantes</h2>
-    <div class="d-flex flex-wrap gap-3 align-items-center">
-      <!-- BUSCADOR -->
+
+    <!-- BOTÓN BUSCAR -->
+    <div class="d-flex align-items-center gap-3 justify-content-start">
       <app-search-form [filters]="studentFilters" (onSearch)="search($event)"> </app-search-form>
 
-      <!-- BOTÓN CREAR ESTUDIANTE -->
+      <!-- BOTÓN CREAR -->
       <button
         type="button"
-        class="btn btn-primary d-flex align-items-center gap-2"
+        class="btn btn-primary d-flex align-items-center gap-2 text-nowrap"
         (click)="openNew()"
       >
         <i class="bi bi-plus-circle"></i>
-        Crear Estudiante
+        Crear
       </button>
     </div>
   </div>

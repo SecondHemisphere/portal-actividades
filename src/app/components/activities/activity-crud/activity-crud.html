@@ -1,15 +1,19 @@
 <div class="container mt-4">
-  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+  <div class="d-block d-md-flex align-items-center justify-content-between mb-3">
     <h2 class="mb-3 mb-md-0">Gestión de Actividades</h2>
 
-    <div class="d-flex flex-wrap gap-3 align-items-center">
-      <!-- BUSCADOR -->
+    <!-- BOTÓN BUSCAR -->
+    <div class="d-flex align-items-center gap-3 justify-content-start">
       <app-search-form [filters]="activityFilters" (onSearch)="search($event)"> </app-search-form>
 
-      <!-- CREAR ACTIVIDAD -->
-      <button type="button" class="btn btn-primary d-flex align-items-center gap-2" (click)="openNew()">
+      <!-- BOTÓN CREAR -->
+      <button
+        type="button"
+        class="btn btn-primary d-flex align-items-center gap-2 text-nowrap"
+        (click)="openNew()"
+      >
         <i class="bi bi-plus-circle"></i>
-        Crear Actividad
+        Crear
       </button>
     </div>
   </div>
