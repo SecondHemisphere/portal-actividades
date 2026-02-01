@@ -1,9 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Category } from '../../../models/Category';
-import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
+import { ServCategoriesApi } from '../../../services/serv-categories-api';
+import Swal from 'sweetalert2';
 
 declare const bootstrap:any;
 
@@ -31,7 +32,7 @@ export class CategoryCrud {
   ];
 
   constructor(
-    private miServicio: ServCategoriesJson,
+    private miServicio: ServCategoriesApi,
     private formbuilder: FormBuilder
   ) {
     this.loadCategories();
@@ -54,17 +55,40 @@ export class CategoryCrud {
   }
 
   delete(category: Category) {
-    const confirmado = confirm(`¿Estás seguro de eliminar la categoría? ${category.name}`);
-    if (confirmado) {
-      this.miServicio.delete(category.id).subscribe(() => {
-        alert("Eliminada exitosamente");
-        this.loadCategories();
-      });
-    }
+    Swal.fire({
+      title: `¿Seguro deseas eliminar la categoría?`,
+      text: category.name,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.miServicio.delete(Number(category.id)).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Categoría eliminada',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.loadCategories();
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar la categoría.',
+            });
+            console.error(err);
+          }
+        });
+      }
+    });
   }
 
   search(filters: any) {
-    this.miServicio.searchCategories(filters).subscribe(
+    this.miServicio.search(filters).subscribe(
       (data: Category[]) => {
         this.filteredCategories = data;
       }
@@ -96,18 +120,35 @@ export class CategoryCrud {
 
     if (this.editingId) {
       let category: Category = { ...datos, id: this.editingId };
-      this.miServicio.update(category).subscribe(() => {
-        alert("Categoría actualizada");
-        this.modalRef.hide();
-        this.loadCategories();
+      this.miServicio.update(category).subscribe({
+        next: (res: any) => {
+          Swal.fire({icon: 'success', title: '¡Éxito!', text: res.message});
+          this.modalRef.hide();
+          this.loadCategories();
+        },
+        error: (err) => {
+          let errorMsg = 'Error al actualizar la categoría';
+          if (err.error?.name) errorMsg = err.error.name.join(', ');
+          Swal.fire({ icon: 'error', title: 'Error', text: errorMsg });
+        }
       });
     } else {
       let category: Category = { ...datos };
-      this.miServicio.create(category).subscribe(() => {
-        alert("Categoría creada");
-        this.modalRef.hide();
-        this.loadCategories();
+      this.miServicio.create(category).subscribe({
+        next: (res: any) => {
+          Swal.fire({icon: 'success', title: '¡Éxito!', text: res.message});
+          this.modalRef.hide();
+          this.loadCategories();
+        },
+        error: (err) => {
+          let errorMsg = 'Error al crear la categoría';
+          if (err.error) {
+            if (err.error.name) errorMsg = err.error.name.join(', ');
+          }
+          Swal.fire({icon: 'error', title: 'Error', text: errorMsg});
+        }
       });
     }
   }
+
 }

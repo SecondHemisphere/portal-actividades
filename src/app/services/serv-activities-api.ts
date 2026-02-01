@@ -25,7 +25,7 @@ export class ServActivitiesApi {
     return this.http.get<any>(`${this.apiUrl}/public/${id}`);
   }
 
-  searchActivities(filters: {
+  search(filters: {
     title?: string;
     categoryId?: number;
     organizerId?: number;

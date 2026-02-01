@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
-import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Rating } from '../../../models/Rating';
 import { Activity } from '../../../models/Activity';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { ServActivitiesApi } from '../../../services/serv-activities-api';
 
 @Component({
   selector: 'app-rating-historial',
@@ -19,7 +19,7 @@ export class RatingHistorial {
 
   constructor(
     private ratingsService: ServRatingsJson,
-    private activitiesService: ServActivitiesJson,
+    private activitiesService: ServActivitiesApi,
     private authService: AuthService,
     private router: Router
   ) {}

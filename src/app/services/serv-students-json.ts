@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Student } from '../models/Student';
 import { map, Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServStudentsJson {
 
-  private studentsUrl = "http://localhost:3000/students";
+  private studentsUrl = `${environment.apiUrl}/students`;
 
   constructor(private httpclient: HttpClient) {}
 

@@ -6,8 +6,8 @@ import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { Activity } from '../../../models/Activity';
 import { Student } from '../../../models/Student';
-import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { ServStudentsJson } from '../../../services/serv-students-json';
+import { ServActivitiesApi } from '../../../services/serv-activities-api';
 
 declare const bootstrap: any;
 
@@ -51,7 +51,7 @@ export class EnrollmentCrud {
 
   constructor(
     private enrollmentService: ServEnrollmentsJson,
-    private activitiesService: ServActivitiesJson,
+    private activitiesService: ServActivitiesApi,
     private studentsService: ServStudentsJson,
     private formBuilder: FormBuilder
   ) {

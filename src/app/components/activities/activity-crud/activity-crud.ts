@@ -3,15 +3,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { Activity } from '../../../models/Activity';
-import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
-import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ServActivitiesApi } from '../../../services/serv-activities-api';
+import { ServCategoriesApi } from '../../../services/serv-categories-api';
 
 declare const bootstrap: any;
 
@@ -61,8 +61,8 @@ export class ActivityCrud {
   ];
 
   constructor(
-    private miServicio: ServActivitiesJson,
-    private categoriesService: ServCategoriesJson,
+    private miServicio: ServActivitiesApi,
+    private categoriesService: ServCategoriesApi,
     private organizersService: ServOrganizersJson,
     private formbuilder: FormBuilder,
     private router:Router
@@ -150,7 +150,7 @@ export class ActivityCrud {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.miServicio.delete(activity.id).subscribe({
+        this.miServicio.delete(Number(activity.id)).subscribe({
           next: () => {
             Swal.fire({
               icon: 'success',
@@ -174,7 +174,7 @@ export class ActivityCrud {
   }
 
   search(filters: any) {
-    this.miServicio.searchActivities(filters).subscribe(
+    this.miServicio.search(filters).subscribe(
       (data: Activity[]) => {
         this.filteredActivities = data;
       }

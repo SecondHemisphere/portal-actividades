@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { Activity } from '../../../models/Activity';
-import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
-import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { CommonModule } from '@angular/common';
 import { PaginationControls } from '../../shared/pagination-control/pagination-control';
 import { ActivityCard } from '../activity-card/activity-card';
+import { ServActivitiesApi } from '../../../services/serv-activities-api';
+import { ServCategoriesApi } from '../../../services/serv-categories-api';
 
 const PATTERN = [
   'col-lg-4', 'col-lg-4', 'col-lg-4',
@@ -43,8 +43,8 @@ export class ActivityList {
   ];
 
   constructor(
-    private activitiesService: ServActivitiesJson,
-    private categoriesService: ServCategoriesJson,
+    private activitiesService: ServActivitiesApi,
+    private categoriesService: ServCategoriesApi,
     private organizersService: ServOrganizersJson,
   ) {
     this.loadActivities();
@@ -93,7 +93,7 @@ export class ActivityList {
   }
 
   search(filters: any) {
-    this.activitiesService.searchActivities(filters).subscribe(
+    this.activitiesService.search(filters).subscribe(
       (data: Activity[]) => {
         this.filteredActivities = data;
         this.currentPage = 1;

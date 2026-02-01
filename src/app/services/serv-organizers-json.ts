@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Organizer } from '../models/Organizer';
 import { map, Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServOrganizersJson {
 
-  private organizersUrl = "http://localhost:3000/organizers";
+  private organizersUrl = `${environment.apiUrl}/organizers`;
 
   constructor(private httpclient: HttpClient) {}
 

@@ -2,11 +2,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { Activity } from '../../../models/Activity';
 import { Organizer } from '../../../models/Organizer';
 import { AuthService } from '../../../services/auth.service';
+import { ServActivitiesApi } from '../../../services/serv-activities-api';
 
 @Component({
   selector: 'app-activities-calendar',
@@ -45,7 +45,7 @@ export class ActivitiesCalendar {
   ];
 
   constructor(
-    private activitiesService: ServActivitiesJson,
+    private activitiesService: ServActivitiesApi,
     private organizersService: ServOrganizersJson,
     private authService: AuthService,
     private router: Router

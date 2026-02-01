@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Enrollment, EnrollmentStatus } from '../models/Enrollment';
 import { map, Observable, switchMap } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServEnrollmentsJson {
 
-  private enrollmentsUrl = "http://localhost:3000/enrollments";
+  private enrollmentsUrl = `${environment.apiUrl}/enrollments`;
 
   constructor(private httpclient: HttpClient) {}
 

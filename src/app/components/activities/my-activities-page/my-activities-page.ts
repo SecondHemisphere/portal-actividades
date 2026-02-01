@@ -1,16 +1,16 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Activity } from '../../../models/Activity';
-import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
-import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
 import { ActivitiesCalendar } from '../../activities/activities-calendar/activities-calendar';
 import { AuthService } from '../../../services/auth.service';
+import { ServActivitiesApi } from '../../../services/serv-activities-api';
+import { ServCategoriesApi } from '../../../services/serv-categories-api';
 
 declare const bootstrap: any;
 
@@ -38,8 +38,8 @@ export class MyActivitiesPage {
   userId = 0;
 
   constructor(
-    private activitiesService: ServActivitiesJson,
-    private categoriesService: ServCategoriesJson,
+    private activitiesService: ServActivitiesApi,
+    private categoriesService: ServCategoriesApi,
     private organizersService: ServOrganizersJson,
     private authService: AuthService,
     private formbuilder: FormBuilder,
@@ -182,7 +182,7 @@ export class MyActivitiesPage {
     const confirmado = confirm(`¿Eliminar actividad "${activity.title}"?`);
     if (!confirmado) return;
 
-    this.activitiesService.delete(activity.id).subscribe(() => {
+    this.activitiesService.delete(Number(activity.id)).subscribe(() => {
       alert("Actividad eliminada");
       this.loadActivities();
     });

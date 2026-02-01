@@ -1,6 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Activity } from '../../../models/Activity';
-import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
 import { ActivatedRoute } from '@angular/router';
@@ -9,13 +8,14 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Rating } from '../../../models/Rating';
 import { Student } from '../../../models/Student';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
-import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { ServStudentsJson } from '../../../services/serv-students-json';
 import { UserRole } from '../../../models/User';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
 import { AuthService } from '../../../services/auth.service';
+import { ServActivitiesApi } from '../../../services/serv-activities-api';
+import { ServCategoriesApi } from '../../../services/serv-categories-api';
 
 declare const bootstrap: any;
 
@@ -51,8 +51,8 @@ export class ActivityView {
   formRating!: FormGroup;
 
   constructor(
-    private activitiesService: ServActivitiesJson,
-    private categoriesService: ServCategoriesJson,
+    private activitiesService: ServActivitiesApi,
+    private categoriesService: ServCategoriesApi,
     private organizersService: ServOrganizersJson,
     private studentsService: ServStudentsJson,
     private enrollmentsService: ServEnrollmentsJson,

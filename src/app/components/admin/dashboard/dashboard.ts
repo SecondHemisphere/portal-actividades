@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
-import { ServActivitiesJson } from '../../../services/serv-activities-api';
+import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
-import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServStudentsJson } from '../../../services/serv-students-json';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { ServUsersJson } from '../../../services/serv-users-json';
@@ -13,6 +12,7 @@ import { Category } from '../../../models/Category';
 import { Rating } from '../../../models/Rating';
 import { Enrollment } from '../../../models/Enrollment';
 import { Activity } from '../../../models/Activity';
+import { ServCategoriesApi } from '../../../services/serv-categories-api';
 
 @Component({
   selector: 'app-dashboard',
@@ -49,9 +49,9 @@ export class Dashboard {
   chartTopRatings: any[] = [];
 
   constructor(
-    private servActivities: ServActivitiesJson,
+    private servActivities: ServActivitiesApi,
     private servOrganizers: ServOrganizersJson,
-    private servCategories: ServCategoriesJson,
+    private servCategories: ServCategoriesApi,
     private servStudents: ServStudentsJson,
     private servEnrollments: ServEnrollmentsJson,
     private servRatings: ServRatingsJson,
