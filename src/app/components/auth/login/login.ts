@@ -1,56 +1,52 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../services/auth/auth-service';
-import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserRole } from '../../../models/User';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
   loginForm: FormGroup;
-  error = '';
+  error: string | null = null;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  login() {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      
+      this.auth.login(email, password).subscribe({
+        next: res => {
+          this.auth.saveToken(res.token);
 
-    const { email } = this.loginForm.value;
+          const role = this.auth.getUserRole();
 
-    this.authService.login(email).subscribe({
-      next: user => {
-        this.error = '';
-
-        switch (user.role) {
-          case UserRole.Admin:
+          if (role === 'Admin') {
             this.router.navigate(['/admin/dashboard']);
-            break;
-          case UserRole.Organizador:
-            this.router.navigate(['/organizer/activities']);
-            break;
-          case UserRole.Estudiante:
-            this.router.navigate(['/student/activities']);
-            break;
-          default:
-            this.router.navigate(['/activities']);
+          } else if (role === 'Organizador') {
+            this.router.navigate(['/organizer/my-activities']);
+          } else if (role === 'Estudiante') {
+            this.router.navigate(['/student/my-enrollments']);
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        error: err => {
+          this.error = 'Credenciales inválidas';
         }
-      },
-      error: err => {
-        this.error = err.message || 'Usuario no encontrado';
-      }
-    });
+      });
+    } else {
+      this.loginForm.markAllAsTouched();
+    }
   }
 
 }

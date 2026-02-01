@@ -10,7 +10,7 @@ import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
 import { ActivitiesCalendar } from '../../activities/activities-calendar/activities-calendar';
-import { AuthService } from '../../../services/auth/auth-service';
+import { AuthService } from '../../../services/auth.service';
 
 declare const bootstrap: any;
 
@@ -81,15 +81,15 @@ export class MyActivitiesPage {
   }
 
   loadData() {
-    const user = this.authService.getCurrentUserValue();
-    if (!user) return;
+    const userId = this.authService.getUserId();
+    if (!userId) return;
 
-    this.userId = Number(user.id);
+    this.userId = Number(userId);
 
     this.organizersService.getOrganizers().subscribe(orgs => {
 
       this.organizers = orgs;
-      const organizer = orgs.find(o => o.id === user.id);
+      const organizer = orgs.find(o => o.id === this.userId);
 
       if (!organizer) {
         this.activities = [];

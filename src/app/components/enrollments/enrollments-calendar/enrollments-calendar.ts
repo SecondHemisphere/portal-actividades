@@ -6,7 +6,7 @@ import { Enrollment } from '../../../models/Enrollment';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { ServActivitiesJson } from '../../../services/serv-activities-json';
 import { Activity } from '../../../models/Activity';
-import { AuthService } from '../../../services/auth/auth-service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-enrollments-calendar',
@@ -49,10 +49,10 @@ export class EnrollmentsCalendar {
   ) {}
 
   ngOnInit() {
-    const user = this.auth.getCurrentUserValue();
-    if (!user) return;
+    const userId = this.auth.getUserId();
+    if (!userId) return;
 
-    this.userId = Number(user.id);
+    this.userId = Number(userId);
     this.loadEnrollments();
   }
 

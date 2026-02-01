@@ -12,10 +12,10 @@ import { ServRatingsJson } from '../../../services/serv-ratings-json';
 import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { ServStudentsJson } from '../../../services/serv-students-json';
-import { AuthService } from '../../../services/auth/auth-service';
 import { UserRole } from '../../../models/User';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
+import { AuthService } from '../../../services/auth.service';
 
 declare const bootstrap: any;
 
@@ -93,17 +93,19 @@ export class ActivityView {
   }
 
   loadCurrentUser() {
-    const user = this.authService.getCurrentUserValue();
+    const userId = this.authService.getUserId();
 
-    if (!user) {
+    if (!userId) {
       this.role = 'public';
       return;
     }
 
-    this.userId = Number(user.id);
+    this.userId = Number(userId);
 
-    if (user.role === UserRole.Estudiante) this.role = 'student';
-    else if (user.role === UserRole.Organizador) this.role = 'organizer';
+    const role = this.authService.getUserRole();
+
+    if (role === UserRole.Estudiante) this.role = 'student';
+    else if (role === UserRole.Organizador) this.role = 'organizer';
     else this.role = 'public';
   }
 

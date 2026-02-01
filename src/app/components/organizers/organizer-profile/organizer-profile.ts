@@ -1,9 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../../services/auth/auth-service';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { Organizer, ShiftType, WeekDay } from '../../../models/Organizer';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 declare const bootstrap: any;
 
@@ -32,10 +32,10 @@ export class OrganizerProfile {
   ) {}
 
   ngOnInit() {
-    const user = this.authService.getCurrentUserValue();
-    if (!user) return;
+    const userId = this.authService.getUserId();
+    if (!userId) return;
 
-    this.organizerService.getOrganizerById(Number(user.id)).subscribe(org => {
+    this.organizerService.getOrganizerById(Number(userId)).subscribe(org => {
       this.organizer = org;
       this.initForm();
     });

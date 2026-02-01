@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
 import { ServActivitiesJson } from '../../../services/serv-activities-json';
-import { AuthService } from '../../../services/auth/auth-service';
 import { Rating } from '../../../models/Rating';
 import { Activity } from '../../../models/Activity';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-rating-historial',
@@ -16,7 +16,6 @@ import { Router } from '@angular/router';
 export class RatingHistorial {
 
   ratings: (Rating & { activity?: Activity })[] = [];
-  userId!: number | string;
 
   constructor(
     private ratingsService: ServRatingsJson,
@@ -26,16 +25,14 @@ export class RatingHistorial {
   ) {}
 
   ngOnInit() {
-    const user = this.authService.getCurrentUserValue();
-    if (!user) return;
+    const userId = this.authService.getUserId();
+    if (!userId) return;
 
-    this.userId = user.id!;
-
-    this.loadRatings();
+    this.loadRatings(Number(userId));
   }
 
-  loadRatings() {
-    this.ratingsService.getRatingsByStudent(this.userId).subscribe(ratings => {
+  loadRatings(userId: number) {
+    this.ratingsService.getRatingsByStudent(userId).subscribe(ratings => {
       this.ratings = ratings;
 
       this.ratings.forEach(r => {

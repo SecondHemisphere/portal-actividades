@@ -6,7 +6,7 @@ import { ServActivitiesJson } from '../../../services/serv-activities-json';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { Activity } from '../../../models/Activity';
 import { Organizer } from '../../../models/Organizer';
-import { AuthService } from '../../../services/auth/auth-service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-activities-calendar',
@@ -55,15 +55,15 @@ export class ActivitiesCalendar {
   }
 
   loadData() {
-    const user = this.authService.getCurrentUserValue();
-    if (!user) return;
+    const userId = this.authService.getUserId();
+    if (!userId) return;
 
-    this.userId = Number(user.id);
+    this.userId = Number(userId);
 
     this.organizersService.getOrganizers().subscribe(orgs => {
 
       this.organizers = orgs;
-      const organizer = orgs.find(o => o.id === user.id);
+      const organizer = orgs.find(o => o.id === this.userId);
 
       if (!organizer) {
         this.activities = [];

@@ -5,9 +5,9 @@ import { Modality, Schedule, Student } from '../../../models/Student';
 import { CommonModule } from '@angular/common';
 import { ServFacultiesJson, Faculty } from '../../../services/serv-faculties-json';
 import { User } from '../../../models/User';
-import { AuthService } from '../../../services/auth/auth-service';
+import { AuthService } from '../../../services/auth.service';
 
-declare const bootstrap:any;
+declare const bootstrap: any;
 
 @Component({
   selector: 'app-student-profile',
@@ -27,7 +27,7 @@ export class StudentProfile {
   schedules = Object.values(Schedule);
 
   photoPreview: string | null = null;
-  studentEdit:Student ={} as Student; //para foto
+  studentEdit: Student = {} as Student; // para foto
 
   constructor(
     private fb: FormBuilder,
@@ -37,14 +37,13 @@ export class StudentProfile {
   ) {}
 
   ngOnInit() {
-    const user = this.authService.getCurrentUserValue();
-    if (!user) return;
-    this.user = user;
+    const userId = this.authService.getUserId();
+    if (!userId) return;
 
     this.facultiesService.getFaculties().subscribe(f => {
       this.faculties = f;
 
-      this.studentService.getStudentById(Number(user.id)).subscribe(st => {
+      this.studentService.getStudentById(Number(userId)).subscribe(st => {
         this.student = st;
         this.photoPreview = st.photoUrl || null;
 
@@ -95,7 +94,7 @@ export class StudentProfile {
       return;
     }
 
-    let updatedStudent: Student = {
+    const updatedStudent: Student = {
       ...this.student,
       ...this.formStudent.value
     };
@@ -109,8 +108,6 @@ export class StudentProfile {
           phone: updatedStudent.phone,
         };
 
-        this.authService.setCurrentUser(updatedUser);
-
         this.student = updatedStudent;
         this.user = updatedUser;
 
@@ -122,5 +119,4 @@ export class StudentProfile {
       }
     });
   }
-
 }
