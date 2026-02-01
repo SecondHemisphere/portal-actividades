@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { Activity } from '../../../models/Activity';
-import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
 import { ServCategoriesJson } from '../../../services/serv-categories-json';
@@ -11,6 +11,7 @@ import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 declare const bootstrap: any;
 
@@ -140,13 +141,36 @@ export class ActivityCrud {
   }
 
   delete(activity: Activity) {
-    const confirmado = confirm(`¿Seguro deseas eliminar la actividad? ${activity.title}`);
-    if (confirmado) {
-      this.miServicio.delete(activity.id).subscribe(() => {
-        alert("Actividad eliminada");
-        this.loadActivities();
-      });
-    }
+    Swal.fire({
+      title: `¿Seguro deseas eliminar la actividad?`,
+      text: activity.title,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.miServicio.delete(activity.id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Actividad eliminada',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.loadActivities();
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar la actividad.',
+            });
+            console.error(err);
+          }
+        });
+      }
+    });
   }
 
   search(filters: any) {
@@ -210,14 +234,24 @@ export class ActivityCrud {
     if (this.editingId) {
       let activity: Activity = { ...datos, id: this.editingId };
       this.miServicio.update(activity).subscribe(() => {
-        alert("Actividad actualizada");
+        Swal.fire({
+          icon: 'success',
+          title: 'Actividad actualizada',
+          showConfirmButton: false,
+          timer: 1500
+        });
         this.modalRef.hide();
         this.loadActivities();
       });
     } else {
       let activity: Activity = { ...datos };
       this.miServicio.create(activity).subscribe(() => {
-        alert("Actividad creada");
+        Swal.fire({
+          icon: 'success',
+          title: 'Actividad creada',
+          showConfirmButton: false,
+          timer: 1500
+        });
         this.modalRef.hide();
         this.loadActivities();
       });

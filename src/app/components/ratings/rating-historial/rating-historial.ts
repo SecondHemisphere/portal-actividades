@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
-import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Rating } from '../../../models/Rating';
 import { Activity } from '../../../models/Activity';
 import { Router } from '@angular/router';

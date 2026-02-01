@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
-import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { ServCategoriesJson } from '../../../services/serv-categories-json';
 import { ServStudentsJson } from '../../../services/serv-students-json';

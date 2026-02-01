@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Enrollment } from '../../../models/Enrollment';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
-import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Activity } from '../../../models/Activity';
 import { AuthService } from '../../../services/auth.service';
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { Activity } from '../../../models/Activity';
-import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
 import { ServCategoriesJson } from '../../../services/serv-categories-json';

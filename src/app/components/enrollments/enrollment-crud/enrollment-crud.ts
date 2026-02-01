@@ -6,7 +6,7 @@ import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { Activity } from '../../../models/Activity';
 import { Student } from '../../../models/Student';
-import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { ServActivitiesJson } from '../../../services/serv-activities-api';
 import { ServStudentsJson } from '../../../services/serv-students-json';
 
 declare const bootstrap: any;

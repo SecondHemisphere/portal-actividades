@@ -7,7 +7,7 @@ import { ServRatingsJson } from '../../../services/serv-ratings-json';
 import { Student } from '../../../models/Student';
 import { Activity } from '../../../models/Activity';
 import { ServStudentsJson } from '../../../services/serv-students-json';
-import { ServActivitiesJson } from '../../../services/serv-activities-json';
+import { ServActivitiesJson } from '../../../services/serv-activities-api';
 
 declare const bootstrap: any;
 
