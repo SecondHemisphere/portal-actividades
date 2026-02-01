@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { ShiftType, Organizer, WeekDay } from '../../../models/Organizer';
-import { ServOrganizersJson } from '../../../services/serv-organizers-json';
+import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 
 declare const bootstrap: any;
 
@@ -54,7 +54,7 @@ export class OrganizerCrud {
   ];
 
   constructor(
-    private miServicio: ServOrganizersJson,
+    private miServicio: ServOrganizersApi,
     private formbuilder: FormBuilder
   ) {
     this.loadOrganizers();
@@ -114,11 +114,12 @@ export class OrganizerCrud {
 
   loadOrganizers() {
     this.miServicio.getOrganizers().subscribe((data: Organizer[]) => {
-
       this.organizers = data.map(o => ({
         ...o,
-        displayShifts: o.shifts?.join(', ') ?? '',
-        displayDays: o.workDays?.join(', ') ?? ''
+        shifts: this.parseShifts(o.shifts),
+        workDays: this.parseWorkDays(o.workDays),
+        displayShifts: this.parseShifts(o.shifts).join(', '),
+        displayDays: this.parseWorkDays(o.workDays).join(', ')
       }));
 
       this.filteredOrganizers = [...this.organizers];
@@ -128,7 +129,7 @@ export class OrganizerCrud {
   delete(org: Organizer) {
     const confirmado = confirm(`¿Seguro de eliminar el organizador ${org.name}?`);
     if (confirmado) {
-      this.miServicio.delete(org.id).subscribe(() => {
+      this.miServicio.delete(Number(org.id)).subscribe(() => {
         alert("Organizador eliminado");
         this.loadOrganizers();
       });
@@ -136,13 +137,20 @@ export class OrganizerCrud {
   }
 
   search(filters: any) {
-    this.miServicio.searchOrganizers(filters).subscribe(
+    this.miServicio.search(filters).subscribe(
       (data: Organizer[]) => {
-        this.filteredOrganizers = data.map(o => ({
-          ...o,
-          displayShifts: o.shifts?.join(', ') ?? '',
-          displayDays: o.workDays?.join(', ') ?? ''
-        }));
+        this.filteredOrganizers = data.map(o => {
+          const shiftsParsed = this.parseShifts(o.shifts);
+          const daysParsed = this.parseWorkDays(o.workDays);
+
+          return {
+            ...o,
+            shifts: shiftsParsed,
+            workDays: daysParsed,
+            displayShifts: shiftsParsed.join(', '),
+            displayDays: daysParsed.join(', ')
+          };
+        });
       }
     );
   }
@@ -181,8 +189,9 @@ export class OrganizerCrud {
       active: org.active
     });
 
-    this.formOrganizer.get('shifts')?.setValue(org.shifts || []);
-    this.formOrganizer.get('workDays')?.setValue(org.workDays || []);
+    this.formOrganizer.get('shifts')?.setValue(this.parseShifts(org.shifts));
+    this.formOrganizer.get('workDays')?.setValue(this.parseWorkDays(org.workDays));
+
     this.photoPreview = org.photoUrl || null;
     this.modalRef.show();
   }
@@ -214,4 +223,17 @@ export class OrganizerCrud {
       });
     }
   }
+
+  parseShifts(val: string | ShiftType[] | undefined): ShiftType[] {
+    if (!val) return [];
+    if (Array.isArray(val)) return val;
+    return (val as string).split(',').map(s => s.trim() as ShiftType);
+  }
+
+  parseWorkDays(val: string | WeekDay[] | undefined): WeekDay[] {
+    if (!val) return [];
+    if (Array.isArray(val)) return val;
+    return (val as string).split(',').map(d => d.trim() as WeekDay);
+  }
+
 }

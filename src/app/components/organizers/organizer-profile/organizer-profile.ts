@@ -1,9 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { Organizer, ShiftType, WeekDay } from '../../../models/Organizer';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
+import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 
 declare const bootstrap: any;
 
@@ -27,7 +27,7 @@ export class OrganizerProfile {
 
   constructor(
     private fb: FormBuilder,
-    private organizerService: ServOrganizersJson,
+    private organizerService: ServOrganizersApi,
     private authService: AuthService
   ) {}
 

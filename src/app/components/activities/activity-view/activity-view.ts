@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Rating } from '../../../models/Rating';
 import { Student } from '../../../models/Student';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
-import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { ServStudentsJson } from '../../../services/serv-students-json';
 import { UserRole } from '../../../models/User';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
@@ -16,6 +15,7 @@ import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
+import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 
 declare const bootstrap: any;
 
@@ -53,7 +53,7 @@ export class ActivityView {
   constructor(
     private activitiesService: ServActivitiesApi,
     private categoriesService: ServCategoriesApi,
-    private organizersService: ServOrganizersJson,
+    private organizersService: ServOrganizersApi,
     private studentsService: ServStudentsJson,
     private enrollmentsService: ServEnrollmentsJson,
     private ratingsService: ServRatingsJson,

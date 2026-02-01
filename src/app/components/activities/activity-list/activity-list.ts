@@ -3,12 +3,12 @@ import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { Activity } from '../../../models/Activity';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
-import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { CommonModule } from '@angular/common';
 import { PaginationControls } from '../../shared/pagination-control/pagination-control';
 import { ActivityCard } from '../activity-card/activity-card';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
+import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 
 const PATTERN = [
   'col-lg-4', 'col-lg-4', 'col-lg-4',
@@ -45,7 +45,7 @@ export class ActivityList {
   constructor(
     private activitiesService: ServActivitiesApi,
     private categoriesService: ServCategoriesApi,
-    private organizersService: ServOrganizersJson,
+    private organizersService: ServOrganizersApi,
   ) {
     this.loadActivities();
     this.loadCategories();

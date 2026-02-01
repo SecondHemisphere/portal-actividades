@@ -5,13 +5,13 @@ import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { Activity } from '../../../models/Activity';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
-import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
+import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 
 declare const bootstrap: any;
 
@@ -63,7 +63,7 @@ export class ActivityCrud {
   constructor(
     private miServicio: ServActivitiesApi,
     private categoriesService: ServCategoriesApi,
-    private organizersService: ServOrganizersJson,
+    private organizersService: ServOrganizersApi,
     private formbuilder: FormBuilder,
     private router:Router
   ) {

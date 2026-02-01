@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Activity } from '../../../models/Activity';
 import { Category } from '../../../models/Category';
 import { Organizer } from '../../../models/Organizer';
-import { ServOrganizersJson } from '../../../services/serv-organizers-json';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
@@ -11,6 +10,7 @@ import { ActivitiesCalendar } from '../../activities/activities-calendar/activit
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
+import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 
 declare const bootstrap: any;
 
@@ -40,7 +40,7 @@ export class MyActivitiesPage {
   constructor(
     private activitiesService: ServActivitiesApi,
     private categoriesService: ServCategoriesApi,
-    private organizersService: ServOrganizersJson,
+    private organizersService: ServOrganizersApi,
     private authService: AuthService,
     private formbuilder: FormBuilder,
     private router: Router
