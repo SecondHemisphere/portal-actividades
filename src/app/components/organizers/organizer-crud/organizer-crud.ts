@@ -113,7 +113,7 @@ export class OrganizerCrud {
   }
 
   loadOrganizers() {
-    this.miServicio.getOrganizers().subscribe((data: Organizer[]) => {
+    this.miServicio.getOrganizers2().subscribe((data: Organizer[]) => {
       this.organizers = data.map(o => ({
         ...o,
         shifts: this.parseShifts(o.shifts),
