@@ -228,12 +228,15 @@ export class OrganizerCrud {
 
     const datos = this.formOrganizer.value;
 
-    datos.shifts = Array.isArray(datos.shifts) ? datos.shifts : [];
-    datos.workDays = Array.isArray(datos.workDays) ? datos.workDays : [];
+    const payload = {
+      ...datos,
+      shifts: Array.isArray(datos.shifts) ? datos.shifts.join(',') : '',
+      workDays: Array.isArray(datos.workDays) ? datos.workDays.join(',') : ''
+    };
 
     if (this.editingId) {
-      const organizer: Organizer = { ...datos, id: this.editingId };
-      this.miServicio.update(organizer).subscribe({
+      const organizerToUpdate = { ...payload, id: this.editingId };
+      this.miServicio.update(organizerToUpdate).subscribe({
         next: (res: any) => {
           Swal.fire({
             icon: 'success',
@@ -247,6 +250,7 @@ export class OrganizerCrud {
           let errorMsg = 'Error al actualizar el organizador';
           if (err.error) {
             if (err.error.name) errorMsg = err.error.name.join(', ');
+            if (err.error.email) errorMsg = err.error.email.join(', ');
           }
           Swal.fire({
             icon: 'error',
@@ -256,8 +260,7 @@ export class OrganizerCrud {
         }
       });
     } else {
-      const organizer: Organizer = { ...datos };
-      this.miServicio.create(organizer).subscribe({
+      this.miServicio.create(payload).subscribe({
         next: (res: any) => {
           Swal.fire({
             icon: 'success',
@@ -271,6 +274,7 @@ export class OrganizerCrud {
           let errorMsg = 'Error al crear el organizador';
           if (err.error) {
             if (err.error.name) errorMsg = err.error.name.join(', ');
+            if (err.error.email) errorMsg = err.error.email.join(', ');
           }
           Swal.fire({
             icon: 'error',
