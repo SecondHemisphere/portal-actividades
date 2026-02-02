@@ -46,10 +46,17 @@
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" formControlName="name" />
             <span class="error">
-              @if(formOrganizer.get("name")?.invalid && formOrganizer.get("name")?.touched) {
-              @if(formOrganizer.get("name")?.errors?.["required"]) { El nombre es obligatorio. }
-              @if(formOrganizer.get("name")?.errors?.["minlength"]) { Mínimo 3 caracteres. }
-              @if(formOrganizer.get("name")?.errors?.["maxlength"]) { Máximo 50 caracteres. } }
+              @if (formOrganizer.get('name')?.invalid && formOrganizer.get('name')?.touched) {
+                @if (formOrganizer.get('name')?.errors?.['required']) {
+                  El nombre es obligatorio.
+                }
+                @if (formOrganizer.get('name')?.errors?.['minlength']) {
+                  Mínimo 3 caracteres.
+                }
+                @if (formOrganizer.get('name')?.errors?.['maxlength']) {
+                  Máximo 50 caracteres.
+                }
+              }
             </span>
           </div>
 
@@ -58,9 +65,14 @@
             <label class="form-label">Correo</label>
             <input type="text" class="form-control" formControlName="email" />
             <span class="error">
-              @if(formOrganizer.get("email")?.invalid && formOrganizer.get("email")?.touched) {
-              @if(formOrganizer.get("email")?.errors?.["required"]) { El correo es obligatorio. }
-              @if(formOrganizer.get("email")?.errors?.["email"]) { Correo inválido. } }
+              @if (formOrganizer.get('email')?.invalid && formOrganizer.get('email')?.touched) {
+                @if (formOrganizer.get('email')?.errors?.['required']) {
+                  El correo es obligatorio.
+                }
+                @if (formOrganizer.get('email')?.errors?.['email']) {
+                  Correo inválido.
+                }
+              }
             </span>
           </div>
 
@@ -69,10 +81,14 @@
             <label class="form-label">Teléfono</label>
             <input type="text" class="form-control" formControlName="phone" />
             <span class="error">
-              @if(formOrganizer.get("phone")?.invalid && formOrganizer.get("phone")?.touched) {
-              @if(formOrganizer.get("phone")?.errors?.["required"]) { El teléfono es obligatorio. }
-              @if(formOrganizer.get("phone")?.errors?.["pattern"]) { Debe tener 7-15 dígitos,
-              opcional "+". } }
+              @if (formOrganizer.get('phone')?.invalid && formOrganizer.get('phone')?.touched) {
+                @if (formOrganizer.get('phone')?.errors?.['required']) {
+                  El teléfono es obligatorio.
+                }
+                @if (formOrganizer.get('phone')?.errors?.['pattern']) {
+                  Debe tener 7-15 dígitos, opcional "+".
+                }
+              }
             </span>
           </div>
 
@@ -81,11 +97,18 @@
             <label class="form-label">Departamento</label>
             <input type="text" class="form-control" formControlName="department" />
             <span class="error">
-              @if(formOrganizer.get("department")?.invalid &&
-              formOrganizer.get("department")?.touched) {
-              @if(formOrganizer.get("department")?.errors?.["required"]) { Requerido. }
-              @if(formOrganizer.get("department")?.errors?.["minlength"]) { Mínimo 2 caracteres. }
-              @if(formOrganizer.get("department")?.errors?.["maxlength"]) { Máximo 50 caracteres. }
+              @if (
+                formOrganizer.get('department')?.invalid && formOrganizer.get('department')?.touched
+              ) {
+                @if (formOrganizer.get('department')?.errors?.['required']) {
+                  Requerido.
+                }
+                @if (formOrganizer.get('department')?.errors?.['minlength']) {
+                  Mínimo 2 caracteres.
+                }
+                @if (formOrganizer.get('department')?.errors?.['maxlength']) {
+                  Máximo 50 caracteres.
+                }
               }
             </span>
           </div>
@@ -95,10 +118,19 @@
             <label class="form-label">Cargo</label>
             <input type="text" class="form-control" formControlName="position" />
             <span class="error">
-              @if(formOrganizer.get("position")?.invalid && formOrganizer.get("position")?.touched)
-              { @if(formOrganizer.get("position")?.errors?.["required"]) { Requerido. }
-              @if(formOrganizer.get("position")?.errors?.["minlength"]) { Mínimo 3 caracteres. }
-              @if(formOrganizer.get("position")?.errors?.["maxlength"]) { Máximo 50 caracteres. } }
+              @if (
+                formOrganizer.get('position')?.invalid && formOrganizer.get('position')?.touched
+              ) {
+                @if (formOrganizer.get('position')?.errors?.['required']) {
+                  Requerido.
+                }
+                @if (formOrganizer.get('position')?.errors?.['minlength']) {
+                  Mínimo 3 caracteres.
+                }
+                @if (formOrganizer.get('position')?.errors?.['maxlength']) {
+                  Máximo 50 caracteres.
+                }
+              }
             </span>
           </div>
 
@@ -107,10 +139,17 @@
             <label class="form-label">Biografía</label>
             <textarea rows="3" class="form-control" formControlName="bio"></textarea>
             <span class="error">
-              @if(formOrganizer.get("bio")?.invalid && formOrganizer.get("bio")?.touched) {
-              @if(formOrganizer.get("bio")?.errors?.["required"]) { Requerido. }
-              @if(formOrganizer.get("bio")?.errors?.["minlength"]) { Mínimo 10 caracteres. }
-              @if(formOrganizer.get("bio")?.errors?.["maxlength"]) { Máximo 300 caracteres. } }
+              @if (formOrganizer.get('bio')?.invalid && formOrganizer.get('bio')?.touched) {
+                @if (formOrganizer.get('bio')?.errors?.['required']) {
+                  Requerido.
+                }
+                @if (formOrganizer.get('bio')?.errors?.['minlength']) {
+                  Mínimo 10 caracteres.
+                }
+                @if (formOrganizer.get('bio')?.errors?.['maxlength']) {
+                  Máximo 300 caracteres.
+                }
+              }
             </span>
           </div>
 
@@ -118,22 +157,23 @@
           <div class="mb-3">
             <label class="form-label">Turnos</label>
             <div>
-              @for(s of shifts; track $index) {
-              <div class="form-check form-check-inline">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  [value]="s"
-                  (change)="onShiftChange($event, s)"
-                  [checked]="formOrganizer.value.shifts?.includes(s)"
-                />
-                <label class="form-check-label">{{ s }}</label>
-              </div>
+              @for (s of shifts; track $index) {
+                <div class="form-check form-check-inline">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    [value]="s"
+                    (change)="onShiftChange($event, s)"
+                    [checked]="formOrganizer.value.shifts?.includes(s)"
+                  />
+                  <label class="form-check-label">{{ s }}</label>
+                </div>
               }
             </div>
             <span class="error">
-              @if(formOrganizer.get("shifts")?.invalid && formOrganizer.get("shifts")?.touched) {
-              Seleccione al menos un turno. }
+              @if (formOrganizer.get('shifts')?.invalid && formOrganizer.get('shifts')?.touched) {
+                Seleccione al menos un turno.
+              }
             </span>
           </div>
 
@@ -141,22 +181,25 @@
           <div class="mb-3">
             <label class="form-label">Días de trabajo</label>
             <div>
-              @for(d of workDays; track $index) {
-              <div class="form-check form-check-inline">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  [value]="d"
-                  (change)="onDayChange($event, d)"
-                  [checked]="formOrganizer.value.workDays?.includes(d)"
-                />
-                <label class="form-check-label">{{ d }}</label>
-              </div>
+              @for (d of workDays; track $index) {
+                <div class="form-check form-check-inline">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    [value]="d"
+                    (change)="onDayChange($event, d)"
+                    [checked]="formOrganizer.value.workDays?.includes(d)"
+                  />
+                  <label class="form-check-label">{{ d }}</label>
+                </div>
               }
             </div>
             <span class="error">
-              @if(formOrganizer.get("workDays")?.invalid && formOrganizer.get("workDays")?.touched)
-              { Seleccione al menos un día. }
+              @if (
+                formOrganizer.get('workDays')?.invalid && formOrganizer.get('workDays')?.touched
+              ) {
+                Seleccione al menos un día.
+              }
             </span>
           </div>
 
@@ -171,25 +214,25 @@
             />
             <!-- VISTA PREVIA -->
             <div class="mt-2">
-              @if(photoPreview){
-              <img
-                [src]="photoPreview"
-                (error)="photoPreview = null"
-                style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
-              />
+              @if (photoPreview) {
+                <img
+                  [src]="photoPreview"
+                  (error)="photoPreview = null"
+                  style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
+                />
               } @else {
-              <div
-                class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
-                style="
-                  width: 140px;
-                  height: 140px;
-                  color: white;
-                  border-radius: 8px;
-                  border: 1px solid #ccc;
-                "
-              >
-                Sin imagen
-              </div>
+                <div
+                  class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                  style="
+                    width: 140px;
+                    height: 140px;
+                    color: white;
+                    border-radius: 8px;
+                    border: 1px solid #ccc;
+                  "
+                >
+                  Sin imagen
+                </div>
               }
             </div>
           </div>
