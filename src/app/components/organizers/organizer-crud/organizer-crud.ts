@@ -4,6 +4,7 @@ import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { ShiftType, Organizer, WeekDay } from '../../../models/Organizer';
 import { ServOrganizersApi } from '../../../services/serv-organizers-api';
+import Swal from 'sweetalert2';
 
 declare const bootstrap: any;
 
@@ -127,13 +128,36 @@ export class OrganizerCrud {
   }
 
   delete(org: Organizer) {
-    const confirmado = confirm(`¿Seguro de eliminar el organizador ${org.name}?`);
-    if (confirmado) {
-      this.miServicio.delete(Number(org.id)).subscribe(() => {
-        alert("Organizador eliminado");
-        this.loadOrganizers();
-      });
-    }
+    Swal.fire({
+      title: '¿Seguro deseas eliminar el organizador?',
+      text: org.name,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.miServicio.delete(Number(org.id)).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Organizador eliminado',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.loadOrganizers();
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar el organizador.',
+            });
+            console.error(err);
+          }
+        });
+      }
+    });
   }
 
   search(filters: any) {
@@ -209,17 +233,51 @@ export class OrganizerCrud {
 
     if (this.editingId) {
       const organizer: Organizer = { ...datos, id: this.editingId };
-      this.miServicio.update(organizer).subscribe(() => {
-        alert("Organizador actualizado");
-        this.modalRef.hide();
-        this.loadOrganizers();
+      this.miServicio.update(organizer).subscribe({
+        next: (res: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: res?.message ?? 'Organizador actualizado correctamente'
+          });
+          this.modalRef.hide();
+          this.loadOrganizers();
+        },
+        error: (err) => {
+          let errorMsg = 'Error al actualizar el organizador';
+          if (err.error) {
+            if (err.error.name) errorMsg = err.error.name.join(', ');
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMsg
+          });
+        }
       });
     } else {
       const organizer: Organizer = { ...datos };
-      this.miServicio.create(organizer).subscribe(() => {
-        alert("Organizador creado");
-        this.modalRef.hide();
-        this.loadOrganizers();
+      this.miServicio.create(organizer).subscribe({
+        next: (res: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: res?.message ?? 'Organizador creado correctamente'
+          });
+          this.modalRef.hide();
+          this.loadOrganizers();
+        },
+        error: (err) => {
+          let errorMsg = 'Error al crear el organizador';
+          if (err.error) {
+            if (err.error.name) errorMsg = err.error.name.join(', ');
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMsg
+          });
+        }
       });
     }
   }
