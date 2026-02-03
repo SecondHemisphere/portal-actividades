@@ -5,7 +5,7 @@ import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServStudentsApi } from '../../../services/serv-students-api';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { ServUsersJson } from '../../../services/serv-users-json';
-import { ServRatingsJson } from '../../../services/serv-ratings-json';
+import { ServRatingsApi } from '../../../services/serv-ratings-api';
 
 import { Category } from '../../../models/Category';
 import { Rating } from '../../../models/Rating';
@@ -54,7 +54,7 @@ export class Dashboard {
     private servCategories: ServCategoriesApi,
     private servStudents: ServStudentsApi,
     private servEnrollments: ServEnrollmentsJson,
-    private servRatings: ServRatingsJson,
+    private servRatings: ServRatingsApi,
     private servUsers: ServUsersJson
   ) {}
 

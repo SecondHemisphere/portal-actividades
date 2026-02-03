@@ -7,7 +7,6 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Rating } from '../../../models/Rating';
 import { Student } from '../../../models/Student';
-import { ServRatingsJson } from '../../../services/serv-ratings-json';
 import { UserRole } from '../../../models/User';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
@@ -16,6 +15,7 @@ import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
 import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 import { ServStudentsApi } from '../../../services/serv-students-api';
+import { ServRatingsApi } from '../../../services/serv-ratings-api';
 
 declare const bootstrap: any;
 
@@ -56,7 +56,7 @@ export class ActivityView {
     private organizersService: ServOrganizersApi,
     private studentsService: ServStudentsApi,
     private enrollmentsService: ServEnrollmentsJson,
-    private ratingsService: ServRatingsJson,
+    private ratingsService: ServRatingsApi,
     private authService: AuthService,
     private route: ActivatedRoute,
     private formbuilder: FormBuilder
@@ -290,7 +290,7 @@ export class ActivityView {
       studentId: this.userId,
       stars: this.formRating.get('stars')?.value,
       comment: this.formRating.get('comment')?.value,
-      date: new Date().toISOString()
+      ratingDate: new Date().toISOString()
     };
 
     this.ratingsService.create(review).subscribe(r => {

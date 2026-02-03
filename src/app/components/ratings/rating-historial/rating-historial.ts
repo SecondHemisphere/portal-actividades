@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServRatingsJson } from '../../../services/serv-ratings-json';
 import { Rating } from '../../../models/Rating';
 import { Activity } from '../../../models/Activity';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
+import { ServRatingsApi } from '../../../services/serv-ratings-api';
 
 @Component({
   selector: 'app-rating-historial',
@@ -18,7 +18,7 @@ export class RatingHistorial {
   ratings: (Rating & { activity?: Activity })[] = [];
 
   constructor(
-    private ratingsService: ServRatingsJson,
+    private ratingsService: ServRatingsApi,
     private activitiesService: ServActivitiesApi,
     private authService: AuthService,
     private router: Router
