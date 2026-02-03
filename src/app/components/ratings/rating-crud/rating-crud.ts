@@ -6,7 +6,7 @@ import { Rating } from '../../../models/Rating';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
 import { Student } from '../../../models/Student';
 import { Activity } from '../../../models/Activity';
-import { ServStudentsJson } from '../../../services/serv-students-json';
+import { ServStudentsApi } from '../../../services/serv-students-api';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 
 declare const bootstrap: any;
@@ -49,7 +49,7 @@ export class RatingCrud {
 
   constructor(
     private miServicio: ServRatingsJson,
-    private studentsService: ServStudentsJson,
+    private studentsService: ServStudentsApi,
     private activitiesService: ServActivitiesApi,
     private formbuilder: FormBuilder
   ) {

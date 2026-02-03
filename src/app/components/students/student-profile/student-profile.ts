@@ -1,11 +1,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ServStudentsJson } from '../../../services/serv-students-json';
-import { Modality, Schedule, Student } from '../../../models/Student';
+import { Career, Faculty, Modality, Schedule, Student } from '../../../models/Student';
 import { CommonModule } from '@angular/common';
-import { ServFacultiesJson, Faculty } from '../../../services/serv-faculties-json';
 import { User } from '../../../models/User';
 import { AuthService } from '../../../services/auth.service';
+import { ServStudentsApi } from '../../../services/serv-students-api';
+import { ServDropdownsApi } from '../../../services/serv-dropdowns-api';
 
 declare const bootstrap: any;
 
@@ -20,7 +20,8 @@ export class StudentProfile {
   user!: User;
   student!: Student;
   faculties: Faculty[] = [];
-  careers: string[] = [];
+  careers: Career[] = [];
+  allCareers: Career[] = [];
   modalRef: any;
 
   modalities = Object.values(Modality);
@@ -31,8 +32,8 @@ export class StudentProfile {
 
   constructor(
     private fb: FormBuilder,
-    private studentService: ServStudentsJson,
-    private facultiesService: ServFacultiesJson,
+    private studentService: ServStudentsApi,
+    private dropDownsService: ServDropdownsApi,
     private authService: AuthService,
   ) {}
 
@@ -40,18 +41,22 @@ export class StudentProfile {
     const userId = this.authService.getUserId();
     if (!userId) return;
 
-    this.facultiesService.getFaculties().subscribe(f => {
-      this.faculties = f;
+    this.dropDownsService.getFacultiesWithCareers().subscribe(faculties => {
+      this.faculties = faculties;
+      this.allCareers = faculties.flatMap(f => (f.careers ?? []).map(c => ({ ...c, facultyId: f.id })));
 
       this.studentService.getStudentById(Number(userId)).subscribe(st => {
         this.student = st;
         this.photoPreview = st.photoUrl || null;
 
+        this.student.faculty = this.faculties.find(f => f.id === st.facultyId);
+        this.student.career = this.allCareers.find(c => c.id === st.careerId);
+
         this.formStudent = this.fb.group({
           name: [st.name, [Validators.required, Validators.minLength(3)]],
           email: [st.email, [Validators.required, Validators.email]],
-          faculty: [st.faculty, Validators.required],
-          career: [st.career, Validators.required],
+          faculty: [st.facultyId, Validators.required],
+          career: [st.careerId, Validators.required],
           semester: [st.semester, [Validators.required, Validators.min(1), Validators.max(10)]],
           modality: [st.modality, Validators.required],
           schedule: [st.schedule, Validators.required],
@@ -59,13 +64,11 @@ export class StudentProfile {
           photoUrl: [st.photoUrl || '']
         });
 
-        const facultyObj = this.faculties.find(x => x.faculty === st.faculty);
-        this.careers = facultyObj ? facultyObj.careers : [];
+        this.careers = this.allCareers.filter(c => c.facultyId === st.facultyId);
 
-        this.formStudent.get('faculty')?.valueChanges.subscribe(facName => {
-          const selected = this.faculties.find(f => f.faculty === facName);
-          this.careers = selected ? selected.careers : [];
-          this.formStudent.get('career')?.setValue('');
+        this.formStudent.get('faculty')?.valueChanges.subscribe(facId => {
+          this.careers = this.allCareers.filter(c => c.facultyId === Number(facId));
+          this.formStudent.get('career')?.setValue(null);
         });
       });
     });

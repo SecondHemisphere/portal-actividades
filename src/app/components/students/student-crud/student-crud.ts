@@ -1,20 +1,22 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
-import { Modality, Schedule, Student } from '../../../models/Student';
-import { ServStudentsJson } from '../../../services/serv-students-json';
-import { ServFacultiesJson, Faculty } from '../../../services/serv-faculties-json';
+import { Career, Faculty, Modality, Schedule, Student } from '../../../models/Student';
+import { ServStudentsApi } from '../../../services/serv-students-api';
+import { ServDropdownsApi } from '../../../services/serv-dropdowns-api';
+import { UserRole } from '../../../models/User';
+import Swal from 'sweetalert2';
 
-declare const bootstrap:any;
+declare const bootstrap: any;
 
 @Component({
   selector: 'app-student-crud',
   imports: [ReactiveFormsModule, DataTable, SearchForm, FormsModule],
   templateUrl: './student-crud.html',
-  styleUrl: './student-crud.css',
+  styleUrls: ['./student-crud.css'],
 })
-export class StudentCrud {
+export class StudentCrud implements AfterViewInit {
   students: Student[] = [];
   filteredStudents: Student[] = [];
   formStudent!: FormGroup;
@@ -22,18 +24,19 @@ export class StudentCrud {
   modalRef: any;
 
   faculties: Faculty[] = [];
-  careers: string[] = [];
+  allCareers: Career[] = [];
+  careers: Career[] = [];
 
   modalities = Object.values(Modality);
   schedules = Object.values(Schedule);
 
   photoPreview: string | null = null;
-  studentEdit:Student ={} as Student; //para foto
+  studentEdit: Student = {} as Student;
 
   studentFilters: SearchFilter[] = [
     { type: 'text', field: 'name', label: 'Nombre' },
-    { type: 'text', field: 'faculty', label: 'Facultad' },
-    { type: 'text', field: 'career', label: 'Carrera' },
+    { type: 'select', field: 'facultyId', label: 'Facultad', options: [] },
+    { type: 'select', field: 'careerId', label: 'Carrera', options: [] },
     { type: 'number', field: 'semester', label: 'Semestre' },
     {
       type: 'select',
@@ -52,8 +55,8 @@ export class StudentCrud {
   colArray: TableColumn[] = [
     { field: 'id', header: 'ID', type: 'number' },
     { field: 'name', header: 'Nombre' },
-    { field: 'faculty', header: 'Facultad' },
-    { field: 'career', header: 'Carrera' },
+    { field: 'facultyName', header: 'Facultad' },
+    { field: 'careerName', header: 'Carrera' },
     { field: 'semester', header: 'Semestre', type: 'number' },
     { field: 'modality', header: 'Modalidad' },
     { field: 'schedule', header: 'Jornada' },
@@ -63,33 +66,52 @@ export class StudentCrud {
   ];
 
   constructor(
-    private miServicio: ServStudentsJson,
-    private facultiesService: ServFacultiesJson,
-    private formbuilder: FormBuilder
+    private studentService: ServStudentsApi,
+    private dropDownsService: ServDropdownsApi,
+    private fb: FormBuilder
   ) {
     this.loadStudents();
 
-    this.formStudent = this.formbuilder.group({
-      name: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50),Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      email:['',[Validators.required,Validators.email]],
-      faculty: ['',Validators.required],
-      career: ['',Validators.required],
-      semester: [1,[Validators.required,Validators.min(1),Validators.max(10)]],
-      modality: ['',Validators.required],
-      schedule: ['',Validators.required],
-      phone: ['',[Validators.required,Validators.pattern(/^\+?[0-9]{7,15}$/)]],
+    this.formStudent = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      facultyId: ['', Validators.required],
+      careerId: ['', Validators.required],
+      semester: [1, [Validators.required, Validators.min(1), Validators.max(10)]],
+      modality: ['', Validators.required],
+      schedule: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
       photoUrl: [''],
       active: [true]
     });
 
-    this.facultiesService.getFaculties().subscribe(data => {
-      this.faculties = data;
+    this.dropDownsService.getFacultiesWithCareers().subscribe(faculties => {
+      this.faculties = faculties;
+
+      this.allCareers = faculties.flatMap(f =>
+        (f.careers ?? []).map(c => ({ ...c, facultyId: f.id }))
+      );
+
+      const facultyFilter = this.studentFilters.find(f => f.field === 'facultyId');
+      if (facultyFilter) {
+        facultyFilter.options = faculties.map(f => ({
+          label: f.name,
+          value: f.id
+        }));
+      }
+
+      const careerFilter = this.studentFilters.find(f => f.field === 'careerId');
+      if (careerFilter) {
+        careerFilter.options = this.allCareers.map(c => ({
+          label: c.name,
+          value: c.id
+        }));
+      }
     });
 
-    this.formStudent.get('faculty')?.valueChanges.subscribe(facName => {
-      const selectedFaculty = this.faculties.find(f => f.faculty === facName);
-      this.careers = selectedFaculty ? selectedFaculty.careers : [];
-      this.formStudent.get('career')?.setValue('');
+    this.formStudent.get('facultyId')?.valueChanges.subscribe(facId => {
+      this.careers = this.allCareers.filter(c => c.facultyId === Number(facId));
+      this.formStudent.get('careerId')?.setValue(null);
     });
   }
 
@@ -99,28 +121,14 @@ export class StudentCrud {
   }
 
   loadStudents() {
-    this.miServicio.getStudents().subscribe((data: Student[]) => {
-      this.students = data;
-      this.filteredStudents = [...data];
+    this.studentService.getStudents2().subscribe((data: Student[]) => {
+      this.students = data.map(s => ({
+        ...s,
+        facultyName: s.faculty?.name || s.facultyName,
+        careerName: s.career?.name || s.careerName
+      }));
+      this.filteredStudents = [...this.students];
     });
-  }
-
-  delete(student: Student) {
-    const confirmado = confirm(`¿Estás seguro de eliminar el estudiante? ${student.name}`);
-    if (confirmado) {
-      this.miServicio.delete(student.id).subscribe(() => {
-        alert("Eliminado exitosamente");
-        this.loadStudents();
-      });
-    }
-  }
-
-  search(filters: any) {
-    this.miServicio.searchStudents(filters).subscribe(
-      (data: Student[]) => {
-        this.filteredStudents = data;
-      }
-    );
   }
 
   openNew() {
@@ -128,15 +136,37 @@ export class StudentCrud {
     this.formStudent.reset({
       name: '',
       email: 'example@ug.edu.ec',
-      faculty: '',
-      career: '',
+      facultyId: '',
+      careerId: '',
       semester: 1,
       modality: '',
-      schedules: '',
+      schedule: '',
       phone: '',
+      photoUrl: '',
       active: true
     });
     this.photoPreview = null;
+    this.modalRef.show();
+  }
+
+  openEdit(student: Student) {
+    this.studentEdit = student;
+    this.editingId = student.id || null;
+
+    this.formStudent.patchValue({
+      name: student.name,
+      email: student.email,
+      phone: student.phone,
+      photoUrl: student.photoUrl,
+      semester: student.semester,
+      modality: student.modality,
+      schedule: student.schedule,
+      active: student.active,
+      facultyId: student.facultyId,
+      careerId: student.careerId
+    });
+
+    this.photoPreview = student.photoUrl || null;
     this.modalRef.show();
   }
 
@@ -145,36 +175,129 @@ export class StudentCrud {
     this.photoPreview = url && url.trim() !== '' ? url : null;
   }
 
-  openEdit(student: Student) {
-    this.studentEdit = student;
-    this.editingId = student.id ? student.id : null;
-    this.formStudent.patchValue(student);
-    this.photoPreview = student.photoUrl || null;
-    this.modalRef.show();
-  }
-
   save() {
     if (this.formStudent.invalid) {
       this.formStudent.markAllAsTouched();
       return;
     }
 
-    let datos = this.formStudent.value;
+    const fv = this.formStudent.value;
+
+    const student: Student = {
+      id: this.editingId ?? 0,
+      name: fv.name,
+      email: fv.email,
+      phone: fv.phone,
+      photoUrl: fv.photoUrl,
+      careerId: Number(fv.careerId),
+      semester: Number(fv.semester),
+      modality: fv.modality,
+      schedule: fv.schedule,
+      role: UserRole.Estudiante,
+      active: fv.active ?? true
+    };
 
     if (this.editingId) {
-      let student: Student = { ...datos, id: this.editingId };
-      this.miServicio.update(student).subscribe(() => {
-        alert("Estudiante actualizado");
-        this.modalRef.hide();
-        this.loadStudents();
+      this.studentService.update(student).subscribe({
+        next: (res: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: res?.message ?? 'Estudiante actualizado correctamente'
+          });
+          this.modalRef.hide();
+          this.loadStudents();
+        },
+        error: (err) => {
+          let errorMsg = 'Error al actualizar el estudiante';
+          if (err.error) {
+            if (err.error.name) errorMsg = err.error.name.join(', ');
+            if (err.error.email) errorMsg = err.error.email.join(', ');
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMsg
+          });
+          console.error(err);
+        }
       });
+
     } else {
-      let student: Student = { ...datos };
-      this.miServicio.create(student).subscribe(() => {
-        alert("Estudiante creado");
-        this.modalRef.hide();
-        this.loadStudents();
+      this.studentService.create(student).subscribe({
+        next: (res: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: res?.message ?? 'Estudiante creado correctamente'
+          });
+          this.modalRef.hide();
+          this.loadStudents();
+        },
+        error: (err) => {
+          let errorMsg = 'Error al crear el estudiante';
+          if (err.error) {
+            if (err.error.name) errorMsg = err.error.name.join(', ');
+            if (err.error.email) errorMsg = err.error.email.join(', ');
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMsg
+          });
+          console.error(err);
+        }
       });
     }
   }
+
+  delete(student: Student) {
+    Swal.fire({
+      title: '¿Seguro deseas eliminar el estudiante?',
+      text: student.name,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.studentService.deactivate(Number(student.id)).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Estudiante eliminado',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.loadStudents();
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar el estudiante.',
+            });
+            console.error(err);
+          }
+        });
+      }
+    });
+  }
+
+  search(filters: any) {
+    this.studentService.search(filters).subscribe(
+      (data: Student[]) => {
+        this.filteredStudents = data.map(s => this.mapStudent(s));
+      }
+    );
+  }
+
+  private mapStudent(s: Student): Student {
+    return {
+      ...s,
+      facultyName: s.faculty?.name ?? s.facultyName ?? '',
+      careerName: s.career?.name ?? s.careerName ?? ''
+    };
+  }
+
 }

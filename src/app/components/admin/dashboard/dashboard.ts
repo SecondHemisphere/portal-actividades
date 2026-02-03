@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
-import { ServStudentsJson } from '../../../services/serv-students-json';
+import { ServStudentsApi } from '../../../services/serv-students-api';
 import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { ServUsersJson } from '../../../services/serv-users-json';
 import { ServRatingsJson } from '../../../services/serv-ratings-json';
@@ -52,7 +52,7 @@ export class Dashboard {
     private servActivities: ServActivitiesApi,
     private servOrganizers: ServOrganizersApi,
     private servCategories: ServCategoriesApi,
-    private servStudents: ServStudentsJson,
+    private servStudents: ServStudentsApi,
     private servEnrollments: ServEnrollmentsJson,
     private servRatings: ServRatingsJson,
     private servUsers: ServUsersJson

@@ -49,13 +49,23 @@
               <input type="text" class="form-control" formControlName="name" />
 
               <span class="error">
-                @if(formStudent.get("name")?.invalid && (formStudent.get("name")?.dirty ||
-                formStudent.get("name")?.touched)) {
-                @if(formStudent.get("name")?.errors?.["required"]){ Es requerido }
-                @if(formStudent.get("name")?.errors?.["minlength"]){ Debe tener mínimo 3 caracteres
-                } @if(formStudent.get("name")?.errors?.["maxlength"]){ Debe tener máximo 50
-                caracteres } @if(formStudent.get("name")?.errors?.["pattern"]){ Solo letras y
-                espacio } }
+                @if (
+                  formStudent.get('name')?.invalid &&
+                  (formStudent.get('name')?.dirty || formStudent.get('name')?.touched)
+                ) {
+                  @if (formStudent.get('name')?.errors?.['required']) {
+                    Es requerido
+                  }
+                  @if (formStudent.get('name')?.errors?.['minlength']) {
+                    Debe tener mínimo 3 caracteres
+                  }
+                  @if (formStudent.get('name')?.errors?.['maxlength']) {
+                    Debe tener máximo 50 caracteres
+                  }
+                  @if (formStudent.get('name')?.errors?.['pattern']) {
+                    Solo letras y espacio
+                  }
+                }
               </span>
             </div>
 
@@ -64,10 +74,17 @@
               <label class="form-label">Correo</label>
               <input type="text" class="form-control" name="email" formControlName="email" />
               <span class="error">
-                @if(formStudent.get("email")?.invalid && (formStudent.get("email")?.dirty||
-                formStudent.get("email")?.touched)){
-                @if(formStudent.get("email")?.errors?.["required"]){ Es requerido}
-                @if(formStudent.get("email")?.errors?.["email"]){ Debe ser un correo válido }}
+                @if (
+                  formStudent.get('email')?.invalid &&
+                  (formStudent.get('email')?.dirty || formStudent.get('email')?.touched)
+                ) {
+                  @if (formStudent.get('email')?.errors?.['required']) {
+                    Es requerido
+                  }
+                  @if (formStudent.get('email')?.errors?.['email']) {
+                    Debe ser un correo válido
+                  }
+                }
               </span>
             </div>
 
@@ -77,43 +94,59 @@
               <input type="text" class="form-control" formControlName="phone" />
 
               <span class="error">
-                @if(formStudent.get("phone")?.invalid && (formStudent.get("phone")?.dirty ||
-                formStudent.get("phone")?.touched)) {
-                @if(formStudent.get("phone")?.errors?.["required"]){ Es requerido }
-                @if(formStudent.get("phone")?.errors?.["pattern"]){ Debe ser un número válido de 7 a
-                15 dígitos, opcional + al inicio } }
+                @if (
+                  formStudent.get('phone')?.invalid &&
+                  (formStudent.get('phone')?.dirty || formStudent.get('phone')?.touched)
+                ) {
+                  @if (formStudent.get('phone')?.errors?.['required']) {
+                    Es requerido
+                  }
+                  @if (formStudent.get('phone')?.errors?.['pattern']) {
+                    Debe ser un número válido de 7 a 15 dígitos, opcional + al inicio
+                  }
+                }
               </span>
             </div>
 
             <!-- FACULTAD -->
             <div class="mb-3">
               <label class="form-label">Facultad</label>
-              <select class="form-select" formControlName="faculty">
+              <select class="form-select" formControlName="facultyId">
                 @for (f of faculties; track $index) {
-                <option [value]="f.faculty">{{ f.faculty }}</option>
+                  <option [value]="f.id">{{ f.name }}</option>
                 }
               </select>
 
               <span class="error">
-                @if(formStudent.get("faculty")?.invalid && (formStudent.get("faculty")?.dirty ||
-                formStudent.get("faculty")?.touched)) {
-                @if(formStudent.get("faculty")?.errors?.["required"]){ Seleccione una facultad } }
+                @if (
+                  formStudent.get('facultyId')?.invalid &&
+                  (formStudent.get('facultyId')?.dirty || formStudent.get('facultyId')?.touched)
+                ) {
+                  @if (formStudent.get('facultyId')?.errors?.['required']) {
+                    Seleccione una facultad
+                  }
+                }
               </span>
             </div>
 
             <!-- CARRERA -->
             <div class="mb-3">
               <label class="form-label">Carrera</label>
-              <select class="form-select" formControlName="career">
+              <select class="form-select" formControlName="careerId">
                 @for (c of careers; track $index) {
-                <option [value]="c">{{ c }}</option>
+                  <option [value]="c.id">{{ c.name }}</option>
                 }
               </select>
 
               <span class="error">
-                @if(formStudent.get("career")?.invalid && (formStudent.get("career")?.dirty ||
-                formStudent.get("career")?.touched)) {
-                @if(formStudent.get("career")?.errors?.["required"]){ Seleccione una carrera } }
+                @if (
+                  formStudent.get('careerId')?.invalid &&
+                  (formStudent.get('careerId')?.dirty || formStudent.get('careerId')?.touched)
+                ) {
+                  @if (formStudent.get('careerId')?.errors?.['required']) {
+                    Seleccione una carrera
+                  }
+                }
               </span>
             </div>
 
@@ -128,12 +161,20 @@
                 max="10"
               />
               <span class="error">
-                @if(formStudent.get("semester")?.invalid && (formStudent.get("semester")?.dirty||
-                formStudent.get("semester")?.touched)){
-                @if(formStudent.get("semester")?.errors?.["required"]){ Es requerido}
-                @if(formStudent.get("semester")?.errors?.["min"] ||
-                formStudent.get("semester")?.errors?.["max"]){ El semestre minimo es 1 y el maximo
-                es 10}}
+                @if (
+                  formStudent.get('semester')?.invalid &&
+                  (formStudent.get('semester')?.dirty || formStudent.get('semester')?.touched)
+                ) {
+                  @if (formStudent.get('semester')?.errors?.['required']) {
+                    Es requerido
+                  }
+                  @if (
+                    formStudent.get('semester')?.errors?.['min'] ||
+                    formStudent.get('semester')?.errors?.['max']
+                  ) {
+                    El semestre minimo es 1 y el maximo es 10
+                  }
+                }
               </span>
             </div>
 
@@ -141,24 +182,29 @@
             <div class="mb-3">
               <label class="form-label">Modalidad</label>
               <div>
-                @for(m of modalities; track $index) {
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    formControlName="modality"
-                    [value]="m"
-                    id="modality{{ $index }}"
-                  />
-                  <label class="form-check-label" for="modality{{ $index }}">{{ m }}</label>
-                </div>
+                @for (m of modalities; track $index) {
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      formControlName="modality"
+                      [value]="m"
+                      id="modality{{ $index }}"
+                    />
+                    <label class="form-check-label" for="modality{{ $index }}">{{ m }}</label>
+                  </div>
                 }
               </div>
 
               <span class="error">
-                @if(formStudent.get("modality")?.invalid && (formStudent.get("modality")?.dirty ||
-                formStudent.get("modality")?.touched)) {
-                @if(formStudent.get("modality")?.errors?.["required"]){ Seleccione una modalidad } }
+                @if (
+                  formStudent.get('modality')?.invalid &&
+                  (formStudent.get('modality')?.dirty || formStudent.get('modality')?.touched)
+                ) {
+                  @if (formStudent.get('modality')?.errors?.['required']) {
+                    Seleccione una modalidad
+                  }
+                }
               </span>
             </div>
 
@@ -166,24 +212,29 @@
             <div class="mb-3">
               <label class="form-label">Jornada</label>
               <div>
-                @for(s of schedules; track $index) {
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    formControlName="schedule"
-                    [value]="s"
-                    id="schedule{{ $index }}"
-                  />
-                  <label class="form-check-label" for="schedule{{ $index }}">{{ s }}</label>
-                </div>
+                @for (s of schedules; track $index) {
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      formControlName="schedule"
+                      [value]="s"
+                      id="schedule{{ $index }}"
+                    />
+                    <label class="form-check-label" for="schedule{{ $index }}">{{ s }}</label>
+                  </div>
                 }
               </div>
 
               <span class="error">
-                @if(formStudent.get("schedule")?.invalid && (formStudent.get("schedule")?.dirty ||
-                formStudent.get("schedule")?.touched)) {
-                @if(formStudent.get("schedule")?.errors?.["required"]){ Seleccione una jornada } }
+                @if (
+                  formStudent.get('schedule')?.invalid &&
+                  (formStudent.get('schedule')?.dirty || formStudent.get('schedule')?.touched)
+                ) {
+                  @if (formStudent.get('schedule')?.errors?.['required']) {
+                    Seleccione una jornada
+                  }
+                }
               </span>
             </div>
 
@@ -198,40 +249,40 @@
               />
               <!-- VISTA PREVIA -->
               <div class="mt-2">
-                @if(photoPreview){
-                <img
-                  [src]="photoPreview"
-                  (error)="photoPreview = null"
-                  style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
-                />
+                @if (photoPreview) {
+                  <img
+                    [src]="photoPreview"
+                    (error)="photoPreview = null"
+                    style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
+                  />
                 } @else {
-                <div
-                  class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
-                  style="
-                    width: 140px;
-                    height: 140px;
-                    color: white;
-                    border-radius: 8px;
-                    border: 1px solid #ccc;
-                  "
-                >
-                  Sin imagen
-                </div>
+                  <div
+                    class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                    style="
+                      width: 140px;
+                      height: 140px;
+                      color: white;
+                      border-radius: 8px;
+                      border: 1px solid #ccc;
+                    "
+                  >
+                    Sin imagen
+                  </div>
                 }
               </div>
             </div>
 
             <!-- ACTIVA -->
-            @if(editingId){
-            <div class="form-check mb-3">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                formControlName="active"
-                id="checkActive"
-              />
-              <label class="form-check-label" for="checkActive">Activa</label>
-            </div>
+            @if (editingId) {
+              <div class="form-check mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="active"
+                  id="checkActive"
+                />
+                <label class="form-check-label" for="checkActive">Activa</label>
+              </div>
             }
           </div>
 
