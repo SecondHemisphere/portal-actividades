@@ -17,29 +17,12 @@ export class ServActivitiesApi {
     return this.http.get<Activity[]>(this.apiUrl);
   }
 
+  getActivities2(): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${this.apiUrl}/Activities2`);
+  }
+
   getActivityById(id: number | string): Observable<Activity> {
     return this.http.get<Activity>(`${this.apiUrl}/${id}`);
-  }
-
-  getActivityPublic(id: number | string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/public/${id}`);
-  }
-
-  search(filters: {
-    title?: string;
-    categoryId?: number;
-    organizerId?: number;
-    location?: string;
-    date?: string;
-  }): Observable<any[]> {
-    let params = new HttpParams();
-    if (filters.title) params = params.set('title', filters.title);
-    if (filters.categoryId) params = params.set('categoryId', filters.categoryId);
-    if (filters.organizerId) params = params.set('organizerId', filters.organizerId);
-    if (filters.location) params = params.set('location', filters.location);
-    if (filters.date) params = params.set('date', filters.date);
-
-    return this.http.get<any[]>(`${this.apiUrl}/search`, { params });
   }
 
   create(activity: Activity): Observable<Activity> {
@@ -52,6 +35,26 @@ export class ServActivitiesApi {
 
   delete(id: number | string): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/deactivate/${id}`, null);
+  }
+
+  search(filters: {
+    categoryId?: number;
+    organizerId?: number;
+    fromDate?: string;
+    toDate?: string;
+    location?: string;
+    title?: string;
+  }): Observable<Activity[]> {
+    let params = new HttpParams();
+
+    if (filters.categoryId != null) params = params.set('categoryId', filters.categoryId.toString());
+    if (filters.organizerId != null) params = params.set('organizerId', filters.organizerId.toString());
+    if (filters.fromDate) params = params.set('fromDate', filters.fromDate);
+    if (filters.toDate) params = params.set('toDate', filters.toDate);
+    if (filters.location) params = params.set('location', filters.location);
+    if (filters.title) params = params.set('title', filters.title);
+
+    return this.http.get<Activity[]>(`${this.apiUrl}/search`, { params });
   }
 
 }

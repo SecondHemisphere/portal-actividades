@@ -2,14 +2,15 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Enrollment } from '../../../models/Enrollment';
-import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
+import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
 import { Activity } from '../../../models/Activity';
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
+import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
 
 @Component({
   selector: 'app-enrollments-calendar',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './enrollments-calendar.html',
   styleUrl: './enrollments-calendar.css',
@@ -25,7 +26,7 @@ export class EnrollmentsCalendar {
     activities: {
       id: number;
       title: string;
-      status: string;
+      status: EnrollmentStatus;
       start: string;
       end: string;
       eventDate: string | undefined;
@@ -42,7 +43,7 @@ export class EnrollmentsCalendar {
   ];
 
   constructor(
-    private enrollmentsService: ServEnrollmentsJson,
+    private enrollmentsService: ServEnrollmentsApi,
     private activitiesService: ServActivitiesApi,
     private auth: AuthService,
     private router: Router
@@ -57,16 +58,16 @@ export class EnrollmentsCalendar {
   }
 
   loadEnrollments() {
-    this.enrollmentsService.getEnrollmentsByStudent(this.userId).subscribe(enrs => {
-      this.enrollments = enrs || [];
+    this.enrollmentsService.getEnrollmentsByStudent(this.userId)
+      .subscribe(enrs => {
+        this.enrollments = enrs || [];
+        const ids = this.enrollments.map(e => e.activityId);
 
-      const ids = this.enrollments.map(e => e.activityId);
-
-      this.activitiesService.getActivities().subscribe(actList => {
-        this.activities = actList.filter(a => ids.includes(a.id!));
-        this.generateFilteredDays();
+        this.activitiesService.getActivities2().subscribe(actList => {
+          this.activities = actList.filter(a => ids.includes(a.id!));
+          this.generateFilteredDays();
+        });
       });
-    });
   }
 
   generateFilteredDays() {
@@ -89,15 +90,11 @@ export class EnrollmentsCalendar {
         );
 
         if (!day) {
-          day = {
-            date: eventDateObj,
-            activities: []
-          };
+          day = { date: eventDateObj, activities: [] };
           this.filteredDays.push(day);
         }
 
-        const [startRaw, endRaw] =
-          act.timeRange?.split('-').map(t => t.trim()) ?? [];
+        const [startRaw, endRaw] = act.timeRange?.split('-').map(t => t.trim()) ?? [];
 
         day.activities.push({
           id: e.activityId,
@@ -106,7 +103,7 @@ export class EnrollmentsCalendar {
           start: startRaw || '—',
           end: endRaw || '—',
           eventDate: act.date,
-          enrollmentDate: e.date
+          enrollmentDate: e.enrollmentDate
         });
       }
     });
@@ -138,7 +135,4 @@ export class EnrollmentsCalendar {
     this.router.navigate(['/activity-view', id]);
   }
 
-  cancel(id: number) {
-    this.router.navigate(['/activity-view', id]);
-  }
 }

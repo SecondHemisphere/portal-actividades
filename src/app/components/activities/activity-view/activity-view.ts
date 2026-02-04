@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Rating } from '../../../models/Rating';
 import { Student } from '../../../models/Student';
 import { UserRole } from '../../../models/User';
-import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { Enrollment, EnrollmentStatus } from '../../../models/Enrollment';
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
@@ -16,6 +15,7 @@ import { ServCategoriesApi } from '../../../services/serv-categories-api';
 import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 import { ServStudentsApi } from '../../../services/serv-students-api';
 import { ServRatingsApi } from '../../../services/serv-ratings-api';
+import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
 
 declare const bootstrap: any;
 
@@ -55,7 +55,7 @@ export class ActivityView {
     private categoriesService: ServCategoriesApi,
     private organizersService: ServOrganizersApi,
     private studentsService: ServStudentsApi,
-    private enrollmentsService: ServEnrollmentsJson,
+    private enrollmentsService: ServEnrollmentsApi,
     private ratingsService: ServRatingsApi,
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -218,7 +218,7 @@ export class ActivityView {
           const updated: Enrollment = {
             ...existing,
             status: EnrollmentStatus.Inscrito,
-            date: new Date().toISOString()
+            enrollmentDate: new Date().toISOString()
           };
 
           this.enrollmentsService.update(updated).subscribe(e => {
@@ -234,7 +234,7 @@ export class ActivityView {
       const enrollment: Omit<Enrollment, 'id'> = {
         activityId: this.activity.id!,
         studentId: this.userId,
-        date: new Date().toISOString(),
+        enrollmentDate: new Date().toISOString(),
         status: EnrollmentStatus.Inscrito
       };
 
@@ -264,7 +264,7 @@ export class ActivityView {
     const updated: Enrollment = {
       ...this.currentEnrollment,
       status: EnrollmentStatus.Cancelado,
-      date: new Date().toISOString()
+      enrollmentDate: new Date().toISOString()
     };
 
     this.enrollmentsService.update(updated).subscribe(e => {

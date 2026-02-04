@@ -3,7 +3,6 @@ import { DecimalPipe } from '@angular/common';
 
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServStudentsApi } from '../../../services/serv-students-api';
-import { ServEnrollmentsJson } from '../../../services/serv-enrollments-json';
 import { ServUsersJson } from '../../../services/serv-users-json';
 import { ServRatingsApi } from '../../../services/serv-ratings-api';
 
@@ -13,6 +12,7 @@ import { Enrollment } from '../../../models/Enrollment';
 import { Activity } from '../../../models/Activity';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
 import { ServOrganizersApi } from '../../../services/serv-organizers-api';
+import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
 
 @Component({
   selector: 'app-dashboard',
@@ -53,7 +53,7 @@ export class Dashboard {
     private servOrganizers: ServOrganizersApi,
     private servCategories: ServCategoriesApi,
     private servStudents: ServStudentsApi,
-    private servEnrollments: ServEnrollmentsJson,
+    private servEnrollments: ServEnrollmentsApi,
     private servRatings: ServRatingsApi,
     private servUsers: ServUsersJson
   ) {}

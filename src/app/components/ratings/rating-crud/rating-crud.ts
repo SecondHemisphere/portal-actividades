@@ -86,7 +86,7 @@ export class RatingCrud {
   }
 
   loadActivities() {
-    this.activitiesService.getActivities().subscribe((data: Activity[]) => {
+    this.activitiesService.getActivities2().subscribe((data: Activity[]) => {
       this.activities = data;
 
       const filter = this.ratingFilters.find(f => f.field === 'activityId');

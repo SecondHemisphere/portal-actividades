@@ -47,13 +47,17 @@
             <div class="mb-3">
               <label class="form-label">Actividad</label>
               <select class="form-select" formControlName="activityId">
-                @for(a of activities; track $index){
-                <option [value]="a.id">{{ a.title }}</option>
+                @for (a of activities; track $index) {
+                  <option [value]="a.id">{{ a.title }}</option>
                 }
               </select>
               <span class="error">
-                @if(formEnrollment.get("activityId")?.invalid &&
-                formEnrollment.get("activityId")?.touched){ Seleccione una actividad }
+                @if (
+                  formEnrollment.get('activityId')?.invalid &&
+                  formEnrollment.get('activityId')?.touched
+                ) {
+                  Seleccione una actividad
+                }
               </span>
             </div>
 
@@ -61,31 +65,27 @@
             <div class="mb-3">
               <label class="form-label">Estudiante</label>
               <select class="form-select" formControlName="studentId">
-                @for(s of students; track $index){
-                <option [value]="s.id">{{ s.name }}</option>
+                @for (s of students; track $index) {
+                  <option [value]="s.id">{{ s.name }}</option>
                 }
               </select>
               <span class="error">
-                @if(formEnrollment.get("studentId")?.invalid &&
-                formEnrollment.get("studentId")?.touched){ Seleccione un estudiante }
+                @if (
+                  formEnrollment.get('studentId')?.invalid &&
+                  formEnrollment.get('studentId')?.touched
+                ) {
+                  Seleccione un estudiante
+                }
               </span>
             </div>
 
             <!-- FECHA -->
-            <div class="mb-3">
-              <label class="form-label">Fecha</label>
-              <input
-                type="date"
-                class="form-control"
-                formControlName="date"
-                [min]="minDate"
-                [max]="maxEnrollmentDate"
-              />
-              <span class="error">
-                @if(formEnrollment.get("date")?.invalid && formEnrollment.get("date")?.touched){
-                Seleccione una fecha válida }
-              </span>
-            </div>
+            @if (editingId) {
+              <div class="mb-3">
+                <label class="form-label">Fecha de inscripción</label>
+                <input type="date" class="form-control" formControlName="enrollmentDate" readonly />
+              </div>
+            }
 
             <!-- OBSERVACIONES -->
             <div class="mb-3">
@@ -97,36 +97,50 @@
                 placeholder="Escriba alguna observación..."
               ></textarea>
               <span class="error">
-                @if(formEnrollment.get("note")?.invalid && (formEnrollment.get("note")?.dirty ||
-                formEnrollment.get("note")?.touched)){
-                @if(formEnrollment.get("note")?.errors?.["minlength"]){ Mínimo 5 caracteres }
-                @if(formEnrollment.get("note")?.errors?.["maxlength"]){ Máximo 300 caracteres } }
+                @if (
+                  formEnrollment.get('note')?.invalid &&
+                  (formEnrollment.get('note')?.dirty || formEnrollment.get('note')?.touched)
+                ) {
+                  @if (formEnrollment.get('note')?.errors?.['minlength']) {
+                    Mínimo 5 caracteres
+                  }
+                  @if (formEnrollment.get('note')?.errors?.['maxlength']) {
+                    Máximo 300 caracteres
+                  }
+                }
               </span>
             </div>
 
-            <!-- ESTADO -->
-            <div class="mb-3">
-              <label class="form-label">Estado</label>
-              <div>
-                @for(s of enrollmentStatuses; track $index) {
-                <div class="form-check form-check-inline">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    formControlName="status"
-                    [value]="s"
-                    id="status{{ $index }}"
-                  />
-                  <label class="form-check-label" for="status{{ $index }}">{{ s }}</label>
+            @if (editingId) {
+              <!-- ESTADO -->
+              <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <div>
+                  @for (s of enrollmentStatuses; track $index) {
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        formControlName="status"
+                        [value]="s"
+                        id="status{{ $index }}"
+                      />
+                      <label class="form-check-label" for="status{{ $index }}">{{ s }}</label>
+                    </div>
+                  }
                 </div>
-                }
+                <span class="error">
+                  @if (
+                    formEnrollment.get('status')?.invalid &&
+                    (formEnrollment.get('status')?.dirty || formEnrollment.get('status')?.touched)
+                  ) {
+                    @if (formEnrollment.get('status')?.errors?.['required']) {
+                      Seleccione un estado
+                    }
+                  }
+                </span>
               </div>
-              <span class="error">
-                @if(formEnrollment.get("status")?.invalid && (formEnrollment.get("status")?.dirty ||
-                formEnrollment.get("status")?.touched)) {
-                @if(formEnrollment.get("status")?.errors?.["required"]){ Seleccione un estado } }
-              </span>
-            </div>
+            }
 
             <!-- BOTONES -->
             <div class="modal-footer">
