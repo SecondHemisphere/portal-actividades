@@ -1,29 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DashboardApiService } from '../../../services/serv-dashboard-api';
 import { DecimalPipe } from '@angular/common';
-
-import { ServActivitiesApi } from '../../../services/serv-activities-api';
-import { ServStudentsApi } from '../../../services/serv-students-api';
-import { ServUsersJson } from '../../../services/serv-users-json';
-import { ServRatingsApi } from '../../../services/serv-ratings-api';
-
-import { Category } from '../../../models/Category';
-import { Rating } from '../../../models/Rating';
-import { Enrollment } from '../../../models/Enrollment';
-import { Activity } from '../../../models/Activity';
-import { ServCategoriesApi } from '../../../services/serv-categories-api';
-import { ServOrganizersApi } from '../../../services/serv-organizers-api';
-import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DecimalPipe],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css',
+  imports: [DecimalPipe],
+  styleUrl: './dashboard.css'
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
 
   loading = true;
 
+  // Totales
   totalActivities = 0;
   totalOrganizers = 0;
   totalUsers = 0;
@@ -32,31 +21,15 @@ export class Dashboard {
   totalCategories = 0;
   totalRatings = 0;
 
-  activities: Activity[] = [];
-  categories: Category[] = [];
-  ratings: Rating[] = [];
-  enrollments: Enrollment[] = [];
-
+  // Datos para gráficos
   chartInscriptions: { label: string; value: number }[] = [];
-  totalInscriptionsLastMonths = 0;
 
   donutBackground = '';
-  donutCategories: any[] = [];
+  donutCategories: { label: string; count: number; color: string }[] = [];
 
-  linePoints: string = '';
-  lineDots: { x: number; y: number }[] = [];
+  chartTopRatings: { label: string; value: number; percent: number }[] = [];
 
-  chartTopRatings: any[] = [];
-
-  constructor(
-    private servActivities: ServActivitiesApi,
-    private servOrganizers: ServOrganizersApi,
-    private servCategories: ServCategoriesApi,
-    private servStudents: ServStudentsApi,
-    private servEnrollments: ServEnrollmentsApi,
-    private servRatings: ServRatingsApi,
-    private servUsers: ServUsersJson
-  ) {}
+  constructor(private dashboardApi: DashboardApiService) {}
 
   ngOnInit(): void {
     this.loadDashboard();
@@ -65,127 +38,68 @@ export class Dashboard {
   loadDashboard(): void {
     this.loading = true;
 
-    let loaded = 0;
-    const done = () => {
-      loaded++;
-      if (loaded === 7) {
-        this.generateCharts();
-        this.loading = false;
-      }
-    };
-
-    this.servActivities.getActivities().subscribe(data => {
-      this.activities = data;
-      this.totalActivities = data.filter(a => a.active).length;
-      done();
+    // Totales
+    this.dashboardApi.getTotals().subscribe({
+      next: totals => {
+        this.totalActivities = totals.totalActivities;
+        this.totalOrganizers = totals.totalOrganizers;
+        this.totalUsers = totals.totalUsers;
+        this.totalStudents = totals.totalStudents;
+        this.totalEnrollments = totals.totalEnrollments;
+        this.totalCategories = totals.totalCategories;
+        this.totalRatings = totals.totalRatings;
+      },
+      error: err => console.error(err)
     });
 
-    this.servOrganizers.getOrganizers().subscribe(data => {
-      this.totalOrganizers = data.filter(o => o.active).length;
-      done();
+    // Actividades por categoría (donut)
+    this.dashboardApi.getActivitiesByCategory().subscribe({
+      next: data => {
+        this.donutCategories = data.map((d, i) => ({
+          label: d.categoryName,
+          count: d.totalActivities,
+          color: this.getColor(i)
+        }));
+        this.generateDonutBackground();
+      },
+      error: err => console.error(err)
     });
 
-    this.servStudents.getStudents().subscribe(data => {
-      this.totalStudents = data.length;
-      done();
+    // Top ratings
+    this.dashboardApi.getTopRatings().subscribe({
+      next: data => {
+        const max = Math.max(...data.map(d => d.avgRating), 1);
+        this.chartTopRatings = data.map(d => ({
+          label: d.activityTitle,
+          value: d.avgRating,
+          percent: (d.avgRating / max) * 100
+        }));
+      },
+      error: err => console.error(err)
     });
 
-    this.servEnrollments.getEnrollments().subscribe(data => {
-      this.enrollments = data;
-      this.totalEnrollments = data.length;
-      done();
-    });
-
-    this.servRatings.getRatings().subscribe(data => {
-      this.ratings = data;
-      this.totalRatings = data.length;
-      done();
-    });
-
-    this.servUsers.getUsers().subscribe(data => {
-      this.totalUsers = data.length;
-      done();
-    });
-
-    this.servCategories.getCategories().subscribe(data => {
-      this.categories = data;
-      this.totalCategories = data.length;
-      done();
-    });
+    this.loading = false;
   }
 
-  generateCharts(): void {
-    this.generateDonutChart();
-    this.generateTopRatings();
-  }
-
-  generateDonutChart(): void {
+  private getColor(index: number): string {
     const colors = [
-      '#944FB6',
-      '#5A67D8',
-      '#4C9FE3',
-      '#2D3748',
-      '#3CA38E',
-      '#C09B40',
-      '#E29578',
-      '#429E51',
-      '#D977CE',
-      '#D96459',
+      '#944FB6', '#5A67D8', '#4C9FE3', '#2D3748', '#3CA38E',
+      '#C09B40', '#E29578', '#429E51', '#D977CE', '#D96459'
     ];
-
-    const total = this.activities.length;
-    let start = 0;
-    const slices: string[] = [];
-
-    this.donutCategories = this.categories.map((c, i) => {
-      const count = this.activities.filter(a => a.categoryId === c.id).length;
-      const angle = total ? (count / total) * 360 : 0;
-      const end = start + angle;
-
-      slices.push(`${colors[i % colors.length]} ${start}deg ${end}deg`);
-      start = end;
-
-      return {
-        label: c.name,
-        count,
-        color: colors[i % colors.length]
-      };
-    });
-
-    this.donutBackground = `conic-gradient(${slices.join(',')})`;
+    return colors[index % colors.length];
   }
 
-  generateTopRatings(): void {
-    const map: any[] = [];
-
-    for (const r of this.ratings) {
-      let item = map.find(m => m.id === r.activityId);
-      if (!item) {
-        item = { id: r.activityId, sum: 0, count: 0 };
-        map.push(item);
-      }
-      item.sum += r.stars;
-      item.count++;
-    }
-
-    const data = map
-      .map(m => {
-        const act = this.activities.find(a => a.id === m.id);
-        return {
-          label: act?.title ?? 'Actividad',
-          value: m.sum / m.count
-        };
-      })
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-
-    const max = Math.max(...data.map(d => d.value), 1);
-
-    this.chartTopRatings = data.map(d => ({
-      label: d.label,
-      value: d.value,
-      percent: (d.value / max) * 100
-    }));
+  private generateDonutBackground(): void {
+    let start = 0;
+    const total = this.donutCategories.reduce((sum, c) => sum + c.count, 0);
+    const slices = this.donutCategories.map(c => {
+      const angle = total ? (c.count / total) * 360 : 0;
+      const end = start + angle;
+      const slice = `${c.color} ${start}deg ${end}deg`;
+      start = end;
+      return slice;
+    });
+    this.donutBackground = `conic-gradient(${slices.join(',')})`;
   }
 
 }
