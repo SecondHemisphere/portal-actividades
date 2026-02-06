@@ -17,10 +17,17 @@ import { Dashboard } from './components/admin/dashboard/dashboard';
 import { RatingHistorial } from './components/ratings/rating-historial/rating-historial';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminProfile } from './components/admin/admin-profile/admin-profile';
+import { RegisterSelect } from './components/auth/register/register-select/register-select';
+import { RegisterStudent } from './components/auth/register/register-student/register-student';
+import { RegisterOrganizer } from './components/auth/register/register-organizer/register-organizer';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
+
+  { path: 'register/select', component: RegisterSelect },
+  { path: 'register/student', component: RegisterStudent },
+  { path: 'register/organizer', component: RegisterOrganizer },
 
   { path: 'activities', component: ActivitiesPage },
   { path: 'activity-view/:id', component: ActivityView },

@@ -1,0 +1,27 @@
+.card-header {
+  border-radius: 8px 8px 0 0 !important;
+  background-color: var(--bs-primary);
+  color: #fff;
+  border-bottom: none;
+}
+
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.65 !important;
+  cursor: not-allowed !important;
+}
+
+.btn-primary:disabled,
+.btn-primary[disabled] {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #fff !important;
+}
+
+.btn-primary:disabled:hover,
+.btn-primary[disabled]:hover {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #fff !important;
+  transform: none !important;
+}

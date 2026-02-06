@@ -5,6 +5,7 @@ import { DataTable, TableColumn } from '../../../shared/data-table/data-table';
 import { User, UserRole } from '../../../../models/User';
 import { ServUsersApi } from '../../../../services/serv-users-api';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../../services/auth.service';
 
 declare const bootstrap: any;
 
@@ -22,6 +23,8 @@ export class UserCrud implements AfterViewInit {
   modalRef: any;
 
   userRoles = Object.values(UserRole);
+
+  currentUserId: number | null = null;
 
   userFilters: SearchFilter[] = [
     { type: 'text', field: 'name', label: 'Nombre' },
@@ -45,6 +48,7 @@ export class UserCrud implements AfterViewInit {
 
   constructor(
     private miServicio: ServUsersApi,
+    private authService: AuthService,
     private formbuilder: FormBuilder
   ) {
     this.loadUsers();
@@ -56,6 +60,9 @@ export class UserCrud implements AfterViewInit {
       role: ['', Validators.required],
       active: [true]
     });
+
+    this.currentUserId = Number(this.authService.getUserId());
+
   }
 
   @ViewChild("userModalRef") modalElement!: ElementRef;
@@ -72,6 +79,14 @@ export class UserCrud implements AfterViewInit {
   }
 
   delete(user: User) {
+    if (user.id === this.currentUserId) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Acción no permitida',
+        text: 'No puedes eliminar tu propio usuario'
+      });
+      return;
+    }
     Swal.fire({
       title: '¿Seguro deseas eliminar el usuario?',
       text: user.name,
@@ -123,13 +138,18 @@ export class UserCrud implements AfterViewInit {
   }
 
   openEdit(user: User) {
-    this.editingId = user.id ? user.id : null;
-    this.formUser.patchValue(user);
-
-    if (this.editingId) {
-      this.formUser.get('role')?.disable();
+    if (user.id === this.currentUserId) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Acción no permitida',
+        text: 'No puedes editar tu propio usuario desde aquí'
+      });
+      return;
     }
 
+    this.editingId = user.id!;
+    this.formUser.patchValue(user);
+    this.formUser.get('role')?.disable();
     this.modalRef.show();
   }
 

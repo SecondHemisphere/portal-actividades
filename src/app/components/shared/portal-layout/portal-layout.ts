@@ -40,6 +40,14 @@ export class PortalLayout implements OnInit {
     this.auth.loggedInObs$.subscribe(() => {
       this.updateUserState();
     });
+
+    this.auth.currentUserObs$.subscribe(user => {
+      if (!user) return;
+
+      this.currentUserName = user.name;
+      this.displayUserName = this.truncateName(user.name, 15);
+      this.currentUserInitials = this.generateInitials(user.name);
+    });
   }
 
   constructor(public auth: AuthService, private router: Router) {}

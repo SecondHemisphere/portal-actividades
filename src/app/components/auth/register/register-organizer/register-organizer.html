@@ -1,0 +1,345 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow border-0">
+        <div class="card-header text-white py-3">
+          <h4 class="mb-2 text-white">Registro de Organizador</h4>
+          <p class="mb-0 small">
+            Complete el formulario para crear una nueva cuenta de organizador
+          </p>
+        </div>
+
+        <div class="card-body p-4">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Nombre -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre completo *</label>
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                formControlName="name"
+                placeholder="Ingrese su nombre completo"
+                [class.is-invalid]="
+                  registerForm.get('name')?.invalid && registerForm.get('name')?.touched
+                "
+              />
+              @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('name')?.errors?.['required']) {
+                    El nombre es requerido
+                  }
+                  @if (registerForm.get('name')?.errors?.['minlength']) {
+                    Mínimo 3 caracteres
+                  }
+                  @if (registerForm.get('name')?.errors?.['maxlength']) {
+                    Máximo 50 caracteres
+                  }
+                  @if (registerForm.get('name')?.errors?.['pattern']) {
+                    Solo letras y espacios
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo electrónico *</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                formControlName="email"
+                placeholder="ejemplo@universidad.edu"
+                [class.is-invalid]="
+                  registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+                "
+              />
+              @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('email')?.errors?.['required']) {
+                    El correo es requerido
+                  }
+                  @if (registerForm.get('email')?.errors?.['email']) {
+                    Ingrese un correo válido
+                  }
+                </div>
+              }
+              <small class="form-text text-muted mt-1 d-block">
+                Este será el correo para iniciar sesión
+              </small>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña *</label>
+              <div class="input-group">
+                <input
+                  [type]="passwordVisible ? 'text' : 'password'"
+                  id="password"
+                  class="form-control"
+                  formControlName="password"
+                  placeholder="Mínimo 8 caracteres"
+                  [class.is-invalid]="
+                    registerForm.get('password')?.invalid && registerForm.get('password')?.touched
+                  "
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility('password')"
+                >
+                  <i
+                    class="bi"
+                    [class.bi-eye]="!passwordVisible"
+                    [class.bi-eye-slash]="passwordVisible"
+                  ></i>
+                </button>
+              </div>
+
+              <!-- Indicador de fortaleza -->
+              @if (registerForm.get('password')?.value) {
+                <div class="mt-2">
+                  <div class="progress" style="height: 5px">
+                    <div
+                      class="progress-bar"
+                      [style.width.%]="passwordStrength.score * 20"
+                      [style.background-color]="passwordStrength.color"
+                    ></div>
+                  </div>
+                  <small [style.color]="passwordStrength.color">
+                    {{ passwordStrength.text }}
+                  </small>
+                </div>
+              }
+
+              @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('password')?.errors?.['required']) {
+                    La contraseña es requerida
+                  }
+                  @if (registerForm.get('password')?.errors?.['minlength']) {
+                    Mínimo 8 caracteres
+                  }
+                  @if (registerForm.get('password')?.errors?.['maxlength']) {
+                    Máximo 20 caracteres
+                  }
+                  @if (registerForm.get('password')?.errors?.['pattern']) {
+                    Debe contener: mayúscula, minúscula, número y carácter especial (@$!%*?&)
+                  }
+                </div>
+              }
+
+              <small class="form-text text-muted mt-1 d-block">
+                La contraseña debe contener al menos: una mayúscula, una minúscula, un número y un
+                carácter especial (@$!%*?&)
+              </small>
+            </div>
+
+            <!-- Confirmar Contraseña -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmar contraseña *</label>
+              <div class="input-group">
+                <input
+                  [type]="confirmPasswordVisible ? 'text' : 'password'"
+                  id="confirmPassword"
+                  class="form-control"
+                  formControlName="confirmPassword"
+                  placeholder="Repita la contraseña"
+                  [class.is-invalid]="
+                    registerForm.get('confirmPassword')?.invalid &&
+                    registerForm.get('confirmPassword')?.touched
+                  "
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility('confirmPassword')"
+                >
+                  <i
+                    class="bi"
+                    [class.bi-eye]="!confirmPasswordVisible"
+                    [class.bi-eye-slash]="confirmPasswordVisible"
+                  ></i>
+                </button>
+              </div>
+              @if (
+                registerForm.get('confirmPassword')?.invalid &&
+                registerForm.get('confirmPassword')?.touched
+              ) {
+                <div class="error">
+                  @if (registerForm.get('confirmPassword')?.errors?.['required']) {
+                    Confirme la contraseña
+                  }
+                  @if (registerForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+                    Las contraseñas no coinciden
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Teléfono *</label>
+              <input
+                type="text"
+                id="phone"
+                class="form-control"
+                formControlName="phone"
+                placeholder="Ej: +1234567890"
+                [class.is-invalid]="
+                  registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched
+                "
+              />
+              @if (registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('phone')?.errors?.['required']) {
+                    El teléfono es requerido
+                  }
+                  @if (registerForm.get('phone')?.errors?.['pattern']) {
+                    Formato inválido (7-15 dígitos, opcional + al inicio)
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Departamento -->
+            <div class="mb-3">
+              <label for="department" class="form-label">Departamento *</label>
+              <input
+                type="text"
+                id="department"
+                class="form-control"
+                formControlName="department"
+                placeholder="Ej: Departamento de Ingeniería"
+                [class.is-invalid]="
+                  registerForm.get('department')?.invalid && registerForm.get('department')?.touched
+                "
+              />
+              @if (
+                registerForm.get('department')?.invalid && registerForm.get('department')?.touched
+              ) {
+                <div class="error">
+                  @if (registerForm.get('department')?.errors?.['required']) {
+                    El departamento es requerido
+                  }
+                  @if (registerForm.get('department')?.errors?.['minlength']) {
+                    Mínimo 2 caracteres
+                  }
+                  @if (registerForm.get('department')?.errors?.['maxlength']) {
+                    Máximo 50 caracteres
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Cargo -->
+            <div class="mb-3">
+              <label for="position" class="form-label">Cargo *</label>
+              <input
+                type="text"
+                id="position"
+                class="form-control"
+                formControlName="position"
+                placeholder="Ej: Coordinador de eventos"
+                [class.is-invalid]="
+                  registerForm.get('position')?.invalid && registerForm.get('position')?.touched
+                "
+              />
+              @if (registerForm.get('position')?.invalid && registerForm.get('position')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('position')?.errors?.['required']) {
+                    El cargo es requerido
+                  }
+                  @if (registerForm.get('position')?.errors?.['minlength']) {
+                    Mínimo 3 caracteres
+                  }
+                  @if (registerForm.get('position')?.errors?.['maxlength']) {
+                    Máximo 50 caracteres
+                  }
+                  @if (registerForm.get('position')?.errors?.['pattern']) {
+                    Solo letras y espacios
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Biografía -->
+            <div class="mb-4">
+              <label for="bio" class="form-label">Biografía *</label>
+              <textarea
+                id="bio"
+                class="form-control"
+                formControlName="bio"
+                rows="3"
+                placeholder="Breve descripción profesional (10-300 caracteres)"
+                [class.is-invalid]="
+                  registerForm.get('bio')?.invalid && registerForm.get('bio')?.touched
+                "
+              ></textarea>
+              @if (registerForm.get('bio')?.invalid && registerForm.get('bio')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('bio')?.errors?.['required']) {
+                    La biografía es requerida
+                  }
+                  @if (registerForm.get('bio')?.errors?.['minlength']) {
+                    Mínimo 10 caracteres
+                  }
+                  @if (registerForm.get('bio')?.errors?.['maxlength']) {
+                    Máximo 300 caracteres
+                  }
+                </div>
+              }
+              <small class="form-text text-muted mt-1 d-block">
+                {{ bioCharacterCount }}/300 caracteres
+              </small>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex gap-2 justify-content-end">
+              <a
+                routerLink="/login"
+                class="btn btn-outline-secondary d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-arrow-left"></i>
+                <span>Cancelar</span>
+              </a>
+              <button
+                type="submit"
+                class="btn btn-primary d-flex align-items-center gap-2"
+                [disabled]="registerForm.invalid || isLoading"
+              >
+                @if (isLoading) {
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  <span>Registrando...</span>
+                } @else {
+                  <i class="bi bi-check-circle"></i>
+                  <span>Registrar Organizador</span>
+                }
+              </button>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="mt-4 pt-4 border-top">
+              <div class="alert alert-info mb-0">
+                <h6 class="alert-heading mb-2">
+                  <i class="bi bi-info-circle me-2"></i>Información importante
+                </h6>
+                <ul class="mb-0 ps-3">
+                  <li>Los campos marcados con * son obligatorios</li>
+                  <li>El organizador podrá iniciar sesión inmediatamente después del registro</li>
+                  <li>Se recomienda usar una contraseña segura</li>
+                  <li>El sistema verificará automáticamente si el correo o nombre ya existen</li>
+                </ul>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

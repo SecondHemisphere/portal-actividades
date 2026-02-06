@@ -14,6 +14,7 @@
       <div class="col-md-9">
         <h3 class="fw-bold mb-1">{{ admin.name }}</h3>
         <p class="text-muted mb-2">{{ admin.email }}</p>
+        <p class="mb-1"><strong>Teléfono:</strong> {{ admin.phone }}</p>
         <p class="mb-1"><strong>Rol:</strong> Administrador</p>
 
         <div class="mt-4 d-flex justify-content-between">
@@ -41,23 +42,50 @@
           <div class="mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" formControlName="name" />
-            <span
-              class="error"
-              *ngIf="formAdmin.get('name')?.invalid && formAdmin.get('name')?.touched"
-            >
-              El nombre es obligatorio (mín. 3 caracteres)
+            <span class="error">
+              @if (formAdmin.get('name')?.invalid && formAdmin.get('name')?.touched) {
+                @if (formAdmin.get('name')?.errors?.['required']) {
+                  El nombre es obligatorio.
+                }
+                @if (formAdmin.get('name')?.errors?.['minlength']) {
+                  Mínimo 3 caracteres.
+                }
+                @if (formAdmin.get('name')?.errors?.['maxlength']) {
+                  Máximo 50 caracteres.
+                }
+              }
             </span>
           </div>
 
           <!-- EMAIL -->
           <div class="mb-3">
             <label class="form-label">Correo</label>
-            <input type="email" class="form-control" formControlName="email" />
-            <span
-              class="error"
-              *ngIf="formAdmin.get('email')?.invalid && formAdmin.get('email')?.touched"
-            >
-              Correo inválido
+            <input type="text" class="form-control" formControlName="email" />
+            <span class="error">
+              @if (formAdmin.get('email')?.invalid && formAdmin.get('email')?.touched) {
+                @if (formAdmin.get('email')?.errors?.['required']) {
+                  El correo es obligatorio.
+                }
+                @if (formAdmin.get('email')?.errors?.['email']) {
+                  Correo inválido.
+                }
+              }
+            </span>
+          </div>
+
+          <!-- TELÉFONO -->
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control" formControlName="phone" />
+            <span class="error">
+              @if (formAdmin.get('phone')?.invalid && formAdmin.get('phone')?.touched) {
+                @if (formAdmin.get('phone')?.errors?.['required']) {
+                  El teléfono es obligatorio.
+                }
+                @if (formAdmin.get('phone')?.errors?.['pattern']) {
+                  Debe tener 7-15 dígitos, opcional "+".
+                }
+              }
             </span>
           </div>
 
@@ -70,23 +98,28 @@
               formControlName="photoUrl"
               (input)="updatePhotoPreview()"
             />
-
+            <!-- VISTA PREVIA -->
             <div class="mt-2">
-              <img
-                *ngIf="photoPreview; else noImg"
-                [src]="photoPreview"
-                class="shadow"
-                style="width: 140px; height: 140px; object-fit: cover; border-radius: 8px"
-              />
-
-              <ng-template #noImg>
+              @if (photoPreview) {
+                <img
+                  [src]="photoPreview"
+                  (error)="photoPreview = null"
+                  style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
+                />
+              } @else {
                 <div
-                  class="bg-secondary text-white d-flex align-items-center justify-content-center"
-                  style="width: 140px; height: 140px; border-radius: 8px"
+                  class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                  style="
+                    width: 140px;
+                    height: 140px;
+                    color: white;
+                    border-radius: 8px;
+                    border: 1px solid #ccc;
+                  "
                 >
                   Sin imagen
                 </div>
-              </ng-template>
+              }
             </div>
           </div>
         </div>

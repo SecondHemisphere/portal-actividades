@@ -48,8 +48,9 @@ export class AdminProfile implements OnInit {
 
   initForm() {
     this.formAdmin = this.fb.group({
-      name: [this.admin.name, [Validators.required, Validators.minLength(3)]],
+      name: [this.admin.name, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: [this.admin.email, [Validators.required, Validators.email]],
+      phone: [this.admin.phone, [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
       photoUrl: [this.admin.photoUrl || '']
     });
   }
@@ -58,6 +59,7 @@ export class AdminProfile implements OnInit {
     this.formAdmin.patchValue({
       name: admin.name,
       email: admin.email,
+
       photoUrl: admin.photoUrl || ''
     });
 
@@ -93,6 +95,8 @@ export class AdminProfile implements OnInit {
           next: () => {
             this.admin = payload;
             this.photoPreview = payload.photoUrl || null;
+
+            this.authService.updateCurrentUser(payload);
 
             Swal.fire({
               icon: 'success',
