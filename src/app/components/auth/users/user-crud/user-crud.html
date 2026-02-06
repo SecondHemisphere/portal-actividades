@@ -44,11 +44,22 @@
               <input type="text" class="form-control" formControlName="name" />
 
               <span class="error">
-                @if(formUser.get("name")?.invalid && (formUser.get("name")?.dirty ||
-                formUser.get("name")?.touched)) { @if(formUser.get("name")?.errors?.["required"]){
-                Es requerido } @if(formUser.get("name")?.errors?.["minlength"]){ Debe tener mínimo 3
-                caracteres } @if(formUser.get("name")?.errors?.["maxlength"]){ Debe tener máximo 50
-                caracteres } @if(formUser.get("name")?.errors?.["pattern"]){ Solo letras y espacio }
+                @if (
+                  formUser.get('name')?.invalid &&
+                  (formUser.get('name')?.dirty || formUser.get('name')?.touched)
+                ) {
+                  @if (formUser.get('name')?.errors?.['required']) {
+                    Es requerido
+                  }
+                  @if (formUser.get('name')?.errors?.['minlength']) {
+                    Debe tener mínimo 3 caracteres
+                  }
+                  @if (formUser.get('name')?.errors?.['maxlength']) {
+                    Debe tener máximo 50 caracteres
+                  }
+                  @if (formUser.get('name')?.errors?.['pattern']) {
+                    Solo letras y espacio
+                  }
                 }
               </span>
             </div>
@@ -57,10 +68,17 @@
               <label class="form-label">Correo</label>
               <input type="email" class="form-control" formControlName="email" />
               <span class="error">
-                @if(formUser.get("email")?.invalid && (formUser.get("email")?.dirty||
-                formUser.get("email")?.touched)){ @if(formUser.get("email")?.errors?.["required"]){
-                Es requerido} @if(formUser.get("email")?.errors?.["email"]){ Debe ser un correo
-                válido }}
+                @if (
+                  formUser.get('email')?.invalid &&
+                  (formUser.get('email')?.dirty || formUser.get('email')?.touched)
+                ) {
+                  @if (formUser.get('email')?.errors?.['required']) {
+                    Es requerido
+                  }
+                  @if (formUser.get('email')?.errors?.['email']) {
+                    Debe ser un correo válido
+                  }
+                }
               </span>
             </div>
 
@@ -69,10 +87,17 @@
               <input type="text" class="form-control" formControlName="phone" />
 
               <span class="error">
-                @if(formUser.get("phone")?.invalid && (formUser.get("phone")?.dirty ||
-                formUser.get("phone")?.touched)) { @if(formUser.get("phone")?.errors?.["required"]){
-                Es requerido } @if(formUser.get("phone")?.errors?.["pattern"]){ Debe ser un número
-                válido de 7 a 15 dígitos, opcional + al inicio } }
+                @if (
+                  formUser.get('phone')?.invalid &&
+                  (formUser.get('phone')?.dirty || formUser.get('phone')?.touched)
+                ) {
+                  @if (formUser.get('phone')?.errors?.['required']) {
+                    Es requerido
+                  }
+                  @if (formUser.get('phone')?.errors?.['pattern']) {
+                    Debe ser un número válido de 7 a 15 dígitos, opcional + al inicio
+                  }
+                }
               </span>
             </div>
 
@@ -81,42 +106,49 @@
               <select class="form-select" formControlName="role">
                 <option value="" disabled>Seleccione un Rol</option>
                 @for (role of userRoles; track $index) {
-                <option [value]="role">{{ role }}</option>
+                  <option [value]="role">{{ role }}</option>
                 }
               </select>
 
               <span class="error">
-                @if(formUser.get("role")?.invalid && (formUser.get("role")?.dirty ||
-                formUser.get("role")?.touched)) { @if(formUser.get("role")?.errors?.["required"]){
-                Seleccione un rol } }
+                @if (
+                  formUser.get('role')?.invalid &&
+                  (formUser.get('role')?.dirty || formUser.get('role')?.touched)
+                ) {
+                  @if (formUser.get('role')?.errors?.['required']) {
+                    Seleccione un rol
+                  }
+                }
               </span>
             </div>
 
-            <div class="mb-3">
-              <label class="form-label">Contraseña</label>
-              <input type="password" class="form-control" formControlName="password" />
+            @if (editingId) {
+              <div class="form-check mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  formControlName="active"
+                  id="checkActive"
+                />
+                <label class="form-check-label" for="checkActive">Activo</label>
+              </div>
+            }
 
-              <span class="error">
-                @if(formUser.get("password")?.invalid && (formUser.get("password")?.dirty ||
-                formUser.get("password")?.touched)) {
-                @if(formUser.get("password")?.errors?.["required"]){ La contraseña es requerida para
-                un nuevo usuario } }
-              </span>
-              @if(editingId && !formUser.get("password")?.touched) {
-              <div class="form-text">Deje vacío para no cambiar la contraseña.</div>
-              }
-            </div>
+            @if (editingId) {
+              <div class="mb-3">
+                <button
+                  type="button"
+                  class="btn btn-secondary d-flex align-items-center gap-2 text-nowrap"
+                  (click)="resetPassword()"
+                >
+                  <i class="bi bi-arrow-repeat"></i>
+                  Reiniciar contraseña
+                </button>
 
-            @if(editingId){
-            <div class="form-check mb-3">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                formControlName="active"
-                id="checkActive"
-              />
-              <label class="form-check-label" for="checkActive">Activo</label>
-            </div>
+                <small class="form-text text-muted">
+                  Se generará una nueva contraseña por defecto.
+                </small>
+              </div>
             }
           </div>
 

@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SearchFilter, SearchForm } from '../../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../../shared/data-table/data-table';
 import { User, UserRole } from '../../../../models/User';
-import { ServUsersJson } from '../../../../services/serv-users-json';
+import { ServUsersApi } from '../../../../services/serv-users-api';
+import Swal from 'sweetalert2';
 
 declare const bootstrap: any;
 
@@ -43,7 +44,7 @@ export class UserCrud implements AfterViewInit {
   ];
 
   constructor(
-    private miServicio: ServUsersJson,
+    private miServicio: ServUsersApi,
     private formbuilder: FormBuilder
   ) {
     this.loadUsers();
@@ -52,7 +53,6 @@ export class UserCrud implements AfterViewInit {
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
-      password: [''],
       role: ['', Validators.required],
       active: [true]
     });
@@ -72,17 +72,39 @@ export class UserCrud implements AfterViewInit {
   }
 
   delete(user: User) {
-    const confirmado = confirm(`¿Estás seguro de eliminar el usuario: ${user.name}?`);
-    if (confirmado && user.id) {
-      this.miServicio.delete(user.id).subscribe(() => {
-        alert("Usuario eliminado exitosamente");
-        this.loadUsers();
-      });
-    }
+    Swal.fire({
+      title: '¿Seguro deseas eliminar el usuario?',
+      text: user.name,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed && user.id) {
+        this.miServicio.delete(user.id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Usuario eliminado',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.loadUsers();
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar el usuario'
+            });
+          }
+        });
+      }
+    });
   }
 
   search(filters: any) {
-    this.miServicio.searchUsers(filters).subscribe(
+    this.miServicio.search(filters).subscribe(
       (data: User[]) => {
         this.filteredUsers = data;
       }
@@ -91,22 +113,77 @@ export class UserCrud implements AfterViewInit {
 
   openNew() {
     this.editingId = null;
-    this.formUser.reset({ active: true, password: '' });
-
-    this.formUser.get('password')?.setValidators(Validators.required);
-    this.formUser.get('password')?.updateValueAndValidity();
+    this.formUser.reset({ active: true });
+    
+    if (!this.editingId) {
+      this.formUser.get('role')?.enable();
+    }
 
     this.modalRef.show();
   }
 
   openEdit(user: User) {
     this.editingId = user.id ? user.id : null;
-
-    this.formUser.get('password')?.clearValidators();
-    this.formUser.get('password')?.updateValueAndValidity();
-
     this.formUser.patchValue(user);
+
+    if (this.editingId) {
+      this.formUser.get('role')?.disable();
+    }
+
     this.modalRef.show();
+  }
+
+  resetPassword() {
+    if (!this.editingId) return;
+
+    Swal.fire({
+      title: '¿Reiniciar contraseña?',
+      text: 'Se generará una nueva contraseña para este usuario.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, reiniciar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.miServicio.resetPassword(Number(this.editingId)).subscribe({
+        next: (res: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Contraseña reiniciada',
+            html: `
+              <p><strong>Nueva contraseña:</strong></p>
+              <code style="font-size:16px">${res.temporaryPassword}</code>
+              <p class="mt-2 text-muted">Compártela con el usuario.</p>
+            `,
+            confirmButtonText: 'Aceptar'
+          });
+        },
+        error: (err) => {
+          let errorMsg = 'Error al reiniciar la contraseña';
+
+          if (err.error) {
+            if (typeof err.error === 'string') {
+              errorMsg = err.error;
+            }
+            else if (err.error.message) {
+              errorMsg = err.error.message;
+            }
+            else if (err.error.errors) {
+              errorMsg = Object.values(err.error.errors)
+                .flat()
+                .join(', ');
+            }
+          }
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMsg
+          });
+        }
+      });
+    });
   }
 
   save() {
@@ -124,18 +201,55 @@ export class UserCrud implements AfterViewInit {
         delete user.password;
       }
 
-      this.miServicio.update(user).subscribe(() => {
-        alert("Usuario actualizado");
-        this.modalRef.hide();
-        this.loadUsers();
+      this.miServicio.update(user).subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: 'Usuario actualizado correctamente'
+          });
+          this.modalRef.hide();
+          this.loadUsers();
+        },
+        error: (err) => {
+          let errorMsg = 'Error al actualizar el usuario';
+          if (err.error) {
+            if (err.error.name) errorMsg = err.error.name.join(', ');
+            if (err.error.email) errorMsg = err.error.email.join(', ');
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMsg
+          });
+        }
       });
     } else {
       let user: User = { ...datos };
-      this.miServicio.create(user).subscribe(() => {
-        alert("Usuario creado");
-        this.modalRef.hide();
-        this.loadUsers();
+      this.miServicio.create(user).subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: 'Usuario creado correctamente'
+          });
+          this.modalRef.hide();
+          this.loadUsers();
+        },
+        error: (err) => {
+          let errorMsg = 'Error al crear el usuario';
+          if (err.error) {
+            if (err.error.name) errorMsg = err.error.name.join(', ');
+            if (err.error.email) errorMsg = err.error.email.join(', ');
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMsg
+          });
+        }
       });
     }
   }
+  
 }
