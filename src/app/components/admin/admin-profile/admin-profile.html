@@ -1,0 +1,103 @@
+<div class="container py-4 organizer-view-container">
+  <div class="card shadow-sm p-4">
+    <div class="row align-items-center">
+      <!-- FOTO -->
+      <div class="col-md-3 text-center">
+        <img
+          [src]="photoPreview || '/img/user.png'"
+          class="rounded-circle shadow"
+          style="width: 140px; height: 140px; object-fit: cover"
+        />
+      </div>
+
+      <!-- INFO -->
+      <div class="col-md-9">
+        <h3 class="fw-bold mb-1">{{ admin.name }}</h3>
+        <p class="text-muted mb-2">{{ admin.email }}</p>
+        <p class="mb-1"><strong>Rol:</strong> Administrador</p>
+
+        <div class="mt-4 d-flex justify-content-between">
+          <button class="btn btn-primary" (click)="openEditProfile(admin)">Actualizar datos</button>
+
+          <button class="btn btn-danger" (click)="resetPassword()">Resetear contraseña</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" tabindex="-1" #adminModalRef>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Perfil</h5>
+        <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
+      </div>
+
+      <form [formGroup]="formAdmin">
+        <div class="modal-body">
+          <!-- NOMBRE -->
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" formControlName="name" />
+            <span
+              class="error"
+              *ngIf="formAdmin.get('name')?.invalid && formAdmin.get('name')?.touched"
+            >
+              El nombre es obligatorio (mín. 3 caracteres)
+            </span>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" class="form-control" formControlName="email" />
+            <span
+              class="error"
+              *ngIf="formAdmin.get('email')?.invalid && formAdmin.get('email')?.touched"
+            >
+              Correo inválido
+            </span>
+          </div>
+
+          <!-- FOTO -->
+          <div class="mb-3">
+            <label class="form-label">Foto (URL)</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="photoUrl"
+              (input)="updatePhotoPreview()"
+            />
+
+            <div class="mt-2">
+              <img
+                *ngIf="photoPreview; else noImg"
+                [src]="photoPreview"
+                class="shadow"
+                style="width: 140px; height: 140px; object-fit: cover; border-radius: 8px"
+              />
+
+              <ng-template #noImg>
+                <div
+                  class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                  style="width: 140px; height: 140px; border-radius: 8px"
+                >
+                  Sin imagen
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-primary" (click)="save()">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

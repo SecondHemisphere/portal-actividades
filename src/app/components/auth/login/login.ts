@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class Login {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      
+
       this.auth.login(email, password).subscribe({
         next: res => {
           this.auth.saveToken(res.token);
@@ -41,7 +42,15 @@ export class Login {
           }
         },
         error: err => {
-          this.error = 'Credenciales inválidas';
+          const message =
+            err.error?.message || 'Error al iniciar sesión';
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Acceso denegado',
+            text: message,
+            confirmButtonText: 'Aceptar'
+          });
         }
       });
     } else {

@@ -5,6 +5,7 @@ export interface User {
   phone: string;
   password?: string;
   role: UserRole;
+  photoUrl?: string;
   active: boolean;
 }
 

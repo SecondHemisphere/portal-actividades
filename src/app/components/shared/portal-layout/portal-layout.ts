@@ -65,7 +65,7 @@ export class PortalLayout implements OnInit {
       role === 'Organizador'
         ? '/organizer/profile'
         : role === 'Admin'
-        ? '/admin/user-crud'
+        ? '/admin/profile'
         : '/student/profile';
   }
 

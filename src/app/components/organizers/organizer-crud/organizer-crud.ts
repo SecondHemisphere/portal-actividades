@@ -183,7 +183,7 @@ export class OrganizerCrud {
     this.editingId = null;
 
     this.formOrganizer.reset({
-      email: 'example@ug.edu.ec',
+      email: 'example@uni.edu',
       active: true
     });
 

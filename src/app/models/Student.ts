@@ -8,7 +8,6 @@ export interface Student extends User {
   semester?: number;
   modality?: Modality;
   schedule?: Schedule;
-  photoUrl?: string;
 
   faculty?: Faculty;
   career?: Career;

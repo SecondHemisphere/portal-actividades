@@ -16,6 +16,7 @@ import { MyActivitiesPage } from './components/activities/my-activities-page/my-
 import { Dashboard } from './components/admin/dashboard/dashboard';
 import { RatingHistorial } from './components/ratings/rating-historial/rating-historial';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminProfile } from './components/admin/admin-profile/admin-profile';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -47,6 +48,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     children: [
+      { path: 'profile', canActivate: [AuthGuard], component: AdminProfile, data: { roles: ['Admin'] }},
       { path: 'dashboard', canActivate: [AuthGuard], component: Dashboard, data: { roles: ['Admin'] }},
       { path: 'activity-crud', canActivate: [AuthGuard], component: ActivityCrud, data: { roles: ['Admin'] }},
       { path: 'category-crud', canActivate: [AuthGuard], component: CategoryCrud, data: { roles: ['Admin'] }},

@@ -135,7 +135,7 @@ export class StudentCrud implements AfterViewInit {
     this.editingId = null;
     this.formStudent.reset({
       name: '',
-      email: 'example@ug.edu.ec',
+      email: 'example@uni.edu',
       facultyId: '',
       careerId: '',
       semester: 1,

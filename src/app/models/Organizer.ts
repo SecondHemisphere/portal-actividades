@@ -6,7 +6,6 @@ export interface Organizer extends User {
   bio: string; // Descripción breve
   shifts: ShiftType[]; // Turno
   workDays: WeekDay[]; // Días
-  photoUrl?: string;
 }
 
 export enum ShiftType {
