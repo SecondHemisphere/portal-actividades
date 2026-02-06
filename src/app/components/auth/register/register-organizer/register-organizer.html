@@ -97,22 +97,6 @@
                 </button>
               </div>
 
-              <!-- Indicador de fortaleza -->
-              @if (registerForm.get('password')?.value) {
-                <div class="mt-2">
-                  <div class="progress" style="height: 5px">
-                    <div
-                      class="progress-bar"
-                      [style.width.%]="passwordStrength.score * 20"
-                      [style.background-color]="passwordStrength.color"
-                    ></div>
-                  </div>
-                  <small [style.color]="passwordStrength.color">
-                    {{ passwordStrength.text }}
-                  </small>
-                </div>
-              }
-
               @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
                 <div class="error">
                   @if (registerForm.get('password')?.errors?.['required']) {
@@ -170,9 +154,10 @@
                 <div class="error">
                   @if (registerForm.get('confirmPassword')?.errors?.['required']) {
                     Confirme la contraseña
-                  }
-                  @if (registerForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
-                    Las contraseñas no coinciden
+                  } @else {
+                    @if (registerForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+                      Las contraseñas no coinciden
+                    }
                   }
                 </div>
               }

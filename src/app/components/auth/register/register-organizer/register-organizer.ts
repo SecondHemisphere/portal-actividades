@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../services/auth.service';
+import { passwordMatchValidator } from '../../../../validators/passwordMatchValidator';
 
 @Component({
   selector: 'app-register-organizer',
@@ -23,26 +24,15 @@ export class RegisterOrganizer {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      name: ['', [Validators.required,Validators.minLength(3),Validators.maxLength(50),Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      email: ['', [Validators.required,Validators.email]],
-      password: ['', [Validators.required,Validators.minLength(8),Validators.maxLength(20),Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       confirmPassword: ['', [Validators.required]],
-      phone: ['', [Validators.required,Validators.pattern(/^\+?[0-9]{7,15}$/)]],
-      department: ['', [Validators.required,Validators.minLength(2),Validators.maxLength(50)]],
-      position: ['', [Validators.required,Validators.minLength(3),Validators.maxLength(50),Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      bio: ['', [Validators.required,Validators.minLength(10),Validators.maxLength(300)]]
-    }, { validator: this.passwordMatchValidator });
-  }
-
-  passwordMatchValidator(form: FormGroup) {
-    const password = form.get('password')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
-    
-    if (password !== confirmPassword) {
-      form.get('confirmPassword')?.setErrors({ passwordMismatch: true });
-      return { passwordMismatch: true };
-    }
-    return null;
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
+      department: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      position: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      bio: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]]
+    }, {  validators: passwordMatchValidator() });
   }
 
   togglePasswordVisibility(field: 'password' | 'confirmPassword') {
@@ -152,36 +142,6 @@ export class RegisterOrganizer {
       'bio': 'Biografía'
     };
     return fieldNames[field] || field;
-  }
-
-  get passwordStrength(): { score: number, text: string, color: string } {
-    const password = this.registerForm.get('password')?.value || '';
-    
-    if (!password) {
-      return { score: 0, text: '', color: '#e9ecef' };
-    }
-
-    let score = 0;
-    
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/\d/.test(password)) score++;
-    if (/[@$!%*?&]/.test(password)) score++;
-
-    const strengthMap = [
-      { text: 'Muy débil', color: '#dc3545' },
-      { text: 'Débil', color: '#fd7e14' },
-      { text: 'Regular', color: '#ffc107' },
-      { text: 'Fuerte', color: '#28a745' },
-      { text: 'Muy fuerte', color: '#20c997' }
-    ];
-
-    return {
-      score,
-      text: strengthMap[score - 1]?.text || strengthMap[0].text,
-      color: strengthMap[score - 1]?.color || strengthMap[0].color
-    };
   }
 
   get bioCharacterCount(): number {

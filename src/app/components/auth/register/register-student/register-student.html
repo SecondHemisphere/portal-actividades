@@ -1,1 +1,374 @@
-<p>register-student works!</p>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow border-0">
+        <div class="card-header text-white py-3">
+          <h4 class="mb-2 text-white">Registro de Estudiante</h4>
+          <p class="mb-0 small">Complete el formulario para crear una nueva cuenta de estudiante</p>
+        </div>
+
+        <div class="card-body p-4">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Nombre -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre completo *</label>
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                formControlName="name"
+                placeholder="Ingrese su nombre completo"
+                [class.is-invalid]="
+                  registerForm.get('name')?.invalid && registerForm.get('name')?.touched
+                "
+              />
+              @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('name')?.errors?.['required']) {
+                    El nombre es requerido
+                  }
+                  @if (registerForm.get('name')?.errors?.['minlength']) {
+                    Mínimo 3 caracteres
+                  }
+                  @if (registerForm.get('name')?.errors?.['maxlength']) {
+                    Máximo 50 caracteres
+                  }
+                  @if (registerForm.get('name')?.errors?.['pattern']) {
+                    Solo letras y espacios
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo electrónico *</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                formControlName="email"
+                placeholder="ejemplo@universidad.edu"
+                [class.is-invalid]="
+                  registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+                "
+              />
+              @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('email')?.errors?.['required']) {
+                    El correo es requerido
+                  }
+                  @if (registerForm.get('email')?.errors?.['email']) {
+                    Ingrese un correo válido
+                  }
+                </div>
+              }
+              <small class="form-text text-muted mt-1 d-block">
+                Este será el correo para iniciar sesión
+              </small>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña *</label>
+              <div class="input-group">
+                <input
+                  [type]="passwordVisible ? 'text' : 'password'"
+                  id="password"
+                  class="form-control"
+                  formControlName="password"
+                  placeholder="Mínimo 8 caracteres"
+                  [class.is-invalid]="
+                    registerForm.get('password')?.invalid && registerForm.get('password')?.touched
+                  "
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility('password')"
+                >
+                  <i
+                    class="bi"
+                    [class.bi-eye]="!passwordVisible"
+                    [class.bi-eye-slash]="passwordVisible"
+                  ></i>
+                </button>
+              </div>
+
+              @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('password')?.errors?.['required']) {
+                    La contraseña es requerida
+                  }
+                  @if (registerForm.get('password')?.errors?.['minlength']) {
+                    Mínimo 8 caracteres
+                  }
+                  @if (registerForm.get('password')?.errors?.['maxlength']) {
+                    Máximo 20 caracteres
+                  }
+                </div>
+              }
+
+              <small class="form-text text-muted mt-1 d-block">
+                La contraseña debe tener entre 8 y 20 caracteres
+              </small>
+            </div>
+
+            <!-- Confirmar Contraseña -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmar contraseña *</label>
+              <div class="input-group">
+                <input
+                  [type]="confirmPasswordVisible ? 'text' : 'password'"
+                  id="confirmPassword"
+                  class="form-control"
+                  formControlName="confirmPassword"
+                  placeholder="Repita la contraseña"
+                  [class.is-invalid]="
+                    registerForm.get('confirmPassword')?.invalid &&
+                    registerForm.get('confirmPassword')?.touched
+                  "
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility('confirmPassword')"
+                >
+                  <i
+                    class="bi"
+                    [class.bi-eye]="!confirmPasswordVisible"
+                    [class.bi-eye-slash]="confirmPasswordVisible"
+                  ></i>
+                </button>
+              </div>
+              @if (
+                registerForm.get('confirmPassword')?.invalid &&
+                registerForm.get('confirmPassword')?.touched
+              ) {
+                <div class="error">
+                  @if (registerForm.get('confirmPassword')?.errors?.['required']) {
+                    Confirme la contraseña
+                  } @else {
+                    @if (registerForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+                      Las contraseñas no coinciden
+                    }
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Teléfono *</label>
+              <input
+                type="text"
+                id="phone"
+                class="form-control"
+                formControlName="phone"
+                placeholder="Ej: +1234567890"
+                [class.is-invalid]="
+                  registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched
+                "
+              />
+              @if (registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('phone')?.errors?.['required']) {
+                    El teléfono es requerido
+                  }
+                  @if (registerForm.get('phone')?.errors?.['pattern']) {
+                    Formato inválido (7-15 dígitos, opcional + al inicio)
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Facultad -->
+            <div class="mb-3">
+              <label for="facultyId" class="form-label">Facultad *</label>
+              <select
+                id="facultyId"
+                class="form-select"
+                formControlName="facultyId"
+                (change)="onFacultyChange($event)"
+                [class.is-invalid]="
+                  registerForm.get('facultyId')?.invalid && registerForm.get('facultyId')?.touched
+                "
+              >
+                <option value="" disabled selected>Seleccione una facultad</option>
+                @for (faculty of faculties; track faculty.id) {
+                  <option [value]="faculty.id">{{ faculty.name }}</option>
+                }
+              </select>
+              @if (
+                registerForm.get('facultyId')?.invalid && registerForm.get('facultyId')?.touched
+              ) {
+                <div class="error">
+                  @if (registerForm.get('facultyId')?.errors?.['required']) {
+                    La facultad es requerida
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Carrera -->
+            <div class="mb-3">
+              <label for="careerId" class="form-label">Carrera *</label>
+              <select
+                id="careerId"
+                class="form-select"
+                formControlName="careerId"
+                [class.is-invalid]="
+                  registerForm.get('careerId')?.invalid && registerForm.get('careerId')?.touched
+                "
+                [disabled]="!careers.length"
+              >
+                <option value="" disabled selected>Seleccione una carrera</option>
+                @for (career of careers; track career.id) {
+                  <option [value]="career.id">{{ career.name }}</option>
+                }
+              </select>
+              @if (registerForm.get('careerId')?.invalid && registerForm.get('careerId')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('careerId')?.errors?.['required']) {
+                    La carrera es requerida
+                  }
+                </div>
+              }
+              @if (!careers.length) {
+                <small class="form-text text-muted mt-1 d-block">
+                  Primero seleccione una facultad para ver las carreras disponibles
+                </small>
+              }
+            </div>
+
+            <!-- Semestre -->
+            <div class="mb-3">
+              <label for="semester" class="form-label">Semestre *</label>
+              <input
+                type="number"
+                id="semester"
+                class="form-control"
+                formControlName="semester"
+                min="1"
+                max="10"
+                placeholder="Ej: 5"
+                [class.is-invalid]="
+                  registerForm.get('semester')?.invalid && registerForm.get('semester')?.touched
+                "
+              />
+              @if (registerForm.get('semester')?.invalid && registerForm.get('semester')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('semester')?.errors?.['required']) {
+                    El semestre es requerido
+                  }
+                  @if (
+                    registerForm.get('semester')?.errors?.['min'] ||
+                    registerForm.get('semester')?.errors?.['max']
+                  ) {
+                    El semestre debe estar entre 1 y 10
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Modalidad -->
+            <div class="mb-3">
+              <label class="form-label">Modalidad *</label>
+              <div>
+                @for (modality of modalities; track modality; let i = $index) {
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      formControlName="modality"
+                      [value]="modality"
+                      [id]="'modality' + i"
+                    />
+                    <label class="form-check-label" [for]="'modality' + i">{{ modality }}</label>
+                  </div>
+                }
+              </div>
+              @if (registerForm.get('modality')?.invalid && registerForm.get('modality')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('modality')?.errors?.['required']) {
+                    La modalidad es requerida
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Jornada -->
+            <div class="mb-4">
+              <label class="form-label">Jornada *</label>
+              <div>
+                @for (schedule of schedules; track schedule; let i = $index) {
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      formControlName="schedule"
+                      [value]="schedule"
+                      [id]="'schedule' + i"
+                    />
+                    <label class="form-check-label" [for]="'schedule' + i">{{ schedule }}</label>
+                  </div>
+                }
+              </div>
+              @if (registerForm.get('schedule')?.invalid && registerForm.get('schedule')?.touched) {
+                <div class="error">
+                  @if (registerForm.get('schedule')?.errors?.['required']) {
+                    La jornada es requerida
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex gap-2 justify-content-end">
+              <a
+                routerLink="/login"
+                class="btn btn-outline-secondary d-flex align-items-center gap-2"
+              >
+                <i class="bi bi-arrow-left"></i>
+                <span>Cancelar</span>
+              </a>
+              <button
+                type="submit"
+                class="btn btn-primary d-flex align-items-center gap-2"
+                [disabled]="registerForm.invalid || isLoading"
+              >
+                @if (isLoading) {
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  <span>Registrando...</span>
+                } @else {
+                  <i class="bi bi-check-circle"></i>
+                  <span>Registrar Estudiante</span>
+                }
+              </button>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="mt-4 pt-4 border-top">
+              <div class="alert alert-info mb-0">
+                <h6 class="alert-heading mb-2">
+                  <i class="bi bi-info-circle me-2"></i>Información importante
+                </h6>
+                <ul class="mb-0 ps-3">
+                  <li>Los campos marcados con * son obligatorios</li>
+                  <li>El estudiante podrá iniciar sesión inmediatamente después del registro</li>
+                  <li>Se recomienda usar una contraseña segura</li>
+                  <li>El sistema verificará automáticamente si el correo o nombre ya existen</li>
+                  <li>La información académica puede ser actualizada posteriormente</li>
+                </ul>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
