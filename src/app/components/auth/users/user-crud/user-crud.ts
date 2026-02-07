@@ -23,7 +23,7 @@ export class UserCrud implements AfterViewInit {
   modalRef: any;
 
   userRoles = Object.values(UserRole);
-
+  
   currentUserId: number | null = null;
 
   userFilters: SearchFilter[] = [
@@ -33,7 +33,7 @@ export class UserCrud implements AfterViewInit {
       type: 'select',
       field: 'role',
       label: 'Rol',
-      options: this.userRoles.map(v => ({ label: v, value: v }))
+      options: Object.values(UserRole).map(v => ({ label: v, value: v }))
     }
   ];
 

@@ -44,14 +44,22 @@
         <!-- FORM -->
         <form [formGroup]="formActivity">
           <div class="modal-body">
-            <!-- TITULO -->
+            <!-- TÍTULO -->
             <div class="mb-3">
               <label class="form-label">Título</label>
               <input type="text" class="form-control" formControlName="title" />
               <span class="error">
-                @if(formActivity.get("title")?.invalid && formActivity.get("title")?.touched){
-                @if(formActivity.get("title")?.errors?.["required"]){ Es requerido }
-                @if(formActivity.get("title")?.errors?.["minlength"]){ Mínimo 3 caracteres } }
+                @if (formActivity.get('title')?.invalid && formActivity.get('title')?.touched) {
+                  @if (formActivity.get('title')?.errors?.['required']) {
+                    El título es requerido
+                  }
+                  @if (formActivity.get('title')?.errors?.['minlength']) {
+                    Mínimo 3 caracteres
+                  }
+                  @if (formActivity.get('title')?.errors?.['maxlength']) {
+                    Máximo 80 caracteres
+                  }
+                }
               </span>
             </div>
 
@@ -59,13 +67,17 @@
             <div class="mb-3">
               <label class="form-label">Categoría</label>
               <select class="form-select" formControlName="categoryId">
-                @for(c of categories; track $index){
-                <option [value]="c.id">{{ c.name }}</option>
+                <option value="">Seleccione una categoría</option>
+                @for (c of categories; track $index) {
+                  <option [value]="c.id">{{ c.name }}</option>
                 }
               </select>
               <span class="error">
-                @if(formActivity.get("categoryId")?.invalid &&
-                formActivity.get("categoryId")?.touched){ Seleccione una categoría }
+                @if (
+                  formActivity.get('categoryId')?.invalid && formActivity.get('categoryId')?.touched
+                ) {
+                  Seleccione una categoría
+                }
               </span>
             </div>
 
@@ -73,55 +85,69 @@
             <div class="mb-3">
               <label class="form-label">Organizador</label>
               <select class="form-select" formControlName="organizerId">
-                @for(o of organizers; track $index){
-                <option [value]="o.id">{{ o.name }}</option>
+                <option value="">Seleccione un organizador</option>
+                @for (o of organizers; track $index) {
+                  <option [value]="o.id">{{ o.name }}</option>
                 }
               </select>
               <span class="error">
-                @if(formActivity.get("organizerId")?.invalid &&
-                formActivity.get("organizerId")?.touched){ Seleccione un organizador }
+                @if (
+                  formActivity.get('organizerId')?.invalid &&
+                  formActivity.get('organizerId')?.touched
+                ) {
+                  Seleccione un organizador
+                }
               </span>
             </div>
 
-            <!-- FECHA -->
+            <!-- FECHA DE LA ACTIVIDAD -->
             <div class="mb-3">
-              <label class="form-label">Fecha</label>
+              <label class="form-label">Fecha de la actividad</label>
               <input type="date" class="form-control" formControlName="date" [min]="minDate" />
               <span class="error">
-                @if(formActivity.get("date")?.invalid && formActivity.get("date")?.touched){
-                Seleccione una fecha }
+                @if (formActivity.get('date')?.invalid && formActivity.get('date')?.touched) {
+                  Seleccione una fecha
+                }
               </span>
             </div>
 
             <!-- HORARIO -->
             <div class="mb-3">
-              <div class="mb-3 d-flex gap-2">
+              <label class="form-label">Horario</label>
+              <div class="d-flex gap-2">
                 <div class="flex-fill">
-                  <label class="form-label">Hora Inicio</label>
-                  <input type="time" class="form-control" formControlName="startTime" />
-                  <span class="error">
-                    @if(formActivity.get("startTime")?.invalid &&
-                    formActivity.get("startTime")?.touched){ Hora de inicio requerida }
-                  </span>
+                  <input
+                    type="time"
+                    class="form-control"
+                    formControlName="startTime"
+                    placeholder="Hora inicio"
+                  />
                 </div>
-
                 <div class="flex-fill">
-                  <label class="form-label">Hora Fin</label>
-                  <input type="time" class="form-control" formControlName="endTime" />
-                  <span class="error">
-                    @if(formActivity.get("endTime")?.invalid &&
-                    formActivity.get("endTime")?.touched){ Hora de fin requerida }
-                  </span>
+                  <input
+                    type="time"
+                    class="form-control"
+                    formControlName="endTime"
+                    placeholder="Hora fin"
+                  />
                 </div>
               </div>
-
               <span class="error">
-                @if(formActivity.errors?.['horaInvalida'] && formActivity.touched){ La hora de fin
-                debe ser posterior a la hora de inicio }
+                @if (formActivity.errors?.['horaInvalida'] && formActivity.touched) {
+                  La hora de fin debe ser posterior a la hora de inicio
+                }
+                @if (
+                  formActivity.get('startTime')?.invalid && formActivity.get('startTime')?.touched
+                ) {
+                  Hora de inicio requerida
+                }
+                @if (formActivity.get('endTime')?.invalid && formActivity.get('endTime')?.touched) {
+                  Hora de fin requerida
+                }
               </span>
             </div>
 
-            <!-- INSCRIPCIONES HASTA -->
+            <!-- FECHA LÍMITE DE INSCRIPCIÓN -->
             <div class="mb-3">
               <label class="form-label">Fecha límite de inscripción</label>
               <input
@@ -132,11 +158,15 @@
                 [max]="maxDeadlineDate"
               />
               <span class="error">
-                @if (formActivity.get("registrationDeadline")?.hasError("required") &&
-                formActivity.get("registrationDeadline")?.touched) { Seleccione una fecha límite de
-                inscripción. } @if(formActivity.errors?.['deadlineInvalida'] &&
-                formActivity.touched){ La fecha límite de inscripción no puede ser posterior a la
-                fecha del evento. }
+                @if (
+                  formActivity.get('registrationDeadline')?.invalid &&
+                  formActivity.get('registrationDeadline')?.touched
+                ) {
+                  Fecha límite requerida
+                }
+                @if (formActivity.errors?.['deadlineInvalida'] && formActivity.touched) {
+                  La fecha límite de inscripción no puede ser posterior a la fecha del evento
+                }
               </span>
             </div>
 
@@ -145,18 +175,30 @@
               <label class="form-label">Lugar</label>
               <input type="text" class="form-control" formControlName="location" />
               <span class="error">
-                @if(formActivity.get("location")?.invalid && formActivity.get("location")?.touched){
-                Lugar requerido }
+                @if (
+                  formActivity.get('location')?.invalid && formActivity.get('location')?.touched
+                ) {
+                  Lugar requerido (mínimo 3 caracteres)
+                }
               </span>
             </div>
 
             <!-- CAPACIDAD -->
             <div class="mb-3">
               <label class="form-label">Capacidad</label>
-              <input type="number" class="form-control" formControlName="capacity" min="1" />
+              <input
+                type="number"
+                class="form-control"
+                formControlName="capacity"
+                min="10"
+                max="500"
+              />
               <span class="error">
-                @if(formActivity.get("capacity")?.invalid && formActivity.get("capacity")?.touched){
-                Capacidad mínima 10 y Capacidad máxima 500 }
+                @if (
+                  formActivity.get('capacity')?.invalid && formActivity.get('capacity')?.touched
+                ) {
+                  Capacidad requerida (mínimo 10, máximo 500)
+                }
               </span>
             </div>
 
@@ -165,12 +207,16 @@
               <label class="form-label">Descripción</label>
               <textarea class="form-control" rows="3" formControlName="description"></textarea>
               <span class="error">
-                @if(formActivity.get("description")?.invalid &&
-                formActivity.get("description")?.touched){ Descripción requerida }
+                @if (
+                  formActivity.get('description')?.invalid &&
+                  formActivity.get('description')?.touched
+                ) {
+                  Descripción requerida (mínimo 10 caracteres)
+                }
               </span>
             </div>
 
-            <!-- FOTO -->
+            <!-- FOTO (URL) -->
             <div class="mb-3">
               <label class="form-label">Foto (URL)</label>
               <input
@@ -178,43 +224,46 @@
                 class="form-control"
                 formControlName="photoUrl"
                 (input)="updatePhotoPreview()"
+                placeholder="https://ejemplo.com/imagen.jpg"
               />
               <!-- VISTA PREVIA -->
               <div class="mt-2">
-                @if(photoPreview){
-                <img
-                  [src]="photoPreview"
-                  (error)="photoPreview = null"
-                  style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
-                />
+                @if (photoPreview) {
+                  <img
+                    [src]="photoPreview"
+                    (error)="photoPreview = null"
+                    style="max-width: 140px; border-radius: 8px; border: 1px solid #ccc"
+                  />
                 } @else {
-                <div
-                  class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
-                  style="
-                    width: 140px;
-                    height: 140px;
-                    color: white;
-                    border-radius: 8px;
-                    border: 1px solid #ccc;
-                  "
-                >
-                  Sin imagen
-                </div>
+                  <div
+                    class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                    style="
+                      width: 140px;
+                      height: 140px;
+                      color: white;
+                      border-radius: 8px;
+                      border: 1px solid #ccc;
+                    "
+                  >
+                    Sin imagen
+                  </div>
                 }
               </div>
             </div>
 
             <!-- ACTIVO -->
-            @if(editingId){
-            <div class="form-check mb-3">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                formControlName="active"
-                id="checkActive"
-              />
-              <label class="form-check-label" for="checkActive">Activo</label>
-            </div>
+            @if (editingId) {
+              <div class="mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="active"
+                    id="checkActive"
+                  />
+                  <label class="form-check-label" for="checkActive">Activo</label>
+                </div>
+              </div>
             }
           </div>
 

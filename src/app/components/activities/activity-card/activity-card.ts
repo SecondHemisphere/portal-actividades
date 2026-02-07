@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter, CSP_NONCE } from '@angular/core';
 import { Activity } from '../../../models/Activity';
-import { Category } from '../../../models/Category';
-import { Organizer } from '../../../models/Organizer';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -13,18 +11,8 @@ import { Router } from '@angular/router';
 })
 export class ActivityCard {
   @Input() activity!: Activity;
-  @Input() categories: Category[] = [];
-  @Input() organizers: Organizer[] = [];
   
   constructor(private router:Router) {
-  }
-
-  getCategoryName(): string {
-    return this.categories.find(c => Number(c.id) === Number(this.activity.categoryId))?.name || 'Sin categoría';
-  }
-
-  getOrganizerName(): string {
-    return this.organizers.find(o => Number(o.id) === Number(this.activity.organizerId))?.name || 'Sin organizador';
   }
 
   view() {

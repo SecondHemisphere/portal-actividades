@@ -10,7 +10,4 @@ export interface Rating {
   stars: number;
   comment?: string;
   ratingDate: string;
-
-  activity?: Activity;
-  student?: Student;
 }

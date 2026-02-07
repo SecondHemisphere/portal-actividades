@@ -1,26 +1,26 @@
 <div class="card h-100 shadow-lg border-0 hover-shadow position-relative rounded-4">
   <div class="position-relative">
     @if (activity.photoUrl) {
-    <img
-      [src]="activity.photoUrl"
-      class="card-img-top rounded-top-4"
-      alt="Foto de la actividad"
-      style="height: 180px; object-fit: cover"
-    />
+      <img
+        [src]="activity.photoUrl"
+        class="card-img-top rounded-top-4"
+        alt="Foto de la actividad"
+        style="height: 180px; object-fit: cover"
+      />
     } @else {
-    <div
-      class="card-img-top bg-light d-flex align-items-center justify-content-center rounded-top-4"
-      style="height: 180px; color: #6c757d"
-    >
-      <i class="bi bi-image-fill fs-3 me-3"></i> Sin Imagen
-    </div>
+      <div
+        class="card-img-top bg-light d-flex align-items-center justify-content-center rounded-top-4"
+        style="height: 180px; color: #6c757d"
+      >
+        <i class="bi bi-image-fill fs-3 me-3"></i> Sin Imagen
+      </div>
     }
 
     <span
       class="badge category-badge position-absolute top-0 start-0 m-2 px-3 py-2 rounded-pill shadow-sm"
       [ngStyle]="{ 'background-color': getCategoryColor(), color: 'white' }"
     >
-      {{ getCategoryName() }}
+      {{ activity.categoryName }}
     </span>
   </div>
 
@@ -31,13 +31,13 @@
 
     <div class="info-line d-flex align-items-center mb-2 small">
       <i class="bi bi-person-badge me-2 text-primary"></i>
-      <span class="fw-semibold text-dark">Organiza: {{ getOrganizerName() }}</span>
+      <span class="fw-semibold text-dark">Organiza: {{ activity.organizerName }}</span>
     </div>
 
     <div class="d-flex justify-content-between info-line small mb-2">
       <span class="d-flex align-items-center">
         <i class="bi bi-calendar me-2 text-primary"></i>
-        {{ activity.date | date : 'MMM d, y' }}
+        {{ activity.date | date: 'MMM d, y' }}
       </span>
     </div>
 

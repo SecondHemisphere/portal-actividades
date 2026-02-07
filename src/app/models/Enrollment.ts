@@ -1,6 +1,3 @@
-import { Activity } from "./Activity";
-import { Student } from "./Student";
-
 export interface Enrollment {
   id?: number;
   activityId: number;
@@ -10,9 +7,6 @@ export interface Enrollment {
   enrollmentDate: string;
   note?: string;
   status: EnrollmentStatus;
-
-  activity?: Activity;
-  student?: Student;
 }
 
 export enum EnrollmentStatus {

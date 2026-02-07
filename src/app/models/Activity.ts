@@ -1,7 +1,10 @@
+import { Category } from "./Category";
+import { Organizer } from "./Organizer";
+
 export interface Activity {
   id?: number;
   title: string;
-  categoryId: number; 
+  categoryId: number;
   categoryName?: string;
   organizerId: number;
   organizerName?: string;
@@ -13,4 +16,5 @@ export interface Activity {
   description?: string;
   photoUrl?: string;
   active: boolean;
+
 }

@@ -76,18 +76,9 @@ export class EnrollmentCrud implements AfterViewInit {
     this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
   }
 
-  private mapEnrollment(e: Enrollment): Enrollment & { activityName: string; studentName: string } {
-    const activity = this.activities.find(a => a.id === e.activityId);
-    return {
-      ...e,
-      activityName: e.activity?.title ?? e.activityName ?? '',
-      studentName: e.student?.name ?? e.studentName ?? ''
-    };
-  }
-
   loadEnrollments() {
     this.enrollmentService.getEnrollments2().subscribe(data => {
-      this.enrollments = data.map(e => this.mapEnrollment(e));
+      this.enrollments = data;
       this.filteredEnrollments = [...this.enrollments];
     });
   }
@@ -218,7 +209,7 @@ export class EnrollmentCrud implements AfterViewInit {
   }) {
     this.enrollmentService.search(filters).subscribe({
       next: (data: Enrollment[]) => {
-        this.filteredEnrollments = data.map(e => this.mapEnrollment(e));
+        this.filteredEnrollments = data;
       },
       error: (err) => {
         const errorMsg = err.error?.message ?? 'Ocurrió un error al buscar inscripciones';

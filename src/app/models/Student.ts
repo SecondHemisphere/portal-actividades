@@ -8,15 +8,12 @@ export interface Student extends User {
   semester?: number;
   modality?: Modality;
   schedule?: Schedule;
-
-  faculty?: Faculty;
-  career?: Career;
 }
 
 export interface Career {
   id: number;
   name: string;
-  facultyId: number;
+  facultyId: number
 }
 
 export interface Faculty {

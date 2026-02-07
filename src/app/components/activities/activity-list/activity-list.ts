@@ -53,7 +53,7 @@ export class ActivityList {
   }
 
   loadActivities() {
-    this.activitiesService.getActivities().subscribe((data: Activity[]) => {
+    this.activitiesService.getActivities2().subscribe((data: Activity[]) => {
       this.activities = data;
       this.filteredActivities = [...data];
       this.pagedData = this.buildRows(this.filteredActivities);
@@ -78,18 +78,6 @@ export class ActivityList {
         organizerFilter.options = this.organizers.map(o => ({ label: o.name, value: o.id }));
       }
     });
-  }
-
-  getCategoryName(id: number): string {
-    return this.categories.find(c => Number(c.id) === Number(id))?.name || 'Sin categoría';
-  }
-
-  getOrganizerName(id: number): string {
-    return this.organizers.find(o => Number(o.id) === Number(id))?.name || 'Sin organizador';
-  }
-
-  getAvailableCapacity(activity: Activity): number {
-    return activity.capacity;
   }
 
   search(filters: any) {

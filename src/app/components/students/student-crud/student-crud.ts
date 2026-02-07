@@ -122,11 +122,7 @@ export class StudentCrud implements AfterViewInit {
 
   loadStudents() {
     this.studentService.getStudents2().subscribe((data: Student[]) => {
-      this.students = data.map(s => ({
-        ...s,
-        facultyName: s.faculty?.name || s.facultyName,
-        careerName: s.career?.name || s.careerName
-      }));
+      this.students = data;
       this.filteredStudents = [...this.students];
     });
   }
@@ -287,17 +283,9 @@ export class StudentCrud implements AfterViewInit {
   search(filters: any) {
     this.studentService.search(filters).subscribe(
       (data: Student[]) => {
-        this.filteredStudents = data.map(s => this.mapStudent(s));
+        this.filteredStudents;
       }
     );
-  }
-
-  private mapStudent(s: Student): Student {
-    return {
-      ...s,
-      facultyName: s.faculty?.name ?? s.facultyName ?? '',
-      careerName: s.career?.name ?? s.careerName ?? ''
-    };
   }
 
 }

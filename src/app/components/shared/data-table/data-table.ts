@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PaginationControls } from '../pagination-control/pagination-control';
+import { DatePipe } from '@angular/common';
 
 /** Define la estructura de cada columna */
 export interface TableColumn {
@@ -13,7 +14,7 @@ export interface TableColumn {
   selector: 'app-data-table',
   templateUrl: './data-table.html',
   styleUrl: './data-table.css',
-  imports: [PaginationControls]
+  imports: [PaginationControls, DatePipe]
 })
 export class DataTable {
 

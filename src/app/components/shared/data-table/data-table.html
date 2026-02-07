@@ -16,25 +16,25 @@
           <tr>
             <!-- COLUMNAS -->
             @for (col of colArray; track $index) {
-            <th
-              (click)="sort(col.field)"
-              style="cursor: pointer; white-space: nowrap"
-              class="px-3 py-2"
-            >
-              {{ col.header }}
+              <th
+                (click)="sort(col.field)"
+                style="cursor: pointer; white-space: nowrap"
+                class="px-3 py-2"
+              >
+                {{ col.header }}
 
-              <!-- INDICADOR DE ORDEN -->
-              @if (sortField === col.field) {
-              <span class="ms-1">
-                {{ sortDirection === 'asc' ? '▲' : '▼' }}
-              </span>
-              }
-            </th>
+                <!-- INDICADOR DE ORDEN -->
+                @if (sortField === col.field) {
+                  <span class="ms-1">
+                    {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                  </span>
+                }
+              </th>
             }
 
             <!-- COLUMNA DE ACCIONES -->
             @if (showView || showEdit || showDelete) {
-            <th class="px-3 py-2">Acciones</th>
+              <th class="px-3 py-2">Acciones</th>
             }
           </tr>
         </thead>
@@ -43,64 +43,65 @@
         <tbody>
           <!-- FILAS -->
           @for (row of pagedData; track $index) {
-          <tr>
-            <!-- CELDAS -->
-            @for (col of colArray; track col.field) {
-            <td class="px-3 py-2">
-              @if (col.type === 'longtext') {
-              <span
-                class="truncate-text"
-                style="cursor: pointer"
-                (click)="openModal(row[col.field])"
-              >
-                {{ row[col.field] }}
-              </span>
-
-              } @else if (col.lookup) {
-              {{ col.lookup(row[col.field]) }}
-
-              } @else if (col.type === 'boolean') {
-              {{ row[col.field] ? 'Sí' : 'No' }}
-
-              } @else {
-              {{ row[col.field] }}
+            <tr>
+              <!-- CELDAS -->
+              @for (col of colArray; track col.field) {
+                <td class="px-3 py-2">
+                  @if (col.type === 'longtext') {
+                    <span
+                      class="truncate-text"
+                      style="cursor: pointer"
+                      (click)="openModal(row[col.field])"
+                    >
+                      {{ row[col.field] }}
+                    </span>
+                  } @else if (col.lookup) {
+                    {{ col.lookup(row[col.field]) }}
+                  } @else if (col.type === 'boolean') {
+                    {{ row[col.field] ? 'Sí' : 'No' }}
+                  } @else if (col.type === 'date') {
+                    {{ row[col.field] | date: 'dd/MM/yyyy' }}
+                  } @else {
+                    {{ row[col.field] }}
+                  }
+                </td>
               }
-            </td>
-            }
 
-            <!-- BOTONES DE ACCIONES -->
-            @if (showView || showEdit || showDelete) {
-            <td class="px-3 py-2">
-              @if (showView) {
-              <button type="button" class="btn btn-secondary btn-sm me-2" (click)="view(row)">
-                <i class="bi bi-eye-fill"></i>
-              </button>
-              } @if (showEdit) {
-              <button type="button" class="btn btn-primary btn-sm me-2" (click)="edit(row)">
-                <i class="bi bi-pencil-fill"></i>
-              </button>
-              } @if (showDelete) {
-              <button type="button" class="btn btn-danger btn-sm me-2" (click)="delete(row)">
-                <i class="bi bi-trash-fill"></i>
-              </button>
+              <!-- BOTONES DE ACCIONES -->
+              @if (showView || showEdit || showDelete) {
+                <td class="px-3 py-2">
+                  @if (showView) {
+                    <button type="button" class="btn btn-secondary btn-sm me-2" (click)="view(row)">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+                  }
+                  @if (showEdit) {
+                    <button type="button" class="btn btn-primary btn-sm me-2" (click)="edit(row)">
+                      <i class="bi bi-pencil-fill"></i>
+                    </button>
+                  }
+                  @if (showDelete) {
+                    <button type="button" class="btn btn-danger btn-sm me-2" (click)="delete(row)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  }
+                </td>
               }
-            </td>
-            }
-          </tr>
+            </tr>
           }
         </tbody>
 
         <!-- TEXTO CUANDO NO HAY DATOS -->
         @if (pagedData.length === 0) {
-        <tr>
-          <td
-            [attr.colspan]="colArray.length + (showView || showEdit || showDelete ? 1 : 0)"
-            class="text-center py-4 text-muted"
-          >
-            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
-            No hay datos para mostrar
-          </td>
-        </tr>
+          <tr>
+            <td
+              [attr.colspan]="colArray.length + (showView || showEdit || showDelete ? 1 : 0)"
+              class="text-center py-4 text-muted"
+            >
+              <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+              No hay datos para mostrar
+            </td>
+          </tr>
         }
       </table>
     </div>
@@ -108,21 +109,21 @@
 
   <!-- MODAL PARA TEXTO LARGO -->
   @if (showModal) {
-  <div class="custom-modal">
-    <div class="custom-modal-content">
-      <div class="custom-modal-header">
-        <h5>{{ modalTitle }}</h5>
-        <button type="button" class="close-btn" (click)="closeModal()">×</button>
-      </div>
+    <div class="custom-modal">
+      <div class="custom-modal-content">
+        <div class="custom-modal-header">
+          <h5>{{ modalTitle }}</h5>
+          <button type="button" class="close-btn" (click)="closeModal()">×</button>
+        </div>
 
-      <div class="custom-modal-body">
-        {{ selectedText }}
-      </div>
+        <div class="custom-modal-body">
+          {{ selectedText }}
+        </div>
 
-      <div class="custom-modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+        <div class="custom-modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+        </div>
       </div>
     </div>
-  </div>
   }
 </app-pagination-controls>

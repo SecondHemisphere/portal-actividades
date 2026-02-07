@@ -19,7 +19,7 @@ export class ServEnrollmentsApi {
 
   getEnrollments2(): Observable<Enrollment[]> {
     return this.http.get<Enrollment[]>(`${this.apiUrl}/Enrollments2`);
-  } 
+  }
 
   getEnrollmentById(id: number | string): Observable<Enrollment> {
     return this.http.get<Enrollment>(`${this.apiUrl}/${id}`);

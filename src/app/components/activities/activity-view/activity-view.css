@@ -52,3 +52,13 @@
 .bg-light-danger {
   background-color: #fff5f5;
 }
+
+.badge-tu {
+  background-color: rgba(90, 103, 216, 0.25);
+  color: var(--bs-primary);
+  border: 1px solid var(--bs-primary);
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+}

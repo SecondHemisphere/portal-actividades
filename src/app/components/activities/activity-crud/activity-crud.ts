@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
@@ -17,11 +17,12 @@ declare const bootstrap: any;
 
 @Component({
   selector: 'app-activity-crud',
+  standalone: true,
   imports: [ReactiveFormsModule, DataTable, SearchForm],
   templateUrl: './activity-crud.html',
-  styleUrl: './activity-crud.css',
+  styleUrls: ['./activity-crud.css']
 })
-export class ActivityCrud {
+export class ActivityCrud implements AfterViewInit {
   activities: Activity[] = [];
   filteredActivities: Activity[] = [];
   formActivity!: FormGroup;
@@ -30,64 +31,64 @@ export class ActivityCrud {
 
   photoPreview: string | null = null;
 
-  minDate:string = "2020-01-01";
-  maxDate = new Date().toISOString().split("T")[0]; ///fecha con formato yyyy-mm-dd
+  minDate: string = "2020-01-01";
+  maxDate: string = new Date().toISOString().split("T")[0];
 
   categories: Category[] = [];
   organizers: Organizer[] = [];
-
-  activityEdit:Activity ={} as Activity; //para foto
 
   activityFilters: SearchFilter[] = [
     { type: 'text', field: 'title', label: 'Título' },
     { type: 'select', field: 'categoryId', label: 'Categoría', options: [] },
     { type: 'select', field: 'organizerId', label: 'Organizador', options: [] },
     { type: 'text', field: 'location', label: 'Lugar' },
-    { type: 'date', field: 'date', label: 'Fecha' }
+    { type: 'date', field: 'fromDate', label: 'Fecha desde' },
+    { type: 'date', field: 'toDate', label: 'Fecha hasta' }
   ];
 
   colArray: TableColumn[] = [
     { field: 'id', header: 'ID', type: 'number' },
     { field: 'title', header: 'Título' },
     { field: 'description', header: 'Descripción', type: 'longtext' },
-    { field: 'categoryId', header: 'Categoría', type: 'lookup', lookup: (id: number) => this.getCategoryName(id) },
-    { field: 'organizerId', header: 'Organizador', type: 'lookup', lookup: (id: number) => this.getOrganizerName(id) },
+    { field: 'categoryName', header: 'Categoría' },
+    { field: 'organizerName', header: 'Organizador' },
     { field: 'date', header: 'Fecha', type: 'date' },
     { field: 'registrationDeadline', header: 'Inscripciones hasta', type: 'date' },
-    { field: 'timeRange', header: 'Horas' },
+    { field: 'timeRange', header: 'Horario' },
     { field: 'location', header: 'Lugar' },
     { field: 'capacity', header: 'Cupo', type: 'number' },
-    { field: 'active', header: 'Activo', type: 'boolean' },
+    { field: 'active', header: 'Activo', type: 'boolean' }
   ];
 
+  @ViewChild('activityModalRef') modalElement!: ElementRef;
+
   constructor(
-    private miServicio: ServActivitiesApi,
+    private fb: FormBuilder,
+    private activitiesService: ServActivitiesApi,
     private categoriesService: ServCategoriesApi,
     private organizersService: ServOrganizersApi,
-    private formbuilder: FormBuilder,
-    private router:Router
+    private router: Router
   ) {
-    this.loadActivities();
-    this.loadCategories();
-    this.loadOrganizers();
-
-    this.formActivity = this.formbuilder.group({
+    this.formActivity = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
       categoryId: ['', Validators.required],
       organizerId: ['', Validators.required],
       date: ['', Validators.required],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
-      registrationDeadline: ['', Validators.required ],
+      registrationDeadline: ['', Validators.required],
       location: ['', [Validators.required, Validators.minLength(3)]],
-      capacity: [1, [Validators.required, Validators.min(10), Validators.max(500)]],
+      capacity: [10, [Validators.required, Validators.min(10), Validators.max(500)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       photoUrl: [''],
       active: [true]
     }, { validators: [horaRangeValidator, registrationDeadlineValidator] });
+
+    this.loadCategories();
+    this.loadOrganizers();
+    this.loadActivities();
   }
 
-  @ViewChild("activityModalRef") modalElement!: ElementRef;
   ngAfterViewInit() {
     this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
   }
@@ -97,98 +98,48 @@ export class ActivityCrud {
   }
 
   loadActivities() {
-    this.miServicio.getActivities().subscribe((data: Activity[]) => {
+    this.activitiesService.getActivities2().subscribe(data => {
       this.activities = data;
-      this.filteredActivities = [...data];
+      this.filteredActivities = [...this.activities];
     });
   }
 
   loadCategories() {
-    this.categoriesService.getCategories().subscribe((data: Category[]) => {
+    this.categoriesService.getCategories().subscribe(data => {
       this.categories = data;
       const categoryFilter = this.activityFilters.find(f => f.field === 'categoryId');
       if (categoryFilter) {
-        categoryFilter.options = this.categories.map(c => ({ label: c.name, value: c.id }));
+        categoryFilter.options = data.map(c => ({ label: c.name, value: c.id }));
       }
     });
   }
 
   loadOrganizers() {
-    this.organizersService.getOrganizers().subscribe((data: Organizer[]) => {
+    this.organizersService.getOrganizers2().subscribe((data: Organizer[]) => {
       this.organizers = data;
+
       const organizerFilter = this.activityFilters.find(f => f.field === 'organizerId');
       if (organizerFilter) {
-        organizerFilter.options = this.organizers.map(o => ({ label: o.name, value: o.id }));
+        organizerFilter.options = data.map((o: Organizer) => ({
+          label: o.name,
+          value: o.id
+        }));
       }
     });
   }
-
-  getCategoryName(id: number): string {
-    return this.categories.find(c => Number(c.id) === Number(id))?.name || 'Sin categoría';
-  }
-
-  getOrganizerName(id: number): string {
-    return this.organizers.find(o => Number(o.id) === Number(id))?.name || 'Sin organizador';
-  }
-
-  updatePhotoPreview() {
-    const url = this.formActivity.get('photoUrl')?.value;
-    this.photoPreview = url && url.trim() !== '' ? url : null;
-  }
-
-  view(activity: Activity) {
-    this.router.navigate(['/activity-view', activity.id]);
-  }
-
-  delete(activity: Activity) {
-    Swal.fire({
-      title: `¿Seguro deseas eliminar la actividad?`,
-      text: activity.title,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.miServicio.delete(Number(activity.id)).subscribe({
-          next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Actividad eliminada',
-              showConfirmButton: false,
-              timer: 1500
-            });
-            this.loadActivities();
-          },
-          error: (err) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se pudo eliminar la actividad.',
-            });
-            console.error(err);
-          }
-        });
-      }
-    });
-  }
-
-  search(filters: any) {
-    this.miServicio.search(filters).subscribe(
-      (data: Activity[]) => {
-        this.filteredActivities = data;
-      }
-    );
-  }
-
+  
   openNew() {
     this.editingId = null;
+    this.formActivity.enable();
+    
     this.formActivity.reset({
       title: '',
       categoryId: '',
       organizerId: '',
       date: '',
-      timeRange: '',
+      startTime: '',
+      endTime: '',
+      registrationDeadline: '',
       location: '',
       capacity: 10,
       description: '',
@@ -197,24 +148,30 @@ export class ActivityCrud {
     });
 
     this.photoPreview = null;
-    
     this.modalRef.show();
   }
 
   openEdit(activity: Activity) {
-    this.activityEdit = activity;
     this.editingId = activity.id ?? null;
 
     const [startTime, endTime] = activity.timeRange?.split(' - ') || ['', ''];
 
     this.formActivity.patchValue({
-      ...activity,
+      title: activity.title,
+      categoryId: activity.categoryId,
+      organizerId: activity.organizerId,
+      date: activity.date,
       startTime: startTime,
-      endTime: endTime
+      endTime: endTime,
+      registrationDeadline: activity.registrationDeadline,
+      location: activity.location,
+      capacity: activity.capacity,
+      description: activity.description,
+      photoUrl: activity.photoUrl,
+      active: activity.active
     });
 
     this.photoPreview = activity.photoUrl || null;
-
     this.modalRef.show();
   }
 
@@ -224,38 +181,99 @@ export class ActivityCrud {
       return;
     }
 
-    let datos = this.formActivity.value;
-
+    const datos = this.formActivity.value;
     datos.timeRange = `${datos.startTime} - ${datos.endTime}`;
-
+    
     delete datos.startTime;
     delete datos.endTime;
 
     if (this.editingId) {
-      let activity: Activity = { ...datos, id: this.editingId };
-      this.miServicio.update(activity).subscribe(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Actividad actualizada',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        this.modalRef.hide();
-        this.loadActivities();
+      datos.id = this.editingId;
+      this.activitiesService.update(datos).subscribe({
+        next: () => {
+          Swal.fire('Actualizado', 'Actividad actualizada correctamente', 'success');
+          this.modalRef.hide();
+          this.loadActivities();
+        },
+        error: (err) => {
+          console.error(err);
+          Swal.fire('Error', 'No se pudo actualizar la actividad', 'error');
+        }
       });
     } else {
-      let activity: Activity = { ...datos };
-      this.miServicio.create(activity).subscribe(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Actividad creada',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        this.modalRef.hide();
-        this.loadActivities();
+      this.activitiesService.create(datos).subscribe({
+        next: () => {
+          Swal.fire('Creado', 'Actividad creada correctamente', 'success');
+          this.modalRef.hide();
+          this.loadActivities();
+        },
+        error: (err) => {
+          const errorMsg = err.error?.message ?? 'Ocurrió un error al crear la actividad';
+          console.error(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMsg
+          });
+        }
       });
     }
   }
 
+  delete(activity: Activity) {
+    Swal.fire({
+      title: '¿Deseas eliminar la actividad?',
+      text: activity.title,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.activitiesService.delete(activity.id!).subscribe({
+          next: () => {
+            Swal.fire('Eliminado', 'Actividad eliminada', 'success');
+            this.loadActivities();
+          },
+          error: (err) => {
+            console.error(err);
+            Swal.fire('Error', 'No se pudo eliminar la actividad', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  view(activity: Activity) {
+    this.router.navigate(['/activity-view', activity.id]);
+  }
+
+  updatePhotoPreview() {
+    const url = this.formActivity.get('photoUrl')?.value;
+    this.photoPreview = url && url.trim() !== '' ? url : null;
+  }
+
+  search(filters: {
+    categoryId?: number;
+    organizerId?: number;
+    fromDate?: string;
+    toDate?: string;
+    location?: string;
+    title?: string;
+  }) {
+    this.activitiesService.search(filters).subscribe({
+      next: (data: Activity[]) => {
+        this.filteredActivities = data;
+      },
+      error: (err) => {
+        const errorMsg = err.error?.message ?? 'Ocurrió un error al buscar actividades';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errorMsg
+        });
+      }
+    });
+  }
+  
 }

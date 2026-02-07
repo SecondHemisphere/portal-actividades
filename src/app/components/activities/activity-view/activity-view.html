@@ -2,23 +2,23 @@
   <div class="card mb-4 shadow-lg border-0 rounded-3">
     <div class="position-relative">
       @if (activity.photoUrl) {
-      <img
-        [src]="activity.photoUrl"
-        [alt]="activity.title"
-        class="card-img-top activity-image rounded-top-3"
-      />
+        <img
+          [src]="activity.photoUrl"
+          [alt]="activity.title"
+          class="card-img-top activity-image rounded-top-3"
+        />
       } @else {
-      <div
-        class="card-img-top activity-no-image d-flex justify-content-center align-items-center rounded-top-3 bg-light text-muted"
-      >
-        <i class="bi bi-image-fill fs-1 me-3"></i> Sin imagen
-      </div>
+        <div
+          class="card-img-top activity-no-image d-flex justify-content-center align-items-center rounded-top-3 bg-light text-muted"
+        >
+          <i class="bi bi-image-fill fs-1 me-3"></i> Sin imagen
+        </div>
       }
 
       <span
         class="badge badge-custom text-white bg-primary shadow-sm py-2 px-3 rounded-pill position-absolute top-0 start-0 m-3"
       >
-        {{ getCategoryName() }}
+        {{ activity.categoryName }}
       </span>
     </div>
 
@@ -34,7 +34,7 @@
           <i class="bi bi-calendar-event me-2 text-primary fs-5"></i>
           <div>
             <b class="d-block">Fecha</b>
-            {{ activity.date | date : 'fullDate' }}
+            {{ activity.date | date: 'fullDate' }}
           </div>
         </div>
 
@@ -58,7 +58,7 @@
           <i class="bi bi-person-badge me-2 text-secondary fs-5"></i>
           <div>
             <b class="d-block">Organiza</b>
-            {{ getOrganizerName() }}
+            {{ activity.organizerName }}
           </div>
         </div>
 
@@ -78,42 +78,45 @@
 
       <div class="d-flex flex-column gap-3 mt-4 pt-2 border-top">
         @if (hasActivityEnded()) {
-        <div class="alert alert-secondary d-flex align-items-center gap-2 mb-0">
-          <i class="bi bi-flag-fill fs-5"></i>
-          <span>Esta actividad ya ha concluido.</span>
-        </div>
-        } @else if (isRegistrationClosed()) {
-        <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
-          <i class="bi bi-x-octagon-fill fs-5"></i>
-          <span>Inscripciones cerradas</span>
-        </div>
-        } @else if (role === 'student') { @if (isEnrolled) {
-        <div class="alert alert-success d-flex align-items-center gap-2 mb-0">
-          <i class="bi bi-check-circle-fill fs-5"></i>
-          <span>Ya estás inscrito en esta actividad</span>
-        </div>
-
-        <div
-          class="p-3 border border-danger rounded-3 bg-light-danger d-flex justify-content-between align-items-center"
-        >
-          <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-exclamation-triangle-fill text-danger fs-4"></i>
-            <span class="fw-semibold text-danger">Cancelar inscripción</span>
+          <div class="alert alert-secondary d-flex align-items-center gap-2 mb-0">
+            <i class="bi bi-flag-fill fs-5"></i>
+            <span>Esta actividad ya ha concluido.</span>
           </div>
+        } @else if (isRegistrationClosed()) {
+          <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
+            <i class="bi bi-x-octagon-fill fs-5"></i>
+            <span>Inscripciones cerradas</span>
+          </div>
+        } @else if (role === 'student') {
+          @if (isEnrolled) {
+            <div class="alert alert-success d-flex align-items-center gap-2 mb-0">
+              <i class="bi bi-check-circle-fill fs-5"></i>
+              <span>Ya estás inscrito en esta actividad</span>
+            </div>
 
-          <button type="button" class="btn btn-danger btn-lg" (click)="cancelEnrollment()">
-            <i class="bi bi-x-circle me-1"></i> Cancelar
-          </button>
-        </div>
-        } @else {
-        <button type="button" class="btn btn-primary btn-lg shadow-sm" (click)="enroll()">
-          <i class="bi bi-plus-circle me-2"></i> Inscribirme
-        </button>
-        } } @if (role === 'organizer' && isMyActivity) {
-        <div class="alert alert-info d-flex align-items-center gap-2">
-          <i class="bi bi-info-circle-fill fs-5"></i>
-          <span class="fw-semibold">Esta actividad es tuya.</span>
-        </div>
+            <div
+              class="p-3 border border-danger rounded-3 bg-light-danger d-flex justify-content-between align-items-center"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-4"></i>
+                <span class="fw-semibold text-danger">Cancelar inscripción</span>
+              </div>
+
+              <button type="button" class="btn btn-danger btn-lg" (click)="cancelEnrollment()">
+                <i class="bi bi-x-circle me-1"></i> Cancelar
+              </button>
+            </div>
+          } @else {
+            <button type="button" class="btn btn-primary btn-lg shadow-sm" (click)="enroll()">
+              <i class="bi bi-plus-circle me-2"></i> Inscribirme
+            </button>
+          }
+        }
+        @if (role === 'organizer' && isMyActivity) {
+          <div class="alert alert-info d-flex align-items-center gap-2">
+            <i class="bi bi-info-circle-fill fs-5"></i>
+            <span class="fw-semibold">Esta actividad es tuya.</span>
+          </div>
         }
       </div>
 
@@ -123,45 +126,69 @@
             <h3 class="card-title fw-bold text-dark mb-0">Opiniones de los Participantes</h3>
 
             @if (canReview) {
-            <button
-              type="button"
-              class="btn btn-primary d-flex align-items-center gap-2"
-              (click)="openNew()"
-            >
-              <i class="bi bi-chat-dots me-1"></i> Comentar
-            </button>
+              <button
+                type="button"
+                class="btn btn-primary d-flex align-items-center gap-2"
+                (click)="openNew()"
+              >
+                <i class="bi bi-chat-dots me-1"></i> Comentar
+              </button>
             }
           </div>
 
           <hr class="my-4" />
 
           @for (r of ratings; track $index) {
-          <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-light shadow-sm">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <b class="text-dark">{{ getStudentName(r.studentId) }}</b>
-              <span class="text-warning">
-                @for (s of [1,2,3,4,5]; track $index) {
-                <i
-                  class="bi me-1 fs-5"
-                  [ngClass]="s <= r.stars ? 'bi-star-fill text-warning' : 'bi-star text-muted'"
-                ></i>
-                }
-              </span>
-            </div>
-
-            @if (r.comment) {
-            <p class="mb-0 text-muted small">{{ r.comment }}</p>
-            }
-          </div>
-          } @empty {
-          <div class="mensaje-vacio text-center py-5">
-            <i class="bi bi-chat-dots icono-vacio display-4 text-muted"></i>
-            <p class="texto-vacio text-muted mt-2">
-              Aún no hay opiniones. @if (canReview) {
-              <span>¡Sé el primero en dejar una!</span>
+            <div class="border-start border-primary border-4 rounded p-3 mb-3 bg-light shadow-sm">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <div class="d-flex align-items-center gap-2">
+                  <b class="text-dark">{{ r.studentName }}</b>
+                  @if (r.studentId === userId) {
+                    <span class="badge badge-tu">Tú</span>
+                  }
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <span class="text-warning">
+                    @for (s of [1, 2, 3, 4, 5]; track $index) {
+                      <i
+                        class="bi me-1 fs-5"
+                        [ngClass]="
+                          s <= r.stars ? 'bi-star-fill text-warning' : 'bi-star text-muted'
+                        "
+                      ></i>
+                    }
+                  </span>
+                  @if (r.studentId === userId) {
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="deleteRating(r)"
+                      title="Eliminar mi comentario"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  }
+                </div>
+              </div>
+              @if (r.comment) {
+                <p class="mb-0 text-muted small">{{ r.comment }}</p>
               }
-            </p>
-          </div>
+              <div class="mt-2 text-end">
+                <small class="text-muted">
+                  {{ r.ratingDate | date: 'mediumDate' }}
+                </small>
+              </div>
+            </div>
+          } @empty {
+            <div class="mensaje-vacio text-center py-5">
+              <i class="bi bi-chat-dots icono-vacio display-4 text-muted"></i>
+              <p class="texto-vacio text-muted mt-2">
+                Aún no hay opiniones.
+                @if (canReview) {
+                  <span>¡Sé el primero en dejar una!</span>
+                }
+              </p>
+            </div>
           }
         </div>
       </div>
@@ -183,21 +210,22 @@
             <label class="form-label">Puntuación (1-5)</label>
             <div class="text-warning fs-4">
               @for (s of [1, 2, 3, 4, 5]; track s) {
-              <i
-                class="bi star-icon"
-                [ngClass]="
-                  s <= formRating.get('stars')?.value ? 'bi-star-fill' : 'bi-star text-muted'
-                "
-                (click)="selectStar(s)"
-                role="button"
-                tabindex="0"
-              ></i>
+                <i
+                  class="bi star-icon"
+                  [ngClass]="
+                    s <= formRating.get('stars')?.value ? 'bi-star-fill' : 'bi-star text-muted'
+                  "
+                  (click)="selectStar(s)"
+                  role="button"
+                  tabindex="0"
+                ></i>
               }
             </div>
 
             <span class="error">
-              @if(formRating.get("stars")?.invalid && formRating.get("stars")?.touched){ La
-              puntuación es requerida. }
+              @if (formRating.get('stars')?.invalid && formRating.get('stars')?.touched) {
+                La puntuación es requerida.
+              }
             </span>
           </div>
 
@@ -206,11 +234,18 @@
             <label class="form-label">Comentario</label>
             <textarea class="form-control" rows="3" formControlName="comment"></textarea>
             <span class="error">
-              @if(formRating.get("comment")?.hasError("required") &&
-              formRating.get("comment")?.touched){ El comentario no puede quedar vacío. }
-              @if(formRating.get("comment")?.hasError("maxlength") &&
-              formRating.get("comment")?.touched){ El comentario no puede exceder los 250
-              caracteres. }
+              @if (
+                formRating.get('comment')?.hasError('required') &&
+                formRating.get('comment')?.touched
+              ) {
+                El comentario no puede quedar vacío.
+              }
+              @if (
+                formRating.get('comment')?.hasError('maxlength') &&
+                formRating.get('comment')?.touched
+              ) {
+                El comentario no puede exceder los 250 caracteres.
+              }
             </span>
           </div>
         </div>

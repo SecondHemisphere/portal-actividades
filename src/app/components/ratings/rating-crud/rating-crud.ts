@@ -56,17 +56,9 @@ export class RatingCrud {
     this.loadRatings();
   }
 
-  private mapRating(r: Rating): Rating {
-    return {
-      ...r,
-      studentName: r.studentName,
-      activityName: r.activityName,
-    };
-  }
-
   loadRatings() {
     this.ratingService.getRatings2().subscribe((data: Rating[]) => {
-      this.ratings = data.map(r => this.mapRating(r));
+      this.ratings = data;
       this.filteredRatings = [...this.ratings];
     });
   }
@@ -136,7 +128,7 @@ export class RatingCrud {
   }) {
     this.ratingService.search(filters).subscribe({
       next: (data: Rating[]) => {
-        this.filteredRatings = data.map(r => this.mapRating(r));
+        this.filteredRatings = data;
       },
       error: (err) => {
         const errorMsg = err.error?.message ?? 'Ocurrió un error al buscar calificaciones';
