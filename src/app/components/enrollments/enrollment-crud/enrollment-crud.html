@@ -101,9 +101,6 @@
                   formEnrollment.get('note')?.invalid &&
                   (formEnrollment.get('note')?.dirty || formEnrollment.get('note')?.touched)
                 ) {
-                  @if (formEnrollment.get('note')?.errors?.['minlength']) {
-                    Mínimo 5 caracteres
-                  }
                   @if (formEnrollment.get('note')?.errors?.['maxlength']) {
                     Máximo 300 caracteres
                   }

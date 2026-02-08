@@ -8,7 +8,8 @@ import { Student } from '../../../models/Student';
 import { ServStudentsApi } from '../../../services/serv-students-api';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
-import Swal from 'sweetalert2';
+import { ApiErrorService } from '../../../shared/api-error.service';
+import { UiAlertService } from '../../../shared/ui-alert.service';
 
 declare const bootstrap: any;
 
@@ -26,7 +27,7 @@ export class EnrollmentCrud implements AfterViewInit {
   editingId: number | null = null;
   modalRef: any;
 
-  activities: Activity[] = []; 
+  activities: Activity[] = [];
   students: Student[] = [];
   enrollmentStatuses = Object.values(EnrollmentStatus);
 
@@ -57,13 +58,15 @@ export class EnrollmentCrud implements AfterViewInit {
     private fb: FormBuilder,
     private enrollmentService: ServEnrollmentsApi,
     private activitiesService: ServActivitiesApi,
-    private studentsService: ServStudentsApi
+    private studentsService: ServStudentsApi,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {
     this.formEnrollment = this.fb.group({
       activityId: ['', Validators.required],
       studentId: ['', Validators.required],
       enrollmentDate: [''],
-      note: ['', [Validators.minLength(5), Validators.maxLength(300)]],
+      note: ['', [Validators.maxLength(300)]],
       status: [EnrollmentStatus.Inscrito, Validators.required]
     });
 
@@ -153,48 +156,43 @@ export class EnrollmentCrud implements AfterViewInit {
       datos.id = this.editingId;
       this.enrollmentService.update(datos).subscribe({
         next: () => {
-          Swal.fire('Actualizado', 'Inscripción actualizada correctamente', 'success');
+          this.ui.success('Inscripción actualizada correctamente');
           this.modalRef.hide();
           this.loadEnrollments();
         },
         error: (err) => {
-          console.error(err);
-          Swal.fire('Error', 'No se pudo actualizar la inscripción', 'error');
+          this.apiError.handle(err, 'actualizar');
         }
       });
     } else {
       this.enrollmentService.create(datos).subscribe({
         next: () => {
-          Swal.fire('Creado', 'Inscripción creada correctamente', 'success');
+          this.ui.success('Inscripción creada correctamente');
           this.modalRef.hide();
           this.loadEnrollments();
         },
         error: (err) => {
-          const errorMsg = err.error?.message ?? 'Ocurrió un error al buscar calificaciones';
-          console.error(err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
+          this.apiError.handle(err, 'crear');
         }
       });
     }
   }
 
   delete(enrollment: Enrollment) {
-    Swal.fire({
-      title: '¿Deseas eliminar la inscripción?',
-      text: `Actividad: ${enrollment.activityName}, Estudiante: ${enrollment.studentName}`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
+    this.ui.confirm(
+      '¿Eliminar la inscripción',
+      `Actividad: ${enrollment.activityName}, Estudiante: ${enrollment.studentName}`,
+      'Sí, eliminar'
+    ).then(result => {
       if (result.isConfirmed) {
-        this.enrollmentService.delete(enrollment.id!).subscribe(() => {
-          Swal.fire('Eliminado', 'Inscripción eliminada', 'success');
-          this.loadEnrollments();
+        this.enrollmentService.delete(Number(enrollment.id)).subscribe({
+          next: () => {
+            this.ui.success('Inscripción eliminada');
+            this.loadEnrollments();
+          },
+          error: (err) => {
+            this.apiError.handle(err, 'eliminar la inscripción');
+          }
         });
       }
     });
@@ -212,13 +210,9 @@ export class EnrollmentCrud implements AfterViewInit {
         this.filteredEnrollments = data;
       },
       error: (err) => {
-        const errorMsg = err.error?.message ?? 'Ocurrió un error al buscar inscripciones';
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMsg
-        });
+        this.apiError.handle(err, 'buscar');
       }
     });
   }
+  
 }

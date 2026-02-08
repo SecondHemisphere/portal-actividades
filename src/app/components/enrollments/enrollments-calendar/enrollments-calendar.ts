@@ -7,7 +7,8 @@ import { Activity } from '../../../models/Activity';
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
-import Swal from 'sweetalert2';
+import { ApiErrorService } from '../../../shared/api-error.service';
+import { UiAlertService } from '../../../shared/ui-alert.service';
 
 @Component({
   selector: 'app-enrollments-calendar',
@@ -50,7 +51,9 @@ export class EnrollmentsCalendar {
     private enrollmentsService: ServEnrollmentsApi,
     private activitiesService: ServActivitiesApi,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {}
 
   ngOnInit() {
@@ -80,24 +83,12 @@ export class EnrollmentsCalendar {
               this.generateFilteredDays();
             },
             error: (err) => {
-              console.error('Error al cargar actividades:', err);
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'No se pudieron cargar las actividades',
-                confirmButtonText: 'OK'
-              });
+              this.apiError.handle(err, 'cargar las actividades');
             }
           });
         },
         error: (err) => {
-          console.error('Error al cargar inscripciones:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudieron cargar tus inscripciones',
-            confirmButtonText: 'OK'
-          });
+          this.apiError.handle(err, 'cargar las inscripciones');
         }
       });
   }
@@ -150,21 +141,19 @@ export class EnrollmentsCalendar {
     const enrollment = this.enrollments.find(e => e.id === activity.enrollmentId);
     if (!enrollment) return;
 
-    const action = enrollment.status === EnrollmentStatus.Inscrito ? 'cancelar' : 'activar';
-    
+    const isCancel = enrollment.status === EnrollmentStatus.Inscrito;
+    const actionText = isCancel ? 'cancelar' : 'activar';
+
     const activityObj = this.activities.find(a => a.id === activity.activityId);
     const activityName = activityObj?.title || 'esta actividad';
 
-    Swal.fire({
-      title: `¿${action === 'cancelar' ? 'Cancelar' : 'Activar'} inscripción?`,
-      text: `¿Estás seguro de ${action} tu inscripción en "${activityName}"?`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: `Sí, ${action}`,
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
+    this.ui.confirm(
+      isCancel ? '¿Cancelar inscripción?' : '¿Activar inscripción?',
+      `¿Estás seguro de ${actionText} tu inscripción en "${activityName}"?`,
+      `Sí, ${actionText}`
+    ).then(result => {
       if (result.isConfirmed) {
-        if (enrollment.status === EnrollmentStatus.Inscrito) {
+        if (isCancel) {
           this.deactivateEnrollment(enrollment.id!, activityName);
         } else {
           this.activateEnrollment(enrollment.id!, activityName);
@@ -187,13 +176,7 @@ export class EnrollmentsCalendar {
             day.activities[actIndex].status = EnrollmentStatus.Cancelado;
           }
         });
-        
-        Swal.fire({
-          icon: 'success',
-          title: '¡Inscripción cancelada!',
-          text:'Tu inscripción ha sido cancelada correctamente',
-          confirmButtonText: 'OK'
-        });
+        this.ui.success('Tu inscripción ha sido cancelada correctamente');
       },
       error: (error) => {
         console.error('Error al cancelar inscripción:', error);
@@ -204,13 +187,7 @@ export class EnrollmentsCalendar {
         } else if (error.message) {
           errorMessage = error.message;
         }
-        
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMessage,
-          confirmButtonText: 'OK'
-        });
+        this.ui.error(errorMessage);
       }
     });
   }
@@ -230,12 +207,7 @@ export class EnrollmentsCalendar {
           }
         });
         
-        Swal.fire({
-          icon: 'success',
-          title: '¡Inscripción activada!',
-          text: 'Tu inscripción ha sido activada correctamente',
-          confirmButtonText: 'OK'
-        });
+        this.ui.success('Tu inscripción ha sido activada correctamente');
       },
       error: (error) => {
         console.error('Error al activar inscripción:', error);
@@ -246,13 +218,7 @@ export class EnrollmentsCalendar {
         } else if (error.message) {
           errorMessage = error.message;
         }
-        
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMessage,
-          confirmButtonText: 'OK'
-        });
+        this.ui.error(errorMessage);
       }
     });
   }

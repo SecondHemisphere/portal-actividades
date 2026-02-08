@@ -134,6 +134,7 @@ export class ApiErrorService {
       'Title': 'Título',
       'CategoryId': 'Categoría',
       'OrganizerId': 'Organizador',
+      'StudentId': 'Estudiante',
       'Date': 'Fecha',
       'RegistrationDeadline': 'Fecha límite de inscripción',
       'Location': 'Lugar',
@@ -145,6 +146,9 @@ export class ApiErrorService {
       'Password': 'Contraseña',
       'ConfirmPassword': 'Confirmar contraseña',
       'Phone': 'Teléfono',
+      'Note': 'Nota',
+      'Status': 'Estado',
     };
   }
+  
 }
