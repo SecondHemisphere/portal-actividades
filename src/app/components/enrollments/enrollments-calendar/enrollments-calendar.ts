@@ -7,6 +7,7 @@ import { Activity } from '../../../models/Activity';
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-enrollments-calendar',
@@ -26,6 +27,7 @@ export class EnrollmentsCalendar {
     date: Date;
     activities: {
       id: number;
+      enrollmentId?: number;
       title: string;
       status: EnrollmentStatus;
       start: string;
@@ -67,14 +69,36 @@ export class EnrollmentsCalendar {
 
   loadEnrollments() {
     this.enrollmentsService.getEnrollmentsByStudent(this.userId)
-      .subscribe(enrs => {
-        this.enrollments = enrs || [];
-        
-        this.activitiesService.getActivities2().subscribe(actList => {
-          const ids = this.enrollments.map(e => e.activityId);
-          this.activities = actList.filter(a => ids.includes(a.id!));
-          this.generateFilteredDays();
-        });
+      .subscribe({
+        next: (enrs) => {
+          this.enrollments = enrs || [];
+          
+          this.activitiesService.getActivities2().subscribe({
+            next: (actList) => {
+              const ids = this.enrollments.map(e => e.activityId);
+              this.activities = actList.filter(a => ids.includes(a.id!));
+              this.generateFilteredDays();
+            },
+            error: (err) => {
+              console.error('Error al cargar actividades:', err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudieron cargar las actividades',
+                confirmButtonText: 'OK'
+              });
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error al cargar inscripciones:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron cargar tus inscripciones',
+            confirmButtonText: 'OK'
+          });
+        }
       });
   }
 
@@ -105,6 +129,7 @@ export class EnrollmentsCalendar {
 
         day.activities.push({
           id: e.activityId,
+          enrollmentId: e.id,
           title: act.title || 'Actividad',
           status: e.status,
           start: startRaw || '—',
@@ -117,6 +142,119 @@ export class EnrollmentsCalendar {
     });
 
     this.filteredDays.sort((a, b) => a.date.getTime() - b.date.getTime());
+  }
+
+  toggleEnrollmentStatus(activity: any) {
+    if (!activity.enrollmentId) return;
+
+    const enrollment = this.enrollments.find(e => e.id === activity.enrollmentId);
+    if (!enrollment) return;
+
+    const action = enrollment.status === EnrollmentStatus.Inscrito ? 'cancelar' : 'activar';
+    
+    const activityObj = this.activities.find(a => a.id === activity.activityId);
+    const activityName = activityObj?.title || 'esta actividad';
+
+    Swal.fire({
+      title: `¿${action === 'cancelar' ? 'Cancelar' : 'Activar'} inscripción?`,
+      text: `¿Estás seguro de ${action} tu inscripción en "${activityName}"?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: `Sí, ${action}`,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (enrollment.status === EnrollmentStatus.Inscrito) {
+          this.deactivateEnrollment(enrollment.id!, activityName);
+        } else {
+          this.activateEnrollment(enrollment.id!, activityName);
+        }
+      }
+    });
+  }
+
+  deactivateEnrollment(enrollmentId: number, activityName: string) {
+    this.enrollmentsService.delete(enrollmentId).subscribe({
+      next: (response) => {
+        const enrollment = this.enrollments.find(e => e.id === enrollmentId);
+        if (enrollment) {
+          enrollment.status = EnrollmentStatus.Cancelado;
+        }
+        
+        this.filteredDays.forEach(day => {
+          const actIndex = day.activities.findIndex(a => a.enrollmentId === enrollmentId);
+          if (actIndex !== -1) {
+            day.activities[actIndex].status = EnrollmentStatus.Cancelado;
+          }
+        });
+        
+        Swal.fire({
+          icon: 'success',
+          title: '¡Inscripción cancelada!',
+          text:'Tu inscripción ha sido cancelada correctamente',
+          confirmButtonText: 'OK'
+        });
+      },
+      error: (error) => {
+        console.error('Error al cancelar inscripción:', error);
+        
+        let errorMessage = 'Error al cancelar la inscripción';
+        if (error.error?.message) {
+          errorMessage = error.error.message;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errorMessage,
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  }
+
+  activateEnrollment(enrollmentId: number, activityName: string) {
+    this.enrollmentsService.activate(enrollmentId).subscribe({
+      next: (response) => {
+        const enrollment = this.enrollments.find(e => e.id === enrollmentId);
+        if (enrollment) {
+          enrollment.status = EnrollmentStatus.Inscrito;
+        }
+        
+        this.filteredDays.forEach(day => {
+          const actIndex = day.activities.findIndex(a => a.enrollmentId === enrollmentId);
+          if (actIndex !== -1) {
+            day.activities[actIndex].status = EnrollmentStatus.Inscrito;
+          }
+        });
+        
+        Swal.fire({
+          icon: 'success',
+          title: '¡Inscripción activada!',
+          text: 'Tu inscripción ha sido activada correctamente',
+          confirmButtonText: 'OK'
+        });
+      },
+      error: (error) => {
+        console.error('Error al activar inscripción:', error);
+        
+        let errorMessage = 'Error al activar la inscripción';
+        if (error.error?.message) {
+          errorMessage = error.error.message;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errorMessage,
+          confirmButtonText: 'OK'
+        });
+      }
+    });
   }
 
   prevMonth() {

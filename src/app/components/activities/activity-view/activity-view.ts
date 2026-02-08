@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { Activity } from '../../../models/Activity';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -66,14 +66,8 @@ export class ActivityView implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.loadCurrentUser();
-    
     const id = this.route.snapshot.paramMap.get('id');
-
-    if (!id) {
-      this.showError('No se especificó ID de actividad');
-      return;
-    }
-
+    if (!id) return;
     this.loadActivity(id);
   }
 
@@ -225,25 +219,6 @@ export class ActivityView implements OnInit, AfterViewInit {
             this.showInfo('Ya estás inscrito en esta actividad');
             return;
           }
-
-          if (existing.status === EnrollmentStatus.Cancelado) {
-            const updated: Enrollment = {
-              ...existing,
-              status: EnrollmentStatus.Inscrito,
-              enrollmentDate: new Date().toISOString()
-            };
-
-            this.enrollmentsService.update(updated).subscribe({
-              next: (e) => {
-                this.isEnrolled = true;
-                this.currentEnrollment = e;
-                this.checkIfCanReview();
-                this.showSuccess('Tu inscripción ha sido reactivada');
-              },
-              error: (error) => this.showError('Error al reactivar inscripción')
-            });
-            return;
-          }
         }
 
         const enrollment: Omit<Enrollment, 'id'> = {
@@ -268,45 +243,6 @@ export class ActivityView implements OnInit, AfterViewInit {
     });
   }
 
-  cancelEnrollment() {
-    if (!this.currentEnrollment) {
-      this.showWarning('No tienes una inscripción activa para cancelar');
-      return;
-    }
-
-    if (this.currentEnrollment.status === EnrollmentStatus.Cancelado) {
-      this.showInfo('La inscripción ya está cancelada');
-      return;
-    }
-
-    this.showConfirm(
-      '¿Cancelar inscripción?',
-      '¿Estás seguro de que deseas cancelar tu inscripción en esta actividad?',
-      'Sí, cancelar',
-      'No, mantener'
-    ).then((result) => {
-      if (result.isConfirmed) {
-        this.processCancellation();
-      }
-    });
-  }
-
-  private processCancellation() {
-    this.enrollmentsService.delete(this.currentEnrollment!.id!).subscribe({
-      next: () => {
-        this.isEnrolled = false;
-        this.currentEnrollment!.status = EnrollmentStatus.Cancelado;
-        this.checkIfCanReview();
-        this.showSuccess('Tu inscripción ha sido cancelada');
-      },
-      error: (error) => {
-        console.error('Error al cancelar inscripción:', error);
-        const errorMsg = error.error?.message || 'Error al cancelar inscripción';
-        this.showError(errorMsg);
-      }
-    });
-  }
-
   submitReview() {
     if (this.formRating.invalid) {
       this.formRating.markAllAsTouched();
@@ -325,10 +261,9 @@ export class ActivityView implements OnInit, AfterViewInit {
       next: (res) => {
         this.modalRef.hide();
         this.showSuccess('Valoración enviada');
-        setTimeout(() => {
-          this.ratings.push(res);
-          this.checkIfCanReview();
-        }, 300);
+        
+        this.loadRatings();
+        this.checkIfCanReview();
       },
       error: (error) => {
         const errorMsg = this.getErrorMessage(error, 'Error al enviar la valoración');

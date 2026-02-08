@@ -40,6 +40,10 @@ export class ServEnrollmentsApi {
   delete(id: number | string): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/deactivate/${id}`, null);
   }
+  
+  activate(id: number | string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/activate/${id}`, null);
+  }
 
   search(filters: {
     studentId?: number;

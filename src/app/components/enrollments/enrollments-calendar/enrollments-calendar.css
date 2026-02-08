@@ -54,18 +54,31 @@
   color: var(--bs-secondary);
 }
 
-.activity-status {
-  font-weight: 600;
+.badge-enrolled {
+  font-size: 0.9rem;
+  font-weight: 800;
   padding: 5px 10px;
   border-radius: 8px;
+  margin-top: 6px;
   background: rgba(72, 187, 120, 0.15);
   color: var(--bs-success);
-  margin-top: 6px;
 }
 
-.activity-status.canceled {
+.badge-cancelled {
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 5px 10px;
+  border-radius: 8px;
+  margin-top: 6px;
   background: rgba(229, 62, 62, 0.15);
   color: var(--bs-danger);
+}
+
+.badge-enrolled:hover,
+.badge-cancelled:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
 }
 
 .activity-actions {

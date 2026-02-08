@@ -95,19 +95,6 @@
                 <i class="bi bi-check-circle-fill fs-5"></i>
                 <span>Ya estás inscrito en esta actividad</span>
               </div>
-
-              <div
-                class="p-3 border border-danger rounded-3 bg-light-danger d-flex justify-content-between align-items-center"
-              >
-                <div class="d-flex align-items-center gap-2">
-                  <i class="bi bi-exclamation-triangle-fill text-danger fs-4"></i>
-                  <span class="fw-semibold text-danger">Cancelar inscripción</span>
-                </div>
-
-                <button type="button" class="btn btn-danger btn-lg" (click)="cancelEnrollment()">
-                  <i class="bi bi-x-circle me-1"></i> Cancelar
-                </button>
-              </div>
             } @else {
               <button type="button" class="btn btn-primary btn-lg shadow-sm" (click)="enroll()">
                 <i class="bi bi-plus-circle me-2"></i> Inscribirme

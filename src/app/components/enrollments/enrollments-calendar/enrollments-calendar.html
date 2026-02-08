@@ -11,44 +11,52 @@
 
 <!-- MENSAJE DE CUANDO NO HAY ACTIVIDADES EN EL MES -->
 @if (filteredDays.length === 0) {
-<div class="mensaje-vacio p-4 text-center border rounded">
-  <i class="bi bi-calendar-x fs-1 mb-2"></i>
-  <div>¡Parece que este mes está libre! Explora nuestras actividades e inscríbete.</div>
-</div>
-} @for (d of filteredDays; track $index) {
-<div class="days-container mb-4">
-  <div class="day-card">
-    <!-- FECHA DE LAS ACTVIDADES-->
-    <div class="day-title">
-      {{ d.date | date : 'EEE d MMM' }}
-    </div>
-
-    <!-- DATOS DE LAS ACTIVIDADES -->
-    @for (a of d.activities; track $index) {
-    <div class="activity">
-      <div class="activity-left">
-        <div class="activity-title">{{ a.title }}</div>
-        <div class="activity-time">{{ a.start }} - {{ a.end }}</div>
-
-        <!-- FECHA DE INSCRIPCIÓN -->
-        <div class="enroll-date text-secondary">
-          <strong>Inscripción creada el:</strong> {{ a.enrollmentDate | date : 'EEE d MMM' }}
-        </div>
-
-        <!-- ESTADO DE INSCRIPCIÓN -->
-        <div class="activity-status" [class.canceled]="a.status === 'Cancelado'">
-          {{ a.status }}
-        </div>
-      </div>
-
-      <!-- BOTÓN DE VER ACTIVIDAD -->
-      <div class="activity-actions">
-        <button type="button" class="btn btn-primary btn-lg" (click)="view(a.id)">
-          <i class="bi bi-eye me-2"></i> Ver Actividad
-        </button>
-      </div>
-    </div>
-    }
+  <div class="mensaje-vacio p-4 text-center border rounded">
+    <i class="bi bi-calendar-x fs-1 mb-2"></i>
+    <div>¡Parece que este mes está libre! Explora nuestras actividades e inscríbete.</div>
   </div>
-</div>
+}
+@for (d of filteredDays; track $index) {
+  <div class="days-container mb-4">
+    <div class="day-card">
+      <!-- FECHA DE LAS ACTIVIDADES -->
+      <div class="day-title">
+        {{ d.date | date: 'EEE d MMM' }}
+      </div>
+
+      <!-- DATOS DE LAS ACTIVIDADES -->
+      @for (a of d.activities; track $index) {
+        <div class="activity">
+          <div class="activity-left">
+            <div class="activity-title">{{ a.title }}</div>
+            <div class="activity-time">{{ a.start }} - {{ a.end }}</div>
+
+            <!-- FECHA DE INSCRIPCIÓN -->
+            <div class="enroll-date text-secondary">
+              <strong>Inscrito el:</strong> {{ a.enrollmentDate | date: 'EEE d MMM' }}
+            </div>
+
+            <!-- ESTADO DE INSCRIPCIÓN -->
+            <span
+              class="badge {{ getStatusClass(a.status) }}"
+              style="cursor: pointer"
+              (click)="toggleEnrollmentStatus(a)"
+              title="Click para {{
+                a.status === 'Inscrito' ? 'cancelar' : 'reactivar'
+              }} inscripción"
+            >
+              {{ getStatusBadge(a.status) }}
+            </span>
+          </div>
+
+          <!-- BOTÓN DE VER ACTIVIDAD -->
+          <div class="activity-actions">
+            <button type="button" class="btn btn-primary btn-lg" (click)="view(a.id)">
+              <i class="bi bi-eye me-2"></i> Ver Actividad
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
 }
