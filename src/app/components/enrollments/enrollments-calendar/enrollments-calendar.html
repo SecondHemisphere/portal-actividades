@@ -16,6 +16,7 @@
     <div>¡Parece que este mes está libre! Explora nuestras actividades e inscríbete.</div>
   </div>
 }
+
 @for (d of filteredDays; track $index) {
   <div class="days-container mb-4">
     <div class="day-card">
@@ -26,7 +27,7 @@
 
       <!-- DATOS DE LAS ACTIVIDADES -->
       @for (a of d.activities; track $index) {
-        <div class="activity">
+        <div class="activity d-flex justify-content-between align-items-start">
           <div class="activity-left">
             <div class="activity-title">{{ a.title }}</div>
             <div class="activity-time">{{ a.start }} - {{ a.end }}</div>
@@ -37,16 +38,20 @@
             </div>
 
             <!-- ESTADO DE INSCRIPCIÓN -->
-            <span
-              class="badge {{ getStatusClass(a.status) }}"
-              style="cursor: pointer"
-              (click)="toggleEnrollmentStatus(a)"
-              title="Click para {{
-                a.status === 'Inscrito' ? 'cancelar' : 'reactivar'
-              }} inscripción"
-            >
-              {{ getStatusBadge(a.status) }}
-            </span>
+            @if (a.status === 'Inscrito') {
+              <span
+                class="badge badge-enrolled"
+                (click)="cancelEnrollment(a)"
+                title="Click para cancelar inscripción"
+                style="cursor: pointer"
+              >
+                {{ getStatusBadge(a.status) }}
+              </span>
+            } @else {
+              <span class="badge badge-cancelled">
+                {{ getStatusBadge(a.status) }}
+              </span>
+            }
           </div>
 
           <!-- BOTÓN DE VER ACTIVIDAD -->

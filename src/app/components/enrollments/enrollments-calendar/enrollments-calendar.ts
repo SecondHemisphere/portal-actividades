@@ -135,90 +135,38 @@ export class EnrollmentsCalendar {
     this.filteredDays.sort((a, b) => a.date.getTime() - b.date.getTime());
   }
 
-  toggleEnrollmentStatus(activity: any) {
-    if (!activity.enrollmentId) return;
+  cancelEnrollment(activity: any) {
+    if (!activity.enrollmentId || activity.status !== 'Inscrito') return;
 
     const enrollment = this.enrollments.find(e => e.id === activity.enrollmentId);
     if (!enrollment) return;
-
-    const isCancel = enrollment.status === EnrollmentStatus.Inscrito;
-    const actionText = isCancel ? 'cancelar' : 'activar';
 
     const activityObj = this.activities.find(a => a.id === activity.activityId);
     const activityName = activityObj?.title || 'esta actividad';
 
     this.ui.confirm(
-      isCancel ? '¿Cancelar inscripción?' : '¿Activar inscripción?',
-      `¿Estás seguro de ${actionText} tu inscripción en "${activityName}"?`,
-      `Sí, ${actionText}`
+      '¿Cancelar inscripción?',
+      `¿Estás seguro de cancelar tu inscripción en "${activityName}"?`,
+      `Sí, cancelar`
     ).then(result => {
       if (result.isConfirmed) {
-        if (isCancel) {
-          this.deactivateEnrollment(enrollment.id!, activityName);
-        } else {
-          this.activateEnrollment(enrollment.id!, activityName);
-        }
-      }
-    });
-  }
-
-  deactivateEnrollment(enrollmentId: number, activityName: string) {
-    this.enrollmentsService.delete(enrollmentId).subscribe({
-      next: (response) => {
-        const enrollment = this.enrollments.find(e => e.id === enrollmentId);
-        if (enrollment) {
-          enrollment.status = EnrollmentStatus.Cancelado;
-        }
-        
-        this.filteredDays.forEach(day => {
-          const actIndex = day.activities.findIndex(a => a.enrollmentId === enrollmentId);
-          if (actIndex !== -1) {
-            day.activities[actIndex].status = EnrollmentStatus.Cancelado;
+        this.enrollmentsService.delete(enrollment.id!).subscribe({
+          next: () => {
+            enrollment.status = EnrollmentStatus.Cancelado;
+            this.filteredDays.forEach(day => {
+              const actIndex = day.activities.findIndex(a => a.enrollmentId === enrollment.id);
+              if (actIndex !== -1) {
+                day.activities[actIndex].status = EnrollmentStatus.Cancelado;
+              }
+            });
+            this.ui.success('Tu inscripción ha sido cancelada correctamente');
+          },
+          error: (error) => {
+            console.error('Error al cancelar inscripción:', error);
+            const errorMessage = error.error?.message || error.message || 'Error al cancelar la inscripción';
+            this.ui.error(errorMessage);
           }
         });
-        this.ui.success('Tu inscripción ha sido cancelada correctamente');
-      },
-      error: (error) => {
-        console.error('Error al cancelar inscripción:', error);
-        
-        let errorMessage = 'Error al cancelar la inscripción';
-        if (error.error?.message) {
-          errorMessage = error.error.message;
-        } else if (error.message) {
-          errorMessage = error.message;
-        }
-        this.ui.error(errorMessage);
-      }
-    });
-  }
-
-  activateEnrollment(enrollmentId: number, activityName: string) {
-    this.enrollmentsService.activate(enrollmentId).subscribe({
-      next: (response) => {
-        const enrollment = this.enrollments.find(e => e.id === enrollmentId);
-        if (enrollment) {
-          enrollment.status = EnrollmentStatus.Inscrito;
-        }
-        
-        this.filteredDays.forEach(day => {
-          const actIndex = day.activities.findIndex(a => a.enrollmentId === enrollmentId);
-          if (actIndex !== -1) {
-            day.activities[actIndex].status = EnrollmentStatus.Inscrito;
-          }
-        });
-        
-        this.ui.success('Tu inscripción ha sido activada correctamente');
-      },
-      error: (error) => {
-        console.error('Error al activar inscripción:', error);
-        
-        let errorMessage = 'Error al activar la inscripción';
-        if (error.error?.message) {
-          errorMessage = error.error.message;
-        } else if (error.message) {
-          errorMessage = error.message;
-        }
-        this.ui.error(errorMessage);
       }
     });
   }
