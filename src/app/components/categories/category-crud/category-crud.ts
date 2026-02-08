@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
-import Swal from 'sweetalert2';
+import { UiAlertService } from '../../../shared/ui-alert.service';
+import { ApiErrorService } from '../../../shared/api-error.service';
 
 declare const bootstrap:any;
 
@@ -33,7 +34,9 @@ export class CategoryCrud {
 
   constructor(
     private miServicio: ServCategoriesApi,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {
     this.loadCategories();
     this.formCategory = this.formbuilder.group({
@@ -55,32 +58,19 @@ export class CategoryCrud {
   }
 
   delete(category: Category) {
-    Swal.fire({
-      title: `¿Seguro deseas eliminar la categoría?`,
-      text: category.name,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
+    this.ui.confirm(
+      '¿Eliminar categoría?',
+      category.name,
+      'Sí, eliminar'
+    ).then(result => {
       if (result.isConfirmed) {
         this.miServicio.delete(Number(category.id)).subscribe({
           next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Categoría eliminada',
-              showConfirmButton: false,
-              timer: 1500
-            });
+            this.ui.success('Categoría eliminada');
             this.loadCategories();
           },
           error: (err) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se pudo eliminar la categoría.',
-            });
-            console.error(err);
+            this.apiError.handle(err, 'eliminar la categoría');
           }
         });
       }
@@ -121,31 +111,25 @@ export class CategoryCrud {
     if (this.editingId) {
       let category: Category = { ...datos, id: this.editingId };
       this.miServicio.update(category).subscribe({
-        next: (res: any) => {
-          Swal.fire({icon: 'success', title: '¡Éxito!', text: res.message});
+        next: () => {
+          this.ui.success('Categoría actualizada correctamente');
           this.modalRef.hide();
           this.loadCategories();
         },
         error: (err) => {
-          let errorMsg = 'Error al actualizar la categoría';
-          if (err.error?.name) errorMsg = err.error.name.join(', ');
-          Swal.fire({ icon: 'error', title: 'Error', text: errorMsg });
+          this.apiError.handle(err, 'actualizar la categoría');
         }
       });
     } else {
       let category: Category = { ...datos };
       this.miServicio.create(category).subscribe({
         next: (res: any) => {
-          Swal.fire({icon: 'success', title: '¡Éxito!', text: res.message});
+          this.ui.success('Categoría creada correctamente');
           this.modalRef.hide();
           this.loadCategories();
         },
         error: (err) => {
-          let errorMsg = 'Error al crear la categoría';
-          if (err.error) {
-            if (err.error.name) errorMsg = err.error.name.join(', ');
-          }
-          Swal.fire({icon: 'error', title: 'Error', text: errorMsg});
+          this.apiError.handle(err, 'crear la categoría');
         }
       });
     }

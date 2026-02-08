@@ -226,6 +226,12 @@
                 (input)="updatePhotoPreview()"
                 placeholder="https://ejemplo.com/imagen.jpg"
               />
+              @if (editingId) {
+                <div class="alert alert-info py-1 px-3 mb-2" style="font-size: 0.85rem">
+                  <i class="bi bi-info-circle me-1"></i>
+                  Si dejas este campo vacío, se mantendrá la foto actual.
+                </div>
+              }
               <!-- VISTA PREVIA -->
               <div class="mt-2">
                 @if (photoPreview) {

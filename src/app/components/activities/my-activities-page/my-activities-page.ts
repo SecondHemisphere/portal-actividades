@@ -8,7 +8,8 @@ import { ActivitiesCalendar } from '../../activities/activities-calendar/activit
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
-import Swal from 'sweetalert2';
+import { ApiErrorService } from '../../../shared/api-error.service';
+import { UiAlertService } from '../../../shared/ui-alert.service';
 
 declare const bootstrap: any;
 
@@ -40,7 +41,9 @@ export class MyActivitiesPage implements OnInit, AfterViewInit {
     private categoriesService: ServCategoriesApi,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {
     this.formActivity = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
@@ -64,15 +67,8 @@ export class MyActivitiesPage implements OnInit, AfterViewInit {
 
     const userRole = this.authService.getUserRole();
     if (userRole !== 'Organizador') {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Acceso restringido',
-        text: 'Solo los organizadores pueden ver esta página',
-        confirmButtonText: 'OK'
-      }).then(() => {
-        this.router.navigate(['/']);
-      });
-      return;
+      this.ui.warning('Solo los organizadores pueden ver esta página')
+        .then(() => this.router.navigate(['/']));
     }
 
     const userId = this.authService.getUserId();
@@ -106,31 +102,26 @@ export class MyActivitiesPage implements OnInit, AfterViewInit {
   deactivate(id: number) {
     this.activitiesService.getActivityById(id).subscribe({
       next: (activity) => {
-        Swal.fire({
-          title: '¿Desactivar actividad?',
-          text: `"${activity.title}" dejará de ser visible para los estudiantes`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Sí, ocultar',
-          cancelButtonText: 'Cancelar',
-        }).then((result) => {
+        this.ui.confirm(
+          '¿Desactivar actividad?',
+          `"${activity.title}" dejará de ser visible para los estudiantes`,
+          'Sí, ocultar'
+        ).then(result => {
           if (result.isConfirmed) {
             this.activitiesService.delete(id).subscribe({
               next: () => {
-                Swal.fire('Desactivada', 'La actividad ha sido desactivada', 'success');
+                this.ui.success('La actividad ha sido desactivada');
                 this.calendarComponent.goToMonth(activity.date);
               },
               error: (err) => {
-                console.error(err);
-                Swal.fire('Error', 'No se pudo desactivar la actividad', 'error');
+                this.apiError.handle(err, 'desactivar la actividad');
               }
             });
           }
         });
       },
       error: (err) => {
-        console.error('Error cargando actividad:', err);
-        Swal.fire('Error', 'No se pudo cargar la actividad', 'error');
+        this.apiError.handle(err, 'cargar la actividad');
       }
     });
   }
@@ -138,31 +129,26 @@ export class MyActivitiesPage implements OnInit, AfterViewInit {
   activate(id: number) {
     this.activitiesService.getActivityById(id).subscribe({
       next: (activity) => {
-        Swal.fire({
-          title: '¿Activar actividad?',
-          text: `"${activity.title}" será visible para los estudiantes`,
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonText: 'Sí, activar',
-          cancelButtonText: 'Cancelar',
-        }).then((result) => {
+        this.ui.confirm(
+          '¿Activar actividad?',
+          `"${activity.title}" será visible para los estudiantes`,
+          'Sí, activar'
+        ).then(result => {
           if (result.isConfirmed) {
             this.activitiesService.activate(id).subscribe({
               next: () => {
-                Swal.fire('Activada', 'La actividad ha sido reactivada', 'success');
+                this.ui.success('La actividad ha sido reactivada');
                 this.calendarComponent.goToMonth(activity.date);
               },
               error: (err) => {
-                console.error(err);
-                Swal.fire('Error', 'No se pudo reactivar la actividad', 'error');
+                this.apiError.handle(err, 'activar la actividad');
               }
             });
           }
         });
       },
       error: (err) => {
-        console.error('Error cargando actividad:', err);
-        Swal.fire('Error', 'No se pudo cargar la actividad', 'error');
+        this.apiError.handle(err, 'cargar la actividad');
       }
     });
   }
@@ -192,12 +178,7 @@ export class MyActivitiesPage implements OnInit, AfterViewInit {
     this.activitiesService.getActivityById(id).subscribe({
       next: (activity) => {
         if (!activity) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se encontró la actividad'
-          });
-          return;
+          this.ui.error('No se encontró la actividad');
         }
 
         this.editingId = id;
@@ -222,14 +203,7 @@ export class MyActivitiesPage implements OnInit, AfterViewInit {
         this.modalRef.show();
       },
       error: (err) => {
-        console.error('Error al cargar actividad:', err);
-        
-        const errorMsg = err.error?.message || 'No se pudo cargar la actividad';
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMsg
-        });
+        this.apiError.handle(err, 'cargar la actividad');
       }
     });
   }
@@ -251,43 +225,23 @@ export class MyActivitiesPage implements OnInit, AfterViewInit {
       datos.id = this.editingId;
       this.activitiesService.update(datos).subscribe({
         next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Actualizado',
-            text: 'Actividad actualizada correctamente'
-          });
+          this.ui.success('Actividad actualizada correctamente');
           this.modalRef.hide();
           this.calendarComponent.goToMonth(datos.date);
         },
         error: (err) => {
-          console.error(err);
-          const errorMsg = err.error?.message ?? 'No se pudo actualizar la actividad';
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
+          this.apiError.handle(err, 'actualizar');
         }
       });
     } else {
       this.activitiesService.create(datos).subscribe({
         next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Creado',
-            text: 'Actividad creada correctamente'
-          });
+          this.ui.success('Actividad creada correctamente');
           this.modalRef.hide();
           this.calendarComponent.goToMonth(datos.date);
         },
         error: (err) => {
-          console.error(err);
-          const errorMsg = err.error?.message ?? 'No se pudo crear la actividad';
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
+          this.apiError.handle(err, 'crear');
         }
       });
     }

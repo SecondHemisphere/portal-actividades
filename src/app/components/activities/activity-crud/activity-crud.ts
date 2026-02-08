@@ -8,19 +8,19 @@ import { Organizer } from '../../../models/Organizer';
 import { horaRangeValidator } from '../../../validators/horaRangeValidator';
 import { registrationDeadlineValidator } from '../../../validators/registrationDeadlineValidator';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServCategoriesApi } from '../../../services/serv-categories-api';
 import { ServOrganizersApi } from '../../../services/serv-organizers-api';
+import { ApiErrorService } from '../../../shared/api-error.service';
+import { UiAlertService } from '../../../shared/ui-alert.service';
 
 declare const bootstrap: any;
 
 @Component({
   selector: 'app-activity-crud',
-  standalone: true,
   imports: [ReactiveFormsModule, DataTable, SearchForm],
   templateUrl: './activity-crud.html',
-  styleUrls: ['./activity-crud.css']
+  styleUrl: './activity-crud.css'
 })
 export class ActivityCrud implements AfterViewInit {
   activities: Activity[] = [];
@@ -67,7 +67,9 @@ export class ActivityCrud implements AfterViewInit {
     private activitiesService: ServActivitiesApi,
     private categoriesService: ServCategoriesApi,
     private organizersService: ServOrganizersApi,
-    private router: Router
+    private router: Router,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {
     this.formActivity = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
@@ -191,57 +193,43 @@ export class ActivityCrud implements AfterViewInit {
       datos.id = this.editingId;
       this.activitiesService.update(datos).subscribe({
         next: () => {
-          Swal.fire('Actualizado', 'Actividad actualizada correctamente', 'success');
+          this.ui.success('Actividad actualizada correctamente');
           this.modalRef.hide();
           this.loadActivities();
         },
         error: (err) => {
-          console.error(err);
-          Swal.fire('Error', 'No se pudo actualizar la actividad', 'error');
+          this.apiError.handle(err, 'actualizar');
         }
       });
     } else {
       this.activitiesService.create(datos).subscribe({
         next: () => {
-          Swal.fire('Creado', 'Actividad creada correctamente', 'success');
+          this.ui.success('Actividad creada correctamente');
           this.modalRef.hide();
           this.loadActivities();
         },
         error: (err) => {
-          const errorMsg = err.error?.message ?? 'Ocurrió un error al crear la actividad';
-          console.error(err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
+          this.apiError.handle(err, 'crear');
         }
       });
     }
   }
 
   delete(activity: Activity) {
-    Swal.fire({
-      title: '¿Deseas eliminar la actividad?',
-      text: activity.title,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
-      if (result.isConfirmed) {
-        this.activitiesService.delete(activity.id!).subscribe({
-          next: () => {
-            Swal.fire('Eliminado', 'Actividad eliminada', 'success');
-            this.loadActivities();
-          },
-          error: (err) => {
-            console.error(err);
-            Swal.fire('Error', 'No se pudo eliminar la actividad', 'error');
-          }
-        });
-      }
-    });
+    this.ui.deleteConfirm(activity.title)
+      .then(result => {
+        if (result.isConfirmed) {
+          this.activitiesService.delete(activity.id!).subscribe({
+            next: () => {
+              this.ui.success('Actividad eliminada');
+              this.loadActivities();
+            },
+            error: (err) => {
+              this.apiError.handle(err, 'eliminar');
+            }
+          });
+        }
+      });
   }
 
   view(activity: Activity) {
@@ -266,12 +254,7 @@ export class ActivityCrud implements AfterViewInit {
         this.filteredActivities = data;
       },
       error: (err) => {
-        const errorMsg = err.error?.message ?? 'Ocurrió un error al buscar actividades';
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMsg
-        });
+        this.apiError.handle(err, 'buscar');
       }
     });
   }

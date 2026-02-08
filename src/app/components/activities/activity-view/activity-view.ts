@@ -10,7 +10,8 @@ import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServRatingsApi } from '../../../services/serv-ratings-api';
 import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
-import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { ApiErrorService } from '../../../shared/api-error.service';
+import { UiAlertService } from '../../../shared/ui-alert.service';
 
 declare const bootstrap: any;
 
@@ -50,7 +51,9 @@ export class ActivityView implements OnInit, AfterViewInit {
     private ratingsService: ServRatingsApi,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {
     this.formRating = this.formbuilder.group({
       stars: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
@@ -83,11 +86,10 @@ export class ActivityView implements OnInit, AfterViewInit {
         this.checkOrganizerOwnership();
         this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Error loading activity:', error);
+      error: (err) => {
         this.isLoading = false;
         this.hasError = true;
-        this.showError('No se pudo cargar la actividad');
+        this.apiError.handle(err, 'cargar la actividad');
       }
     });
   }
@@ -117,9 +119,8 @@ export class ActivityView implements OnInit, AfterViewInit {
         next: (data) => {
           this.ratings = data;
         },
-        error: (error) => {
-          console.error('Error loading ratings:', error);
-          this.showError('Error al cargar las valoraciones');
+        error: (err) => {
+          this.apiError.handle(err, 'cargar las valoraciones');
         }
       });
   }
@@ -143,7 +144,9 @@ export class ActivityView implements OnInit, AfterViewInit {
           this.isEnrolled = !!active;
           this.checkIfCanReview();
         },
-        error: (error) => console.error('Error checking enrollment:', error)
+        error: (err) => {
+          this.apiError.handle(err, 'verificar la inscripción');
+        }
       });
   }
 
@@ -178,21 +181,21 @@ export class ActivityView implements OnInit, AfterViewInit {
 
   enroll() {
     if (this.role !== 'student') {
-      this.showInfo('Solo los estudiantes pueden inscribirse');
+      this.ui.info('Solo los estudiantes pueden inscribirse');
       return;
     }
 
     if (!this.activity) {
-      this.showError('No se ha cargado la actividad todavía');
+      this.ui.error('No se ha cargado la actividad todavía');
       return;
     }
 
     if (this.isRegistrationClosed()) {
-      this.showWarning('Las inscripciones están cerradas');
+      this.ui.warning('Las inscripciones están cerradas');
       return;
     }
 
-    this.showConfirm(
+    this.ui.confirm(
       '¿Inscribirse en la actividad?',
       `${this.activity.title}`,
       'Sí, inscribirme',
@@ -216,7 +219,7 @@ export class ActivityView implements OnInit, AfterViewInit {
             this.isEnrolled = true;
             this.currentEnrollment = existing;
             this.checkIfCanReview();
-            this.showInfo('Ya estás inscrito en esta actividad');
+            this.ui.info('Ya estás inscrito en esta actividad');
             return;
           }
         }
@@ -234,12 +237,16 @@ export class ActivityView implements OnInit, AfterViewInit {
             this.isEnrolled = true;
             this.currentEnrollment = e;
             this.checkIfCanReview();
-            this.showSuccess('Te has inscrito correctamente');
+            this.ui.success('Te has inscrito correctamente');
           },
-          error: (error) => this.showError('Error al inscribirse')
+          error: (err) => {
+            this.apiError.handle(err, 'inscribirse en la actividad');
+          }
         });
       },
-      error: (error) => this.showError('Error al verificar inscripciones')
+      error: (err) => {
+        this.apiError.handle(err, 'verificar inscripciones');
+      }
     });
   }
 
@@ -260,14 +267,13 @@ export class ActivityView implements OnInit, AfterViewInit {
     this.ratingsService.create(review).subscribe({
       next: (res) => {
         this.modalRef.hide();
-        this.showSuccess('Valoración enviada');
+        this.ui.success('Valoración enviada');
         
         this.loadRatings();
         this.checkIfCanReview();
       },
-      error: (error) => {
-        const errorMsg = this.getErrorMessage(error, 'Error al enviar la valoración');
-        this.showError(errorMsg);
+      error: (err) => {
+        this.apiError.handle(err, 'enviar la valoración');
       }
     });
   }
@@ -295,7 +301,7 @@ export class ActivityView implements OnInit, AfterViewInit {
   }
 
   deleteRating(rating: Rating) {
-    this.showDeleteConfirm(
+    this.ui.deleteConfirm(
       '¿Eliminar valoración?',
       '¿Estás seguro de que deseas eliminar esta valoración?'
     ).then((result) => {
@@ -306,11 +312,10 @@ export class ActivityView implements OnInit, AfterViewInit {
             setTimeout(() => {
               this.checkIfCanReview();
             }, 0);
-            this.showSuccess('Valoración eliminada');
+            this.ui.success('Valoración eliminada');
           },
-          error: (error) => {
-            const errorMsg = this.getErrorMessage(error, 'Error al eliminar valoración');
-            this.showError(errorMsg);
+          error: (err) => {
+            this.apiError.handle(err, 'eliminar la valoración');
           }
         });
       }
@@ -334,88 +339,6 @@ export class ActivityView implements OnInit, AfterViewInit {
     if (this.ratings.length === 0) return 0;
     const sum = this.ratings.reduce((total, rating) => total + rating.stars, 0);
     return parseFloat((sum / this.ratings.length).toFixed(1));
-  }
-  
-  private getErrorMessage(error: any, defaultMessage: string): string {
-    if (error.error?.message) {
-      return error.error.message;
-    }
-    return defaultMessage;
-  }
-
-  private showAlert(
-    icon: SweetAlertIcon,
-    title: string,
-    text: string,
-    showConfirmButton: boolean = true,
-    timer?: number
-  ): void {
-    const config: any = {
-      icon,
-      title,
-      text
-    };
-
-    if (timer && !showConfirmButton) {
-      config.timer = timer;
-      config.showConfirmButton = false;
-    } else {
-      config.showConfirmButton = showConfirmButton;
-    }
-
-    Swal.fire(config);
-  }
-
-  private showSuccess(message: string, timer: number = 3000): void {
-    this.showAlert('success', '¡Éxito!', message, false, timer);
-  }
-
-  private showError(message: string): void {
-    this.showAlert('error', 'Error', message);
-  }
-
-  private showWarning(message: string): void {
-    this.showAlert('warning', 'Advertencia', message);
-  }
-
-  private showInfo(message: string, timer: number = 3000): void {
-    this.showAlert('info', 'Información', message, false, timer);
-  }
-
-  private showConfirm(
-    title: string,
-    text: string,
-    confirmButtonText: string = 'Confirmar',
-    cancelButtonText: string = 'Cancelar',
-    icon: SweetAlertIcon = 'question'
-  ): Promise<any> {
-    return Swal.fire({
-      title,
-      text,
-      icon,
-      showCancelButton: true,
-      confirmButtonText,
-      cancelButtonText,
-    });
-  }
-
-  private showDeleteConfirm(
-    title: string = '¿Eliminar?',
-    text: string = 'Esta acción no se puede deshacer',
-    itemName?: string
-  ): Promise<any> {
-    const message = itemName
-      ? `¿Estás seguro de eliminar "${itemName}"?`
-      : text;
-    
-    return Swal.fire({
-      title,
-      text: message,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    });
   }
 
   handleImageError(event: Event) {
