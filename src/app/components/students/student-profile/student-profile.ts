@@ -1,12 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
 import { Student, Career, Faculty, Modality, Schedule } from '../../../models/Student';
 import { User } from '../../../models/User';
 import { AuthService } from '../../../services/auth.service';
 import { ServStudentsApi } from '../../../services/serv-students-api';
 import { ServDropdownsApi } from '../../../services/serv-dropdowns-api';
+import { ApiErrorService } from '../../../shared/api-error.service';
+import { UiAlertService } from '../../../shared/ui-alert.service';
 
 declare const bootstrap: any;
 
@@ -15,7 +16,7 @@ declare const bootstrap: any;
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './student-profile.html',
-  styleUrl: './student-profile.css'
+  styleUrls: ['./student-profile.css']
 })
 export class StudentProfile {
 
@@ -33,7 +34,7 @@ export class StudentProfile {
   schedules = Object.values(Schedule);
 
   photoPreview: string | null = null;
-  studentEdit: Student = {} as Student; //para foto
+  studentEdit: Student = {} as Student;
 
   @ViewChild('studentModalRef') modalElement!: ElementRef;
 
@@ -41,7 +42,9 @@ export class StudentProfile {
     private fb: FormBuilder,
     private studentService: ServStudentsApi,
     private dropDownsService: ServDropdownsApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {
     this.formStudent = this.fb.group({});
   }
@@ -50,17 +53,23 @@ export class StudentProfile {
     const userId = this.authService.getUserId();
     if (!userId) return;
 
-    this.dropDownsService.getFacultiesWithCareers().subscribe(facs => {
-      this.faculties = facs;
-      this.allCareers = facs.flatMap(f =>
-        (f.careers ?? []).map(c => ({ ...c, facultyId: f.id }))
-      );
+    this.dropDownsService.getFacultiesWithCareers().subscribe({
+      next: facs => {
+        this.faculties = facs;
+        this.allCareers = facs.flatMap(f =>
+          (f.careers ?? []).map(c => ({ ...c, facultyId: f.id }))
+        );
 
-      this.studentService.getStudentById(Number(userId)).subscribe(st => {
-        this.student = st;
-        this.photoPreview = st.photoUrl || null;
-        this.initForm();
-      });
+        this.studentService.getStudentById(Number(userId)).subscribe({
+          next: st => {
+            this.student = st;
+            this.photoPreview = st.photoUrl || null;
+            this.initForm();
+          },
+          error: err => this.apiError.handle(err, 'cargar perfil de estudiante')
+        });
+      },
+      error: err => this.apiError.handle(err, 'cargar facultades y carreras')
     });
   }
 
@@ -73,14 +82,11 @@ export class StudentProfile {
       name: [this.student.name, [Validators.required, Validators.minLength(3)]],
       email: [this.student.email, [Validators.required, Validators.email]],
       phone: [this.student.phone, [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
-
       facultyId: [this.student.facultyId, Validators.required],
       careerId: [this.student.careerId, Validators.required],
-
       semester: [this.student.semester, [Validators.required, Validators.min(1), Validators.max(10)]],
       modality: [this.student.modality, Validators.required],
       schedule: [this.student.schedule, Validators.required],
-
       photoUrl: [this.student.photoUrl || '']
     });
 
@@ -128,59 +134,27 @@ export class StudentProfile {
     }
 
     const datos = this.formStudent.value;
+    const payload: Student = { ...this.student, ...datos };
 
-    const payload: Student = {
-      ...this.student,
-      ...datos
-    };
-
-    Swal.fire({
-      title: '¿Deseas actualizar tu perfil?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, actualizar',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
+    this.ui.confirm('¿Deseas actualizar tu perfil?', 'Se actualizarán tus datos del perfil.').then(result => {
       if (!result.isConfirmed) return;
 
       this.studentService.update(payload).subscribe({
         next: () => {
-
           const userId = this.authService.getUserId();
           if (!userId) return;
 
-          this.studentService.getStudentById(Number(userId)).subscribe(st => {
-            this.student = st;
-            this.photoPreview = st.photoUrl || null;
-
-            Swal.fire({
-              icon: 'success',
-              title: '¡Perfil actualizado!',
-              timer: 1500,
-              showConfirmButton: false
-            });
-
-            this.modalRef.hide();
+          this.studentService.getStudentById(Number(userId)).subscribe({
+            next: st => {
+              this.student = st;
+              this.photoPreview = st.photoUrl || null;
+              this.ui.success('¡Perfil actualizado!');
+              this.modalRef.hide();
+            },
+            error: err => this.apiError.handle(err, 'refrescar perfil de estudiante')
           });
         },
-        error: (err) => {
-          let errorMsg = 'Ocurrió un error al actualizar el perfil';
-
-          if (err.error) {
-            if (err.error.name) {
-              errorMsg = err.error.name.join(', ');
-            }
-            if (err.error.email) {
-              errorMsg = err.error.email.join(', ');
-            }
-          }
-
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
-        }
+        error: err => this.apiError.handle(err, 'actualizar perfil de estudiante')
       });
     });
   }

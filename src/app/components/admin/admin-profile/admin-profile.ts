@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/User';
 import { ServUsersApi } from '../../../services/serv-users-api';
+import { UiAlertService } from '../../../shared/ui-alert.service';
+import { ApiErrorService } from '../../../shared/api-error.service';
 
 declare const bootstrap: any;
 
@@ -15,7 +16,7 @@ declare const bootstrap: any;
   templateUrl: './admin-profile.html',
   styleUrl: './admin-profile.css'
 })
-export class AdminProfile implements OnInit {
+export class AdminProfile implements OnInit, AfterViewInit {
 
   admin!: User;
   formAdmin!: FormGroup;
@@ -28,7 +29,9 @@ export class AdminProfile implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private usersService: ServUsersApi
+    private usersService: ServUsersApi,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +62,7 @@ export class AdminProfile implements OnInit {
     this.formAdmin.patchValue({
       name: admin.name,
       email: admin.email,
-
+      phone: admin.phone,
       photoUrl: admin.photoUrl || ''
     });
 
@@ -83,73 +86,45 @@ export class AdminProfile implements OnInit {
       ...this.formAdmin.value
     };
 
-    Swal.fire({
-      title: '¿Actualizar perfil?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, guardar',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
-      if (result.isConfirmed) {
-        this.usersService.update(payload).subscribe({
-          next: () => {
-            this.admin = payload;
-            this.photoPreview = payload.photoUrl || null;
+    this.ui.confirm(
+      '¿Actualizar perfil?',
+      'Se guardarán los cambios realizados en tu perfil.'
+    ).then(result => {
+      if (!result.isConfirmed) return;
 
-            this.authService.updateCurrentUser(payload);
+      this.usersService.update(payload).subscribe({
+        next: () => {
+          this.admin = payload;
+          this.photoPreview = payload.photoUrl || null;
 
-            Swal.fire({
-              icon: 'success',
-              title: 'Perfil actualizado',
-              timer: 1500,
-              showConfirmButton: false
-            });
+          this.authService.updateCurrentUser(payload);
 
-            this.modalRef.hide();
-          },
-          error: (err) => {
-            let errorMsg = 'Error al actualizar el perfil';
-            if (err.error) {
-              if (err.error.name) errorMsg = err.error.name.join(', ');
-              if (err.error.email) errorMsg = err.error.email.join(', ');
-            }
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: errorMsg
-            });
-          }
-        });
-      }
+          this.ui.success('Perfil actualizado correctamente');
+          this.modalRef.hide();
+        },
+        error: (err) => {
+          this.apiError.handle(err, 'actualizar el perfil');
+        }
+      });
     });
   }
 
   resetPassword() {
-    Swal.fire({
-      title: '¿Resetear contraseña?',
-      text: 'La nueva contraseña será generada automáticamente',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, resetear',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
-      if (result.isConfirmed) {
-        this.usersService.resetPassword(this.admin.id!).subscribe({
-          next: (res: any) => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Contraseña reseteada',
-              html: `
-                <b>Nueva contraseña temporal:</b><br>
-                <code>${res.temporaryPassword}</code>
-              `
-            });
-          },
-          error: () => {
-            Swal.fire('Error', 'No se pudo resetear la contraseña', 'error');
-          }
-        });
-      }
+    this.ui.confirm(
+      '¿Resetear contraseña?',
+      'La nueva contraseña será generada automáticamente.'
+    ).then(result => {
+      if (!result.isConfirmed) return;
+
+      this.usersService.resetPassword(this.admin.id!).subscribe({
+        next: (res: any) => {
+          this.ui.success(`Contraseña reseteada. Nueva contraseña temporal: "${res.temporaryPassword}"`);
+        },
+        error: () => {
+          this.ui.error('No se pudo resetear la contraseña');
+        }
+      });
     });
   }
+  
 }

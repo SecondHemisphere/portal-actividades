@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink, } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
 import { AuthService } from '../../../../services/auth.service';
 import { passwordMatchValidator } from '../../../../validators/passwordMatchValidator';
 import { ServDropdownsApi } from '../../../../services/serv-dropdowns-api';
 import { Modality, Schedule } from '../../../../models/Student';
+import { UiAlertService } from '../../../../shared/ui-alert.service';
+import { ApiErrorService } from '../../../../shared/api-error.service';
 
 @Component({
   selector: 'app-register-student',
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './register-student.html',
-  styleUrl: './register-student.css',
+  styleUrls: ['./register-student.css'],
 })
 export class RegisterStudent {
   registerForm: FormGroup;
@@ -30,7 +31,9 @@ export class RegisterStudent {
     private fb: FormBuilder,
     private authService: AuthService,
     private dropdownsService: ServDropdownsApi,
-    private router: Router
+    private router: Router,
+    private ui: UiAlertService,
+    private apiError: ApiErrorService
   ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
@@ -62,9 +65,7 @@ export class RegisterStudent {
           }
         }
       },
-      error: (err) => {
-        console.error('Error loading faculties:', err);
-      }
+      error: (err) => this.apiError.handle(err, 'cargar facultades y carreras')
     });
   }
 
@@ -91,16 +92,8 @@ export class RegisterStudent {
   onSubmit() {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
-      
       const errors = this.getFirstFormErrors();
-      if (errors.length > 0) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Complete correctamente el formulario',
-          html: `<div class="text-start"><small>${errors[0]}</small></div>`,
-          confirmButtonText: 'Entendido'
-        });
-      }
+      if (errors.length > 0) this.ui.warning(errors[0]);
       return;
     }
 
@@ -116,42 +109,22 @@ export class RegisterStudent {
       modality: this.registerForm.get('modality')?.value,
       schedule: this.registerForm.get('schedule')?.value
     };
-
     this.authService.registerStudent(formData).subscribe({
-      next: (response: any) => {
+      next: () => {
         this.isLoading = false;
-        
-        Swal.fire({
-          icon: 'success',
-          title: '¡Registro exitoso!',
-          text: response?.message || 'El estudiante ha sido registrado correctamente.',
-          showConfirmButton: true,
-          confirmButtonText: 'Continuar'
-        }).then(() => {
+        this.ui.success('¡Registro exitoso!').then(() => {
           this.router.navigate(['/login']);
         });
       },
       error: (err) => {
         this.isLoading = false;
-        let errorMsg = 'Error al crear la cuenta';
-
-        if (err.error) {
-          if (err.error.name) errorMsg = err.error.name.join(', ');
-          if (err.error.email) errorMsg = err.error.email.join(', ');
-        }
-        
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMsg
-        });
+        this.apiError.handle(err, 'crear cuenta de estudiante')
       }
     });
   }
 
   getFirstFormErrors(): string[] {
     const errors: string[] = [];
-    
     const controls = this.registerForm.controls;
     for (const key in controls) {
       const control = controls[key];
@@ -166,7 +139,6 @@ export class RegisterStudent {
           'max': `El valor máximo es ${control.errors['max']?.max}`,
           'passwordMismatch': 'Las contraseñas no coinciden'
         };
-        
         for (const errorKey in control.errors) {
           if (errorMessages[errorKey]) {
             const fieldName = this.getFieldDisplayName(key);
@@ -194,4 +166,5 @@ export class RegisterStudent {
     };
     return fieldNames[field] || field;
   }
+  
 }

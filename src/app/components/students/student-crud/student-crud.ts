@@ -6,7 +6,8 @@ import { Career, Faculty, Modality, Schedule, Student } from '../../../models/St
 import { ServStudentsApi } from '../../../services/serv-students-api';
 import { ServDropdownsApi } from '../../../services/serv-dropdowns-api';
 import { UserRole } from '../../../models/User';
-import Swal from 'sweetalert2';
+import { UiAlertService } from '../../../shared/ui-alert.service';
+import { ApiErrorService } from '../../../shared/api-error.service';
 
 declare const bootstrap: any;
 
@@ -68,7 +69,9 @@ export class StudentCrud implements AfterViewInit {
   constructor(
     private studentService: ServStudentsApi,
     private dropDownsService: ServDropdownsApi,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private ui: UiAlertService,
+    private apiError: ApiErrorService
   ) {
     this.loadStudents();
 
@@ -85,28 +88,22 @@ export class StudentCrud implements AfterViewInit {
       active: [true]
     });
 
-    this.dropDownsService.getFacultiesWithCareers().subscribe(faculties => {
-      this.faculties = faculties;
+    this.dropDownsService.getFacultiesWithCareers().subscribe({
+      next: (faculties) => {
+        this.faculties = faculties;
+        this.allCareers = faculties.flatMap(f => (f.careers ?? []).map(c => ({ ...c, facultyId: f.id })));
 
-      this.allCareers = faculties.flatMap(f =>
-        (f.careers ?? []).map(c => ({ ...c, facultyId: f.id }))
-      );
+        const facultyFilter = this.studentFilters.find(f => f.field === 'facultyId');
+        if (facultyFilter) {
+          facultyFilter.options = faculties.map(f => ({ label: f.name, value: f.id }));
+        }
 
-      const facultyFilter = this.studentFilters.find(f => f.field === 'facultyId');
-      if (facultyFilter) {
-        facultyFilter.options = faculties.map(f => ({
-          label: f.name,
-          value: f.id
-        }));
-      }
-
-      const careerFilter = this.studentFilters.find(f => f.field === 'careerId');
-      if (careerFilter) {
-        careerFilter.options = this.allCareers.map(c => ({
-          label: c.name,
-          value: c.id
-        }));
-      }
+        const careerFilter = this.studentFilters.find(f => f.field === 'careerId');
+        if (careerFilter) {
+          careerFilter.options = this.allCareers.map(c => ({ label: c.name, value: c.id }));
+        }
+      },
+      error: (err) => this.apiError.handle(err, 'cargar facultades y carreras')
     });
 
     this.formStudent.get('facultyId')?.valueChanges.subscribe(facId => {
@@ -121,9 +118,12 @@ export class StudentCrud implements AfterViewInit {
   }
 
   loadStudents() {
-    this.studentService.getStudents2().subscribe((data: Student[]) => {
-      this.students = data;
-      this.filteredStudents = [...this.students];
+    this.studentService.getStudents().subscribe({
+      next: (data: Student[]) => {
+        this.students = data;
+        this.filteredStudents = [...data];
+      },
+      error: (err) => this.apiError.handle(err, 'cargar estudiantes')
     });
   }
 
@@ -195,97 +195,43 @@ export class StudentCrud implements AfterViewInit {
 
     if (this.editingId) {
       this.studentService.update(student).subscribe({
-        next: (res: any) => {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: res?.message ?? 'Estudiante actualizado correctamente'
-          });
+        next: () => {
+          this.ui.success('Estudiante actualizado correctamente');
           this.modalRef.hide();
           this.loadStudents();
         },
-        error: (err) => {
-          let errorMsg = 'Error al actualizar el estudiante';
-          if (err.error) {
-            if (err.error.name) errorMsg = err.error.name.join(', ');
-            if (err.error.email) errorMsg = err.error.email.join(', ');
-          }
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
-          console.error(err);
-        }
+        error: (err) => this.apiError.handle(err, 'actualizar estudiante')
       });
-
     } else {
       this.studentService.create(student).subscribe({
-        next: (res: any) => {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: res?.message ?? 'Estudiante creado correctamente'
-          });
+        next: () => {
+          this.ui.success('Estudiante creado correctamente');
           this.modalRef.hide();
           this.loadStudents();
         },
-        error: (err) => {
-          let errorMsg = 'Error al crear el estudiante';
-          if (err.error) {
-            if (err.error.name) errorMsg = err.error.name.join(', ');
-            if (err.error.email) errorMsg = err.error.email.join(', ');
-          }
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
-          console.error(err);
-        }
+        error: (err) => this.apiError.handle(err, 'crear estudiante')
       });
     }
   }
 
   delete(student: Student) {
-    Swal.fire({
-      title: '¿Seguro deseas eliminar el estudiante?',
-      text: student.name,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
+    this.ui.deleteConfirm(student.name).then(result => {
+      if (result.isConfirmed && student.id) {
         this.studentService.deactivate(Number(student.id)).subscribe({
           next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Estudiante eliminado',
-              showConfirmButton: false,
-              timer: 1500
-            });
+            this.ui.success('Estudiante eliminado correctamente');
             this.loadStudents();
           },
-          error: (err) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se pudo eliminar el estudiante.',
-            });
-            console.error(err);
-          }
+          error: (err) => this.apiError.handle(err, 'eliminar estudiante')
         });
       }
     });
   }
 
   search(filters: any) {
-    this.studentService.search(filters).subscribe(
-      (data: Student[]) => {
-        this.filteredStudents;
-      }
-    );
+    this.studentService.search(filters).subscribe({
+      next: (data: Student[]) => this.filteredStudents = data,
+      error: (err) => this.apiError.handle(err, 'buscar estudiantes')
+    });
   }
-
 }

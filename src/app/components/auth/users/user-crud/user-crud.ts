@@ -4,8 +4,9 @@ import { SearchFilter, SearchForm } from '../../../shared/search-form/search-for
 import { DataTable, TableColumn } from '../../../shared/data-table/data-table';
 import { User, UserRole } from '../../../../models/User';
 import { ServUsersApi } from '../../../../services/serv-users-api';
-import Swal from 'sweetalert2';
 import { AuthService } from '../../../../services/auth.service';
+import { UiAlertService } from '../../../../shared/ui-alert.service';
+import { ApiErrorService } from '../../../../shared/api-error.service';
 
 declare const bootstrap: any;
 
@@ -49,7 +50,9 @@ export class UserCrud implements AfterViewInit {
   constructor(
     private miServicio: ServUsersApi,
     private authService: AuthService,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {
     this.loadUsers();
 
@@ -80,42 +83,24 @@ export class UserCrud implements AfterViewInit {
 
   delete(user: User) {
     if (user.id === this.currentUserId) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Acción no permitida',
-        text: 'No puedes eliminar tu propio usuario'
-      });
+      this.ui.warning('No puedes eliminar tu propio usuario');
       return;
     }
-    Swal.fire({
-      title: '¿Seguro deseas eliminar el usuario?',
-      text: user.name,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed && user.id) {
-        this.miServicio.delete(user.id).subscribe({
-          next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Usuario eliminado',
-              showConfirmButton: false,
-              timer: 1500
-            });
-            this.loadUsers();
-          },
-          error: () => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se pudo eliminar el usuario'
-            });
-          }
-        });
-      }
-    });
+
+    this.ui.deleteConfirm(user.name)
+      .then(result => {
+        if (result.isConfirmed && user.id) {
+          this.miServicio.delete(user.id).subscribe({
+            next: () => {
+              this.ui.success('Usuario eliminado correctamente');
+              this.loadUsers();
+            },
+            error: (err) => {
+              this.apiError.handle(err, 'eliminar el usuario');
+            }
+          });
+        }
+      });
   }
 
   search(filters: any) {
@@ -139,14 +124,9 @@ export class UserCrud implements AfterViewInit {
 
   openEdit(user: User) {
     if (user.id === this.currentUserId) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Acción no permitida',
-        text: 'No puedes editar tu propio usuario desde aquí'
-      });
+      this.ui.warning('No puedes editar tu propio usuario desde aquí');
       return;
     }
-
     this.editingId = user.id!;
     this.formUser.patchValue(user);
     this.formUser.get('role')?.disable();
@@ -156,51 +136,20 @@ export class UserCrud implements AfterViewInit {
   resetPassword() {
     if (!this.editingId) return;
 
-    Swal.fire({
-      title: '¿Reiniciar contraseña?',
-      text: 'Se generará una nueva contraseña para este usuario.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, reiniciar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
+    this.ui.confirm(
+      '¿Reiniciar contraseña?',
+      'Se generará una nueva contraseña para este usuario.'
+    ).then(result => {
       if (!result.isConfirmed) return;
 
-      this.miServicio.resetPassword(Number(this.editingId)).subscribe({
+      this.miServicio.resetPassword(this.editingId!).subscribe({
         next: (res: any) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Contraseña reiniciada',
-            html: `
-              <p><strong>Nueva contraseña:</strong></p>
-              <code style="font-size:16px">${res.temporaryPassword}</code>
-              <p class="mt-2 text-muted">Compártela con el usuario.</p>
-            `,
-            confirmButtonText: 'Aceptar'
-          });
+          this.ui.success(
+            `Contraseña reiniciada. La nueva contraseña de este usuario es "${res.temporaryPassword}"`
+          );
         },
         error: (err) => {
-          let errorMsg = 'Error al reiniciar la contraseña';
-
-          if (err.error) {
-            if (typeof err.error === 'string') {
-              errorMsg = err.error;
-            }
-            else if (err.error.message) {
-              errorMsg = err.error.message;
-            }
-            else if (err.error.errors) {
-              errorMsg = Object.values(err.error.errors)
-                .flat()
-                .join(', ');
-            }
-          }
-
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
+          this.apiError.handle(err, 'reiniciar la contraseña');
         }
       });
     });
@@ -223,50 +172,24 @@ export class UserCrud implements AfterViewInit {
 
       this.miServicio.update(user).subscribe({
         next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: 'Usuario actualizado correctamente'
-          });
+          this.ui.success('Usuario actualizado correctamente');
           this.modalRef.hide();
           this.loadUsers();
         },
         error: (err) => {
-          let errorMsg = 'Error al actualizar el usuario';
-          if (err.error) {
-            if (err.error.name) errorMsg = err.error.name.join(', ');
-            if (err.error.email) errorMsg = err.error.email.join(', ');
-          }
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
+          this.apiError.handle(err, 'actualizar el usuario');
         }
       });
     } else {
       let user: User = { ...datos };
       this.miServicio.create(user).subscribe({
         next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: 'Usuario creado correctamente'
-          });
+          this.ui.success('Usuario creado correctamente');
           this.modalRef.hide();
           this.loadUsers();
         },
         error: (err) => {
-          let errorMsg = 'Error al crear el usuario';
-          if (err.error) {
-            if (err.error.name) errorMsg = err.error.name.join(', ');
-            if (err.error.email) errorMsg = err.error.email.join(', ');
-          }
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
+          this.apiError.handle(err, 'crear el usuario');
         }
       });
     }
