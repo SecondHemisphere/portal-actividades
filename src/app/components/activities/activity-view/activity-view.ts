@@ -57,7 +57,7 @@ export class ActivityView implements OnInit, AfterViewInit {
   ) {
     this.formRating = this.formbuilder.group({
       stars: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
-      comment: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(250)]]
+      comment: ['', [Validators.required, Validators.maxLength(250)]]
     });
   }
 
@@ -302,7 +302,7 @@ export class ActivityView implements OnInit, AfterViewInit {
 
   deleteRating(rating: Rating) {
     this.ui.deleteConfirm(
-      '¿Eliminar valoración?',
+      '',
       '¿Estás seguro de que deseas eliminar esta valoración?'
     ).then((result) => {
       if (result.isConfirmed && rating.id) {

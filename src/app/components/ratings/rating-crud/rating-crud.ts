@@ -6,9 +6,10 @@ import { Rating } from '../../../models/Rating';
 import { ServRatingsApi } from '../../../services/serv-ratings-api';
 import { ServStudentsApi } from '../../../services/serv-students-api';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
-import Swal from 'sweetalert2';
 import { Student } from '../../../models/Student';
 import { Activity } from '../../../models/Activity';
+import { ApiErrorService } from '../../../shared/api-error.service';
+import { UiAlertService } from '../../../shared/ui-alert.service';
 
 declare const bootstrap: any;
 
@@ -49,7 +50,9 @@ export class RatingCrud {
   constructor(
     private ratingService: ServRatingsApi,
     private studentsService: ServStudentsApi,
-    private activitiesService: ServActivitiesApi
+    private activitiesService: ServActivitiesApi,
+    private apiError: ApiErrorService,
+    private ui: UiAlertService
   ) {
     this.loadStudents();
     this.loadActivities();
@@ -92,27 +95,18 @@ export class RatingCrud {
   }
 
   delete(rating: Rating) {
-    Swal.fire({
-      title: '¿Seguro deseas eliminar esta calificación?',
-      text: `${rating.studentName} - ${rating.activityName}`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
+    this.ui.deleteConfirm(
+      '',
+      `¿Estás seguro de eliminar la valoración de ${rating.studentName} en ${rating.activityName}?`)
+    .then(result => {
       if (result.isConfirmed) {
         this.ratingService.delete(Number(rating.id)).subscribe({
           next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Calificación eliminada',
-              timer: 1500,
-              showConfirmButton: false
-            });
+            this.ui.success('Valoración eliminada');
             this.loadRatings();
           },
-          error: () => {
-            Swal.fire('Error', 'No se pudo eliminar la calificación', 'error');
+          error: (err) => {
+            this.apiError.handle(err, 'eliminar');
           }
         });
       }
@@ -131,12 +125,7 @@ export class RatingCrud {
         this.filteredRatings = data;
       },
       error: (err) => {
-        const errorMsg = err.error?.message ?? 'Ocurrió un error al buscar calificaciones';
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMsg
-        });
+        this.apiError.handle(err, 'buscar');
       }
     });
   }

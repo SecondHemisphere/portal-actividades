@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
 import { ServRatingsApi } from '../../../services/serv-ratings-api';
-
 @Component({
   selector: 'app-rating-historial',
   imports: [CommonModule],
@@ -48,4 +47,5 @@ export class RatingHistorial {
   view(id: number) {
     this.router.navigate(['/activity-view', id]);
   }
+  
 }
