@@ -1,63 +1,99 @@
-<!-- CONTENEDOR DEL HEADER -->
-<div class="header-container d-flex justify-content-between align-items-center mb-3">
-  <!-- Botón MES ANTERIOR -->
-  <button type="button" class="btn btn-secondary" (click)="prevMonth()">
-    <i class="bi bi-chevron-left"></i>
-    Mes anterior
-  </button>
+<div class="header-container d-flex justify-content-between align-items-center mb-3 mt-2">
+  <div class="d-flex gap-2">
+    <!-- Botón MES ANTERIOR -->
+    <button type="button" class="btn btn-secondary" (click)="prevMonth()" [disabled]="loading">
+      <i class="bi bi-chevron-left"></i>
+      Anterior
+    </button>
+    <!-- Botón MES ACTUAL -->
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="goToCurrentMonth()"
+      [disabled]="loading"
+    >
+      <i class="bi bi-calendar-check"></i>
+      Hoy
+    </button>
+  </div>
 
   <!-- TÍTULO DEL MES -->
-  <h2 class="title text-center m-0">{{ months[selectedMonth] }} {{ selectedYear }}</h2>
+  <h2 class="title text-center m-0">
+    @if (loading) {
+      <i class="bi bi-arrow-clockwise spin"></i>
+    }
+    {{ months[selectedMonth] }} {{ selectedYear }}
+  </h2>
 
   <!-- Botón MES SIGUIENTE -->
-  <button type="button" class="btn btn-secondary" (click)="nextMonth()">
-    Mes siguiente <i class="bi bi-chevron-right"></i>
+  <button type="button" class="btn btn-secondary" (click)="nextMonth()" [disabled]="loading">
+    Siguiente <i class="bi bi-chevron-right"></i>
   </button>
 </div>
 
-<!-- MENSAJE DE CUANDO NO HAY ACTIVIDADES EN EL MES -->
-@if (filteredDays.length === 0) {
-<div class="mensaje-vacio p-4 text-center border rounded">
-  <i class="bi bi-calendar-x fs-1 mb-2"></i>
-  <div>¡Parece que este mes no tiene actividades creadas!.</div>
-</div>
-} @for (d of filteredDays; track $index) {
-<div class="days-container mb-4">
-  <div class="day-card">
-    <!-- FECHA DEL DÍA -->
-    <div class="day-title">
-      {{ d.date | date : 'EEE d MMM' }}
+<!-- LOADING STATE -->
+@if (loading) {
+  <div class="text-center p-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
     </div>
+    <p class="mt-2">Cargando actividades...</p>
+  </div>
+}
 
-    <!-- ACTIVIDADES DEL DÍA -->
+<!-- MENSAJE DE CUANDO NO HAY ACTIVIDADES EN EL MES -->
+@else if (filteredDays.length === 0) {
+  <div class="mensaje-vacio p-4 text-center border rounded">
+    <i class="bi bi-calendar-x fs-1 mb-2"></i>
+    <div>¡Parece que este mes no tiene actividades creadas!.</div>
+  </div>
+}
+
+<!-- LISTA DE ACTIVIDADES -->
+@else {
+  @for (d of filteredDays; track $index) {
     @for (a of d.activities; track $index) {
-    <div class="activity">
-      <div class="activity-left">
-        <!-- TÍTULO -->
-        <div class="activity-title">{{ a.title }}</div>
+      <div class="days-container mb-4">
+        <div class="day-card">
+          <div class="day-title">
+            {{ a.eventDate | date: 'fullDate' }}
+          </div>
+          <!-- ACTIVIDADES DEL DÍA -->
+          <div class="activity">
+            <div class="activity-left">
+              <!-- TÍTULO -->
+              <div class="activity-title">{{ a.title }}</div>
 
-        <!-- HORARIO -->
-        <div class="activity-time">{{ a.start }} - {{ a.end }}</div>
+              <!-- HORARIO -->
+              <div class="activity-time">{{ a.start }} - {{ a.end }}</div>
 
-        <!-- ESTADO DE ACTIVIDAD -->
-        <div class="activity-status" [class.active]="a.active" [class.inactive]="!a.active">
-          {{ a.active ? 'Activa' : 'Inactiva' }}
+              <!-- ESTADO DE ACTIVIDAD -->
+              <span
+                class="activity-status"
+                [class.active]="a.active"
+                [class.inactive]="!a.active"
+                style="cursor: pointer"
+                (click)="a.active ? deactivate(a.id) : activate(a.id)"
+                title="{{ a.active ? 'Click para ocultar' : 'Click para mostrar' }}"
+              >
+                {{ a.active ? 'Activa' : 'Inactiva' }}
+              </span>
+            </div>
+
+            <!-- BOTONES DE ACCIONES -->
+            <div class="activity-actions d-flex gap-2">
+              <button type="button" class="btn btn-secondary me-2" (click)="view(a.id)">
+                <i class="bi bi-eye-fill"></i>
+              </button>
+              <button type="button" class="btn btn-primary me-2" (click)="edit(a.id)">
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <!-- BOTONES DE ACCIONES -->
-      <div class="activity-actions d-flex gap-2">
-        <button type="button" class="btn btn-secondary me-2" (click)="view(a.id)">
-          <i class="bi bi-eye-fill"></i>
-        </button>
-        <button type="button" class="btn btn-primary me-2" (click)="edit(a.id)">
-          <i class="bi bi-pencil-fill"></i>
-        </button>
-      </div>
-    </div>
     }
-  </div>
-</div>
+  }
 }
 
 <!-- CREAR ACTIVIDAD -->
@@ -65,6 +101,7 @@
   type="button"
   class="btn btn-primary fab-btn d-flex align-items-center gap-2"
   (click)="new()"
+  [disabled]="loading"
 >
   <i class="bi bi-plus-lg"></i>
   Crear Actividad

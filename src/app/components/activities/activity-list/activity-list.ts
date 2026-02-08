@@ -51,9 +51,9 @@ export class ActivityList {
     this.loadCategories();
     this.loadOrganizers();
   }
-
+ 
   loadActivities() {
-    this.activitiesService.getActivities2().subscribe((data: Activity[]) => {
+    this.activitiesService.getActiveActivities().subscribe((data: Activity[]) => {
       this.activities = data;
       this.filteredActivities = [...data];
       this.pagedData = this.buildRows(this.filteredActivities);
@@ -81,7 +81,7 @@ export class ActivityList {
   }
 
   search(filters: any) {
-    this.activitiesService.search(filters).subscribe(
+    this.activitiesService.searchPublic(filters).subscribe(
       (data: Activity[]) => {
         this.filteredActivities = data;
         this.currentPage = 1;

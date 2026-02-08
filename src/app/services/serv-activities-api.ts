@@ -25,6 +25,23 @@ export class ServActivitiesApi {
     return this.http.get<Activity>(`${this.apiUrl}/${id}`);
   }
 
+  getActiveActivities(): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${this.apiUrl}/active`);
+  }
+
+  getInactiveActivities(): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${this.apiUrl}/inactive`);
+  }
+
+  getActivitiesByOrganizerAndMonth(organizerId: number, year: number, month: number) {
+    const backendMonth = month + 1;
+    return this.http.get<Activity[]>(`${this.apiUrl}/organizer/${organizerId}/month/${year}/${backendMonth}`);
+  }
+
+  getAvailableActivities(): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${this.apiUrl}/available`);
+  }
+
   create(activity: Activity): Observable<Activity> {
     return this.http.post<Activity>(this.apiUrl, activity);
   }
@@ -35,6 +52,10 @@ export class ServActivitiesApi {
 
   delete(id: number | string): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/deactivate/${id}`, null);
+  }
+
+  activate(id: number | string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/activate/${id}`, null);
   }
 
   search(filters: {
@@ -55,6 +76,18 @@ export class ServActivitiesApi {
     if (filters.title) params = params.set('title', filters.title);
 
     return this.http.get<Activity[]>(`${this.apiUrl}/search`, { params });
+  }
+
+  searchPublic(filters: {
+    title?: string;
+    categoryId?: number;
+  }): Observable<Activity[]> {
+    let params = new HttpParams();
+    
+    if (filters.title) params = params.set('title', filters.title);
+    if (filters.categoryId != null) params = params.set('categoryId', filters.categoryId.toString());
+    
+    return this.http.get<Activity[]>(`${this.apiUrl}/search/public`, { params });
   }
 
 }

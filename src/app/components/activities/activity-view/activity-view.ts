@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { Activity } from '../../../models/Activity';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -22,6 +22,7 @@ declare const bootstrap: any;
   styleUrls: ['./activity-view.css'],
 })
 export class ActivityView implements OnInit, AfterViewInit {
+
   activity!: Activity;
   ratings: Rating[] = [];
 
@@ -41,6 +42,7 @@ export class ActivityView implements OnInit, AfterViewInit {
 
   isLoading: boolean = true;
   hasError: boolean = false;
+  imageError = false;
 
   constructor(
     private activitiesService: ServActivitiesApi,
@@ -290,20 +292,18 @@ export class ActivityView implements OnInit, AfterViewInit {
   }
 
   private processCancellation() {
-    const updated: Enrollment = {
-      ...this.currentEnrollment!,
-      status: EnrollmentStatus.Cancelado,
-      enrollmentDate: new Date().toISOString()
-    };
-
-    this.enrollmentsService.update(updated).subscribe({
-      next: (e) => {
+    this.enrollmentsService.delete(this.currentEnrollment!.id!).subscribe({
+      next: () => {
         this.isEnrolled = false;
-        this.currentEnrollment = e;
+        this.currentEnrollment!.status = EnrollmentStatus.Cancelado;
         this.checkIfCanReview();
         this.showSuccess('Tu inscripción ha sido cancelada');
       },
-      error: (error) => this.showError('Error al cancelar inscripción')
+      error: (error) => {
+        console.error('Error al cancelar inscripción:', error);
+        const errorMsg = error.error?.message || 'Error al cancelar inscripción';
+        this.showError(errorMsg);
+      }
     });
   }
 
@@ -481,6 +481,13 @@ export class ActivityView implements OnInit, AfterViewInit {
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
     });
+  }
+
+  handleImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.style.display = 'none';
+    
+    console.warn('La imagen no pudo cargar:', imgElement.src);
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,7 +10,6 @@ import { ServEnrollmentsApi } from '../../../services/serv-enrollments-api';
 
 @Component({
   selector: 'app-enrollments-calendar',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './enrollments-calendar.html',
   styleUrl: './enrollments-calendar.css',
@@ -20,6 +19,8 @@ export class EnrollmentsCalendar {
   enrollments: Enrollment[] = [];
   activities: Activity[] = [];
   userId = 0;
+
+  @Input() refreshTrigger: boolean = false;
 
   filteredDays: {
     date: Date;
@@ -31,6 +32,7 @@ export class EnrollmentsCalendar {
       end: string;
       eventDate: string | undefined;
       enrollmentDate: string;
+      activityId: number;
     }[];
   }[] = [];
 
@@ -57,13 +59,19 @@ export class EnrollmentsCalendar {
     this.loadEnrollments();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['refreshTrigger']) {
+      this.loadEnrollments();
+    }
+  }
+
   loadEnrollments() {
     this.enrollmentsService.getEnrollmentsByStudent(this.userId)
       .subscribe(enrs => {
         this.enrollments = enrs || [];
-        const ids = this.enrollments.map(e => e.activityId);
-
+        
         this.activitiesService.getActivities2().subscribe(actList => {
+          const ids = this.enrollments.map(e => e.activityId);
           this.activities = actList.filter(a => ids.includes(a.id!));
           this.generateFilteredDays();
         });
@@ -75,17 +83,16 @@ export class EnrollmentsCalendar {
 
     this.enrollments.forEach(e => {
       const act = this.activities.find(a => a.id === e.activityId);
-      if (!act) return;
+      if (!act || !act.date) return;
 
       const eventDateObj = new Date(act.date);
       const year = eventDateObj.getFullYear();
       const month = eventDateObj.getMonth();
 
       if (year === this.selectedYear && month === this.selectedMonth) {
-
         let day = this.filteredDays.find(d =>
-          d.date.getFullYear() === eventDateObj.getFullYear() &&
-          d.date.getMonth() === eventDateObj.getMonth() &&
+          d.date.getFullYear() === year &&
+          d.date.getMonth() === month &&
           d.date.getDate() === eventDateObj.getDate()
         );
 
@@ -103,7 +110,8 @@ export class EnrollmentsCalendar {
           start: startRaw || '—',
           end: endRaw || '—',
           eventDate: act.date,
-          enrollmentDate: e.enrollmentDate
+          enrollmentDate: e.enrollmentDate,
+          activityId: e.activityId
         });
       }
     });
@@ -133,6 +141,27 @@ export class EnrollmentsCalendar {
 
   view(id: number) {
     this.router.navigate(['/activity-view', id]);
+  }
+
+  getMonthYear(): string {
+    return `${this.months[this.selectedMonth]} ${this.selectedYear}`;
+  }
+
+  getDayName(date: Date): string {
+    const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    return days[date.getDay()];
+  }
+
+  getStatusBadge(status: EnrollmentStatus): string {
+    return status === 'Inscrito' ? 'Inscrito' :
+           status === 'Cancelado' ? 'Cancelado' :
+           status || 'Pendiente';
+  }
+
+  getStatusClass(status: EnrollmentStatus): string {
+    return status === 'Inscrito' ? 'badge-enrolled' :
+           status === 'Cancelado' ? 'badge-cancelled' :
+           'badge-pending';
   }
 
 }

@@ -1,12 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Activity } from '../../../models/Activity';
-import { Organizer } from '../../../models/Organizer';
 import { AuthService } from '../../../services/auth.service';
 import { ServActivitiesApi } from '../../../services/serv-activities-api';
-import { ServOrganizersApi } from '../../../services/serv-organizers-api';
 
 @Component({
   selector: 'app-activities-calendar',
@@ -18,10 +16,15 @@ export class ActivitiesCalendar {
 
   @Output() editActivity = new EventEmitter<number>();
   @Output() newActivity = new EventEmitter<void>();
+  @Output() activateActivity = new EventEmitter<number>();
+  @Output() deactivateActivity = new EventEmitter<number>();
 
-  organizers: Organizer[] = [];
+  @Input() refreshTrigger: boolean = false;
+
   activities: Activity[] = [];
   userId = 0;
+  
+  loading = false;
 
   filteredDays: {
     date: Date;
@@ -32,7 +35,9 @@ export class ActivitiesCalendar {
       start: string;
       end: string;
       eventDate: string | undefined;
-      organizer?: Organizer;
+      capacity: number;
+      location: string;
+      registrationDeadline: string;
     }[];
   }[] = [];
 
@@ -46,80 +51,86 @@ export class ActivitiesCalendar {
 
   constructor(
     private activitiesService: ServActivitiesApi,
-    private organizersService: ServOrganizersApi,
     private authService: AuthService,
     private router: Router
-  )
-  {
-    this.loadData();
-  }
+  ) {}
 
-  loadData() {
+  ngOnInit() {
     const userId = this.authService.getUserId();
     if (!userId) return;
 
     this.userId = Number(userId);
+    this.loadActivitiesForMonth();
+  }
 
-    this.organizersService.getOrganizers().subscribe(orgs => {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['refreshTrigger']) {
+      this.loadActivitiesForMonth();
+    }
+  }
 
-      this.organizers = orgs;
-      const organizer = orgs.find(o => o.id === this.userId);
-
-      if (!organizer) {
-        this.activities = [];
-        this.filteredDays = [];
-        return;
-      }
-
-      this.activitiesService.getActivities().subscribe(list => {
-        this.activities = list.filter(a => a.organizerId === organizer.id);
-        this.generateFilteredDays();
+  loadActivitiesForMonth() {
+    this.loading = true;
+    
+    this.activitiesService
+      .getActivitiesByOrganizerAndMonth(this.userId, this.selectedYear, this.selectedMonth)
+      .subscribe({
+        next: (list) => {
+          this.activities = list;
+          this.generateFilteredDays();
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error cargando actividades:', error);
+          this.loading = false;
+          this.activities = [];
+          this.filteredDays = [];
+        }
       });
-    });
   }
 
   generateFilteredDays() {
     this.filteredDays = [];
 
+    const daysMap = new Map<string, typeof this.filteredDays[0]>();
+
     this.activities.forEach(act => {
       if (!act.date) return;
 
-      const eventDateObj = new Date(act.date + 'T00:00:00');
-
-      if (
-        eventDateObj.getFullYear() === this.selectedYear &&
-        eventDateObj.getMonth() === this.selectedMonth
-      ) {
-
-        let day = this.filteredDays.find(d =>
-          d.date.getFullYear() === eventDateObj.getFullYear() &&
-          d.date.getMonth() === eventDateObj.getMonth() &&
-          d.date.getDate() === eventDateObj.getDate()
-        );
-
-        if (!day) {
-          day = { date: eventDateObj, activities: [] };
-          this.filteredDays.push(day);
-        }
-
-        const organizer = this.organizers.find(o => o.id === act.organizerId);
-
-        const [startRaw, endRaw] =
-          act.timeRange?.split('-').map(t => t.trim()) ?? [];
-
-        day.activities.push({
-          id: act.id!,
-          title: act.title ?? 'Actividad',
-          active: act.active,
-          start: startRaw || '—',
-          end: endRaw || '—',
-          eventDate: act.date,
-          organizer: organizer
+      const dayKey = act.date;
+      
+      if (!daysMap.has(dayKey)) {
+        const dateObj = this.parseDate(act.date);
+        daysMap.set(dayKey, {
+          date: dateObj,
+          activities: []
         });
       }
+
+      const day = daysMap.get(dayKey)!;
+
+      const [startRaw, endRaw] = act.timeRange?.split('-').map(t => t.trim()) ?? [];
+
+      day.activities.push({
+        id: act.id!,
+        title: act.title ?? 'Actividad',
+        active: act.active,
+        start: startRaw || '—',
+        end: endRaw || '—',
+        eventDate: act.date,
+        capacity: act.capacity || 0,
+        location: act.location || 'Sin ubicación',
+        registrationDeadline: act.registrationDeadline || ''
+      });
     });
 
+    this.filteredDays = Array.from(daysMap.values());
     this.filteredDays.sort((a, b) => a.date.getTime() - b.date.getTime());
+  }
+
+  parseDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
   }
 
   prevMonth() {
@@ -129,7 +140,7 @@ export class ActivitiesCalendar {
     } else {
       this.selectedMonth--;
     }
-    this.generateFilteredDays();
+    this.loadActivitiesForMonth();
   }
 
   nextMonth() {
@@ -139,7 +150,21 @@ export class ActivitiesCalendar {
     } else {
       this.selectedMonth++;
     }
-    this.generateFilteredDays();
+    this.loadActivitiesForMonth();
+  }
+
+  goToCurrentMonth() {
+    const now = new Date();
+    this.selectedYear = now.getFullYear();
+    this.selectedMonth = now.getMonth();
+    this.loadActivitiesForMonth();
+  }
+
+  goToMonth(date: string | Date) {
+    const d = new Date(date);
+    this.selectedMonth = d.getMonth();
+    this.selectedYear = d.getFullYear();
+    this.loadActivitiesForMonth();
   }
 
   view(id: number) {
@@ -150,8 +175,20 @@ export class ActivitiesCalendar {
     this.editActivity.emit(id);
   }
 
+  activate(id: number) {
+    this.activateActivity.emit(id);
+  }
+
+  deactivate(id: number) {
+    this.deactivateActivity.emit(id);
+  }
+
   new() {
     this.newActivity.emit();
   }
 
+  getMonthYear(): string {
+    return `${this.months[this.selectedMonth]} ${this.selectedYear}`;
+  }
+  
 }
