@@ -4,7 +4,8 @@ import { SearchFilter, SearchForm } from '../../shared/search-form/search-form';
 import { DataTable, TableColumn } from '../../shared/data-table/data-table';
 import { ShiftType, Organizer, WeekDay } from '../../../models/Organizer';
 import { ServOrganizersApi } from '../../../services/serv-organizers-api';
-import Swal from 'sweetalert2';
+import { ApiErrorService } from '../../../shared/api-error.service';
+import { UiAlertService } from '../../../shared/ui-alert.service';
 
 declare const bootstrap: any;
 
@@ -56,7 +57,9 @@ export class OrganizerCrud {
 
   constructor(
     private miServicio: ServOrganizersApi,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private ui: UiAlertService,
+    private apiError: ApiErrorService
   ) {
     this.loadOrganizers();
     this.formOrganizer = this.formbuilder.group({
@@ -64,7 +67,7 @@ export class OrganizerCrud {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
       department: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      position: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      position: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       bio: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(300)]],
       shifts: [[], [Validators.required]],
       workDays: [[], [Validators.required]],
@@ -114,47 +117,30 @@ export class OrganizerCrud {
   }
 
   loadOrganizers() {
-    this.miServicio.getOrganizers2().subscribe((data: Organizer[]) => {
-      this.organizers = data.map(o => ({
-        ...o,
-        shifts: this.parseShifts(o.shifts),
-        workDays: this.parseWorkDays(o.workDays),
-        displayShifts: this.parseShifts(o.shifts).join(', '),
-        displayDays: this.parseWorkDays(o.workDays).join(', ')
-      }));
-
-      this.filteredOrganizers = [...this.organizers];
+    this.miServicio.getOrganizers().subscribe({
+      next: (data: Organizer[]) => {
+        this.organizers = data.map(o => ({
+          ...o,
+          shifts: this.parseShifts(o.shifts),
+          workDays: this.parseWorkDays(o.workDays),
+          displayShifts: this.parseShifts(o.shifts).join(', '),
+          displayDays: this.parseWorkDays(o.workDays).join(', ')
+        }));
+        this.filteredOrganizers = [...this.organizers];
+      },
+      error: (err) => this.apiError.handle(err, 'cargar organizadores')
     });
   }
 
   delete(org: Organizer) {
-    Swal.fire({
-      title: '¿Seguro deseas eliminar el organizador?',
-      text: org.name,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
+    this.ui.deleteConfirm(org.name).then(result => {
+      if (result.isConfirmed && org.id) {
         this.miServicio.delete(Number(org.id)).subscribe({
           next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Organizador eliminado',
-              showConfirmButton: false,
-              timer: 1500
-            });
+            this.ui.success('Organizador eliminado correctamente');
             this.loadOrganizers();
           },
-          error: (err) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'No se pudo eliminar el organizador.',
-            });
-            console.error(err);
-          }
+          error: (err) => this.apiError.handle(err, 'eliminar organizador')
         });
       }
     });
@@ -237,51 +223,21 @@ export class OrganizerCrud {
     if (this.editingId) {
       const organizerToUpdate = { ...payload, id: this.editingId };
       this.miServicio.update(organizerToUpdate).subscribe({
-        next: (res: any) => {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: res?.message ?? 'Organizador actualizado correctamente'
-          });
+        next: () => {
+          this.ui.success('Organizador actualizado correctamente');
           this.modalRef.hide();
           this.loadOrganizers();
         },
-        error: (err) => {
-          let errorMsg = 'Error al actualizar el organizador';
-          if (err.error) {
-            if (err.error.name) errorMsg = err.error.name.join(', ');
-            if (err.error.email) errorMsg = err.error.email.join(', ');
-          }
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
-        }
+        error: (err) => this.apiError.handle(err, 'actualizar organizador')
       });
     } else {
       this.miServicio.create(payload).subscribe({
-        next: (res: any) => {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: res?.message ?? 'Organizador creado correctamente'
-          });
+        next: () => {
+          this.ui.success('Organizador creado correctamente');
           this.modalRef.hide();
           this.loadOrganizers();
         },
-        error: (err) => {
-          let errorMsg = 'Error al crear el organizador';
-          if (err.error) {
-            if (err.error.name) errorMsg = err.error.name.join(', ');
-            if (err.error.email) errorMsg = err.error.email.join(', ');
-          }
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: errorMsg
-          });
-        }
+        error: (err) => this.apiError.handle(err, 'crear organizador')
       });
     }
   }

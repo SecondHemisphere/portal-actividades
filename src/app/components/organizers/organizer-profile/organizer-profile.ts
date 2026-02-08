@@ -4,7 +4,8 @@ import { Organizer, ShiftType, WeekDay } from '../../../models/Organizer';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { ServOrganizersApi } from '../../../services/serv-organizers-api';
-import Swal from 'sweetalert2';
+import { UiAlertService } from '../../../shared/ui-alert.service';
+import { ApiErrorService } from '../../../shared/api-error.service';
 
 declare const bootstrap: any;
 
@@ -29,7 +30,9 @@ export class OrganizerProfile {
   constructor(
     private fb: FormBuilder,
     private organizerService: ServOrganizersApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private ui: UiAlertService,
+    private apiError: ApiErrorService
   ) {
     this.formOrganizer = this.fb.group({})
   }
@@ -54,7 +57,7 @@ export class OrganizerProfile {
 
   initForm() {
     this.formOrganizer = this.fb.group({
-      name: [this.organizer.name, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
       email: [this.organizer.email, [Validators.required, Validators.email]],
       phone: [this.organizer.phone, [Validators.required, Validators.pattern(/^\+?[0-9]{7,15}$/)]],
       department: [this.organizer.department, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
@@ -113,7 +116,6 @@ export class OrganizerProfile {
     }
 
     const datos = this.formOrganizer.value;
-
     const payload: Organizer = {
       ...this.organizer,
       ...datos,
@@ -121,56 +123,30 @@ export class OrganizerProfile {
       workDays: Array.isArray(datos.workDays) ? datos.workDays.join(',') : ''
     };
 
-    Swal.fire({
-      title: '¿Deseas actualizar tu perfil?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, actualizar',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
-      if (result.isConfirmed) {
-        this.organizerService.update(payload).subscribe({
-          next: () => {
-            this.organizer = {
-              ...this.organizer,
-              name: datos.name,
-              email: datos.email,
-              phone: datos.phone,
-              department: datos.department,
-              position: datos.position,
-              bio: datos.bio,
-              shifts: datos.shifts,
-              workDays: datos.workDays,
-              photoUrl: datos.photoUrl
-            };
+    this.ui.confirm('¿Deseas actualizar tu perfil?', 'Se actualizarán tus datos del perfil.').then(result => {
+      if (!result.isConfirmed) return;
 
-            this.organizer.shifts = Array.isArray(datos.shifts) ? datos.shifts : this.organizer.shifts;
-            this.organizer.workDays = Array.isArray(datos.workDays) ? datos.workDays : this.organizer.workDays;
+      this.organizerService.update(payload).subscribe({
+        next: () => {
+          const userId = this.authService.getUserId();
+          if (!userId) return;
 
-            this.photoPreview = datos.photoUrl || null;
-
-            Swal.fire({
-              icon: 'success',
-              title: '¡Perfil actualizado!',
-              timer: 1500,
-              showConfirmButton: false
-            });
-            this.modalRef.hide();
-          },
-          error: (err) => {
-            let errorMsg = 'Ocurrió un error al actualizar el perfil';
-            if (err.error) {
-              if (err.error.name) errorMsg = err.error.name.join(', ');
-              if (err.error.email) errorMsg = err.error.email.join(', ');
-            }
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: errorMsg
-            });
-          }
-        });
-      }
+          this.organizerService.getOrganizerById(Number(userId)).subscribe({
+            next: org => {
+              this.organizer = {
+                ...org,
+                shifts: this.parseShifts(org.shifts),
+                workDays: this.parseWorkDays(org.workDays)
+              };
+              this.photoPreview = org.photoUrl || null;
+              this.ui.success('¡Perfil actualizado!');
+              this.modalRef.hide();
+            },
+            error: err => this.apiError.handle(err, 'refrescar perfil de organizador')
+          });
+        },
+        error: err => this.apiError.handle(err, 'actualizar perfil de organizador')
+      });
     });
   }
 
@@ -185,4 +161,5 @@ export class OrganizerProfile {
     if (Array.isArray(val)) return val;
     return (val as string).split(',').map(d => d.trim() as WeekDay);
   }
+  
 }

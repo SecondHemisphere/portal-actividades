@@ -56,6 +56,9 @@
                 @if (formOrganizer.get('name')?.errors?.['maxlength']) {
                   Máximo 50 caracteres.
                 }
+                @if (formOrganizer.get('name')?.errors?.['pattern']) {
+                  Solo letras y espacio
+                }
               }
             </span>
           </div>
