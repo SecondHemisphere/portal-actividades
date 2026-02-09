@@ -97,7 +97,7 @@ export class EnrollmentCrud implements AfterViewInit {
   }
 
   loadStudents() {
-    this.studentsService.getStudents2().subscribe(data => {
+    this.studentsService.getStudents().subscribe(data => {
       this.students = data;
       const studentFilter = this.enrollmentFilters.find(f => f.field === 'studentId');
       if (studentFilter) {

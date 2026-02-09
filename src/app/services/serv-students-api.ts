@@ -17,10 +17,6 @@ export class ServStudentsApi {
     return this.http.get<Student[]>(this.apiUrl);
   }
 
-  getStudents2(): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.apiUrl}/Students2`);
-  }
-
   getStudentById(id: number | string): Observable<Student> {
     return this.http.get<Student>(`${this.apiUrl}/${id}`);
   }

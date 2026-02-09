@@ -67,7 +67,7 @@ export class RatingCrud {
   }
 
   loadStudents() {
-    this.studentsService.getStudents2().subscribe((data: Student[]) => {
+    this.studentsService.getStudents().subscribe((data: Student[]) => {
       this.students = data;
 
       const filter = this.ratingFilters.find(f => f.field === 'studentId');

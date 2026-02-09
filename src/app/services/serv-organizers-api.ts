@@ -17,10 +17,6 @@ export class ServOrganizersApi {
     return this.http.get<Organizer[]>(this.apiUrl);
   }
 
-  getOrganizers2(): Observable<Organizer[]> {
-    return this.http.get<Organizer[]>(`${this.apiUrl}/Organizers2`);
-  }
-
   getOrganizerById(id: number | string): Observable<Organizer> {
     return this.http.get<Organizer>(`${this.apiUrl}/${id}`);
   }

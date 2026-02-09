@@ -117,7 +117,7 @@ export class ActivityCrud implements AfterViewInit {
   }
 
   loadOrganizers() {
-    this.organizersService.getOrganizers2().subscribe((data: Organizer[]) => {
+    this.organizersService.getOrganizers().subscribe((data: Organizer[]) => {
       this.organizers = data;
 
       const organizerFilter = this.activityFilters.find(f => f.field === 'organizerId');
