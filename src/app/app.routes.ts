@@ -36,6 +36,7 @@ export const routes: Routes = [
   {
     path: 'student',
     children: [
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'my-enrollments', canActivate: [AuthGuard], component: MyEnrollmentsPage, data: { roles: ['Estudiante'] }},
       { path: 'profile', canActivate: [AuthGuard], component: StudentProfile, data: { roles: ['Estudiante'] }},
       { path: 'rating-historial', canActivate: [AuthGuard], component: RatingHistorial, data: { roles: ['Estudiante'] }},
@@ -46,6 +47,7 @@ export const routes: Routes = [
   {
     path: 'organizer',
     children: [
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'my-activities', canActivate: [AuthGuard], component: MyActivitiesPage, data: { roles: ['Organizador'] }},
       { path: 'profile', canActivate: [AuthGuard], component: OrganizerProfile, data: { roles: ['Organizador'] }},
     ]
